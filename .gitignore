@@ -1,9 +1,11 @@
-# 用户生成的 config 不入库
-skills/llm-refine/config.json
-
 # Python
 __pycache__/
 *.pyc
 
 # macOS
 .DS_Store
+
+# 运行时产物（gstack / playwright / superpowers 本地会话）
+.playwright-mcp/
+.gstack/
+.superpowers/

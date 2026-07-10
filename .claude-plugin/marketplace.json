@@ -17,7 +17,8 @@
       "skills": [
         "./skills/video-downloader",
         "./skills/audio-transcribe",
-        "./skills/text-refine"
+        "./skills/text-refine",
+        "./skills/srt-html"
       ]
     },
     {
@@ -36,7 +37,8 @@
       "source": "./plugins/writting-assistant",
       "strict": false,
       "skills": [
-        "./skills/writting-assistant"
+        "./skills/writting-assistant",
+        "./skills/golden-title"
       ]
     }
   ]
