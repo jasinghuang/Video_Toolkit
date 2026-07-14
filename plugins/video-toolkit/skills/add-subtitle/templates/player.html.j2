@@ -1,7 +1,13 @@
-{% extends "_base.html.j2" %}
-{% set title = srt_name ~ " — Subtitle Player" %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ srt_name }} — add-subtitle</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a0f; }
 
-{% block extra_css %}
   .player-wrap {
     position: relative;
     max-width: 960px;
@@ -9,93 +15,68 @@
     background: #000;
     border-radius: 10px;
     overflow: hidden;
-    aspect-ratio: 16/9;
+    container-type: inline-size;
   }
-  video {
-    width: 100%;
-    height: 100%;
-    display: block;
-  }
-  .no-video-msg {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #555;
-    font-size: 18px;
-  }
-{% endblock %}
+  video { width: 100%; height: auto; display: block; }
 
-{% block content %}
+  .sub-wrap {
+    position: absolute;
+    left: 50%;
+    bottom: 8%;
+    transform: translateX(-50%);
+    z-index: 3;
+    width: 100%;
+    text-align: center;
+    pointer-events: none;
+  }
+  .subtitle {
+    display: inline-block;
+    font-family: "FZLanTingHei", "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-weight: 600;
+    color: #000;
+    background: #fff;
+    border: 1.3px solid #000;
+    border-radius: 9px;
+    padding: 6px 20px;
+    box-shadow: 0 5px 16px rgba(0,0,0,0.28);
+    font-size: clamp(12px, 2.4cqw, 28px);
+    line-height: 1.2;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    max-width: 90%;
+  }
+</style>
+</head>
+<body>
 <div class="player-wrap">
   <video id="player" src="{{ video_path }}" controls></video>
-  {% if not video_path %}
-  <div class="no-video-msg">No video loaded</div>
-  {% endif %}
   <div class="sub-wrap">
-    <div class="sub-bar" id="subContainer" style="display:none">
-      <span class="kara" id="karaEl">
-        <span class="stroke-layer" id="strokeLayer"></span>
-        <span class="fill-layer" id="fillLayer"></span>
-      </span>
-    </div>
-    {% if subtitles2 %}
-    <div class="sub-bar sub-track2" id="subContainer2" style="display:none">
-      <span class="kara" id="karaEl2">
-        <span class="stroke-layer" id="strokeLayer2"></span>
-        <span class="fill-layer" id="fillLayer2"></span>
-      </span>
-    </div>
-    {% endif %}
+    <span class="subtitle" id="subtitle" style="visibility:hidden;"></span>
   </div>
 </div>
-{% endblock %}
 
-{% block js_init %}
+<script>
+const SUBTITLES = {{ subtitles | tojson }};
+const subs = SUBTITLES.map(s => ({ start: s.start, end: s.end, text: s.text }));
 const video = document.getElementById("player");
-subContainer = document.getElementById("subContainer");
-strokeLayer = document.getElementById("strokeLayer");
-fillLayer = document.getElementById("fillLayer");
-{% if subtitles2 %}
-subContainer2 = document.getElementById("subContainer2");
-strokeLayer2 = document.getElementById("strokeLayer2");
-fillLayer2 = document.getElementById("fillLayer2");
-{% endif %}
+const el = document.getElementById("subtitle");
 
-let charEls = [];
-
-function tick() {
-  const t = video.currentTime;
-  const found = findSub(t);
-
-  if (!found) {
-    clearSub();
-  } else if (!activeSub || activeSub.idx !== found.idx) {
-    showSub(found);
-    charEls = fillLayer.querySelectorAll(".c");
+function findSub(t) {
+  for (let i = 0; i < subs.length; i++) {
+    if (t >= subs[i].start && t < subs[i].end) return subs[i];
   }
-
-  if (activeSub) {
-    applyStyle(charEls, charProgress(activeSub, t), styleFn);
-    if (activeSub2 && fillLayer2) {
-      const charEls2 = fillLayer2.querySelectorAll(".c");
-      applyStyle(charEls2, charProgress(activeSub2, t), styleFn);
-    }
-  }
-
-  requestAnimationFrame(tick);
+  return null;
 }
 
-video.addEventListener("play", () => requestAnimationFrame(tick));
-video.addEventListener("seeked", () => {
-  const t = video.currentTime;
-  const found = findSub(t);
-  if (!found) {
-    clearSub();
+video.addEventListener("timeupdate", () => {
+  const found = findSub(video.currentTime);
+  if (found) {
+    el.textContent = found.text;
+    el.style.visibility = "visible";
   } else {
-    showSub(found);
-    charEls = fillLayer.querySelectorAll(".c");
-    applyStyle(charEls, charProgress(found, t), styleFn);
+    el.style.visibility = "hidden";
   }
 });
-{% endblock %}
+</script>
+</body>
+</html>
