@@ -18,7 +18,7 @@
         "./skills/video-downloader",
         "./skills/audio-transcribe",
         "./skills/text-refine",
-        "./skills/srt-html"
+        "./skills/add-subtitle"
       ]
     },
     {
