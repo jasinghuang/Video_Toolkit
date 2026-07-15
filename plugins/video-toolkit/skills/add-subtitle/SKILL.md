@@ -5,7 +5,8 @@ description: >
   样式叠加到视频上，输出一个自包含 HTML 播放页。样式固定、单行居中，
   自动适配 16:9 / 4:3 / 3:4 / 9:16 等多种视频比例。约定输入 SRT 每条 ≤12 字
   （超出由上游 text-refine 切分）。当用户要给视频加字幕、字幕叠加、
-  生成字幕播放页、srt 转 html 时触发此 skill。也可给 web-video-presentation
+  生成字幕播放页、srt 转 html、presentation 字幕、注入字幕层时触发此 skill。
+  也可给 web-video-presentation
   产出的 presentation（Vite+React 项目）注入字幕层（显示当前 narration，
   随 step 自动切换）。依赖 jinja2（视频模式自动安装）。
 ---
@@ -50,9 +51,12 @@ python ${CLAUDE_PLUGIN_ROOT}/skills/add-subtitle/skill_main.py --presentation /p
 
 | 参数 | 说明 | 默认值 |
 |------|------|--------|
-| `srt_file` | 输入 SRT 文件路径 | 必需 |
-| `--video` | 视频文件路径 | 必需 |
-| `--output`, `-o` | 输出目录 | SRT 同目录 |
+| `srt_file` | 输入 SRT 文件（视频模式） | 视频模式必需 |
+| `--video` | 视频文件（视频模式） | 视频模式必需 |
+| `--output`, `-o` | 输出目录（视频模式） | SRT 同目录 |
+| `--presentation` | presentation 目录（注入模式） | —— |
+
+`srt_file`/`--video`（视频模式）与 `--presentation`（注入模式）**互斥**。
 
 ## 输入约定
 
