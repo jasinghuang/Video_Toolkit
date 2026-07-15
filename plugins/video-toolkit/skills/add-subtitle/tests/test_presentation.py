@@ -79,3 +79,60 @@ def test_patch_only_one_import_line():
     # 第二次不重复加 import
     assert twice.count('import { Subtitle }') == 1
     assert twice.count("<Subtitle text={stepText} />") == 1
+
+
+from presentation import inject_presentation  # noqa: E402
+
+
+def _make_fixture_presentation(tmp_path: Path) -> Path:
+    pres = tmp_path / "presentation"
+    (pres / "src").mkdir(parents=True)
+    (pres / "src" / "App.tsx").write_text(FIXTURE_APP, encoding="utf-8")
+    return pres
+
+
+def test_inject_creates_subtitle_files_and_patches_app(tmp_path: Path):
+    pres = _make_fixture_presentation(tmp_path)
+    inject_presentation(pres)
+
+    sub_tsx = pres / "src" / "components" / "Subtitle.tsx"
+    sub_css = pres / "src" / "components" / "Subtitle.css"
+    assert sub_tsx.exists() and sub_css.exists()
+    assert "export function Subtitle" in sub_tsx.read_text(encoding="utf-8")
+    assert ".subtitle-badge" in sub_css.read_text(encoding="utf-8")
+
+    app = (pres / "src" / "App.tsx").read_text(encoding="utf-8")
+    assert 'import { Subtitle }' in app
+    assert "<Subtitle text={stepText} />" in app
+
+
+def test_inject_is_idempotent(tmp_path: Path):
+    pres = _make_fixture_presentation(tmp_path)
+    inject_presentation(pres)
+    app_after_first = (pres / "src" / "App.tsx").read_text(encoding="utf-8")
+    inject_presentation(pres)  # 第二次不应破坏
+    app_after_second = (pres / "src" / "App.tsx").read_text(encoding="utf-8")
+    assert app_after_first == app_after_second
+    assert app_after_second.count('import { Subtitle }') == 1
+
+
+def test_inject_refuses_non_standard_app(tmp_path: Path):
+    pres = tmp_path / "presentation"
+    (pres / "src").mkdir(parents=True)
+    (pres / "src" / "App.tsx").write_text(
+        'export default function App() { return <div>no stage</div>; }\n',
+        encoding="utf-8",
+    )
+    with pytest.raises(ValueError):
+        inject_presentation(pres)
+    # 校验失败时不生成任何文件
+    assert not (pres / "src" / "components").exists()
+    # App.tsx 不被改动
+    assert "Subtitle" not in (pres / "src" / "App.tsx").read_text(encoding="utf-8")
+
+
+def test_inject_refuses_missing_app_tsx(tmp_path: Path):
+    pres = tmp_path / "presentation"
+    (pres / "src").mkdir(parents=True)  # 没有 App.tsx
+    with pytest.raises(ValueError, match="App.tsx"):
+        inject_presentation(pres)

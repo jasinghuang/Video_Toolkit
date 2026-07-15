@@ -119,3 +119,30 @@ def patch_app_tsx(content: str) -> str:
         count=1,
     )
     return content
+
+
+def inject_presentation(presentation_dir: Path) -> None:
+    """给 presentation 项目注入字幕层：校验 → 生成组件/CSS → patch App.tsx。
+
+    幂等：重复运行不重复 patch。
+    """
+    app_path = presentation_dir / "src" / "App.tsx"
+    if not app_path.exists():
+        raise ValueError(f"未找到 {app_path}：不是 web-video-presentation 项目")
+
+    original = app_path.read_text(encoding="utf-8")
+    validate_presentation(original)  # 失败抛 ValueError，下面不执行
+
+    components_dir = presentation_dir / "src" / "components"
+    components_dir.mkdir(parents=True, exist_ok=True)
+    (components_dir / "Subtitle.tsx").write_text(build_subtitle_tsx(), encoding="utf-8")
+    (components_dir / "Subtitle.css").write_text(build_subtitle_css(), encoding="utf-8")
+    print(f"  Generated: {components_dir / 'Subtitle.tsx'}")
+    print(f"  Generated: {components_dir / 'Subtitle.css'}")
+
+    patched = patch_app_tsx(original)
+    if patched != original:
+        app_path.write_text(patched, encoding="utf-8")
+        print(f"  Patched:   {app_path}")
+    else:
+        print(f"  Already injected: {app_path}")
