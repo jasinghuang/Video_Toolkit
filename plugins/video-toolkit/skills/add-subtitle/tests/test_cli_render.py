@@ -69,3 +69,40 @@ def test_no_palette_or_style_params_in_help(tmp_path: Path):
     for removed in ["--palette", "--style", "--srt2", "--lyric", "--highlight-color"]:
         assert removed not in help_text, f"已废弃参数仍出现在 --help: {removed}"
     assert "--video" in help_text
+
+
+def test_presentation_mode_injects_subtitle(tmp_path: Path):
+    # 构造最小 presentation（复用 fixture App.tsx）
+    fixture_app = (
+        Path(__file__).resolve().parent / "fixtures" / "sample-presentation" / "src" / "App.tsx"
+    ).read_text(encoding="utf-8")
+    pres = tmp_path / "presentation"
+    (pres / "src").mkdir(parents=True)
+    (pres / "src" / "App.tsx").write_text(fixture_app, encoding="utf-8")
+
+    result = subprocess.run(
+        [sys.executable, str(SCRIPT), "--presentation", str(pres)],
+        capture_output=True, text=True,
+    )
+    assert result.returncode == 0, result.stderr
+    assert (pres / "src" / "components" / "Subtitle.tsx").exists()
+    assert (pres / "src" / "components" / "Subtitle.css").exists()
+    assert "Subtitle" in (pres / "src" / "App.tsx").read_text(encoding="utf-8")
+
+
+def test_presentation_and_video_are_mutually_exclusive(tmp_path: Path):
+    srt = tmp_path / "a.srt"
+    _write_srt(srt)
+    result = subprocess.run(
+        [sys.executable, str(SCRIPT), str(srt), "--video", "v.mp4", "--presentation", str(tmp_path)],
+        capture_output=True, text=True,
+    )
+    assert result.returncode != 0
+
+
+def test_help_lists_presentation_flag():
+    result = subprocess.run(
+        [sys.executable, str(SCRIPT), "--help"], capture_output=True, text=True,
+    )
+    assert result.returncode == 0
+    assert "--presentation" in result.stdout

@@ -100,12 +100,38 @@ def render_html(subtitles, output_path: Path, srt_name: str, video_path: str):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Overlay SRT subtitles onto a video as a self-contained HTML page",
+        description="Overlay SRT subtitles onto a video OR inject subtitle layer into a presentation",
     )
-    parser.add_argument("srt_file", type=str, help="Input SRT file path")
-    parser.add_argument("--video", type=str, required=True, help="Video file path (required)")
-    parser.add_argument("--output", "-o", type=str, help="Output directory")
+    parser.add_argument("srt_file", nargs="?", type=str, help="Input SRT file (video mode)")
+    parser.add_argument("--video", type=str, help="Video file path (video mode, required with srt_file)")
+    parser.add_argument("--presentation", type=str, help="Presentation directory (inject subtitle layer)")
+    parser.add_argument("--output", "-o", type=str, help="Output directory (video mode)")
     args = parser.parse_args()
+
+    # presentation 注入模式
+    if args.presentation:
+        if args.srt_file or args.video:
+            parser.error("--presentation 与 srt_file/--video 互斥")
+        from presentation import inject_presentation
+
+        pres_path = Path(args.presentation).expanduser()
+        if not pres_path.is_dir():
+            print(f"Error: Presentation directory not found: {pres_path}")
+            sys.exit(1)
+
+        print(f"\n{'=' * 60}")
+        print("add-subtitle — Inject subtitle layer into presentation")
+        print(f"{'=' * 60}")
+        print(f"  Target: {pres_path}")
+        inject_presentation(pres_path)
+        print(f"{'=' * 60}\nDone!\n{'=' * 60}\n")
+        return
+
+    # 视频模式（原有逻辑）
+    if not args.srt_file:
+        parser.error("需要 srt_file（视频模式）或 --presentation（注入模式）")
+    if not args.video:
+        parser.error("视频模式需要 --video")
 
     if not check_jinja2():
         install_jinja2()
@@ -147,9 +173,7 @@ def main():
         output_path=output_dir / f"{base_name}_subtitle.html",
     )
 
-    print(f"\n{'=' * 60}")
-    print("Done!")
-    print(f"{'=' * 60}\n")
+    print(f"\n{'=' * 60}\nDone!\n{'=' * 60}\n")
 
 
 if __name__ == "__main__":
