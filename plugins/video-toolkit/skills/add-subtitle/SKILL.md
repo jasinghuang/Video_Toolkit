@@ -5,7 +5,9 @@ description: >
   样式叠加到视频上，输出一个自包含 HTML 播放页。样式固定、单行居中，
   自动适配 16:9 / 4:3 / 3:4 / 9:16 等多种视频比例。约定输入 SRT 每条 ≤12 字
   （超出由上游 text-refine 切分）。当用户要给视频加字幕、字幕叠加、
-  生成字幕播放页、srt 转 html 时触发此 skill。依赖 jinja2，脚本自动安装。
+  生成字幕播放页、srt 转 html 时触发此 skill。也可给 web-video-presentation
+  产出的 presentation（Vite+React 项目）注入字幕层（显示当前 narration，
+  随 step 自动切换）。依赖 jinja2（视频模式自动安装）。
 ---
 
 # add-subtitle
@@ -29,6 +31,20 @@ python ${CLAUDE_PLUGIN_ROOT}/skills/add-subtitle/skill_main.py subtitle.srt --vi
 # 指定输出目录
 python ${CLAUDE_PLUGIN_ROOT}/skills/add-subtitle/skill_main.py subtitle.srt --video video.mp4 -o ~/Desktop
 ```
+
+## presentation 注入模式
+
+给 [web-video-presentation](https://github.com/ConardLi/garden-skills) 产出的 presentation（Vite+React 项目）注入字幕层：在舞台底部显示当前 step 的 narration，随 step 推进自动切换、和口播音频天然同步（step 驱动，无需 srt/时间戳）。默认显示，按 `H` 键临时隐藏。
+
+```bash
+python ${CLAUDE_PLUGIN_ROOT}/skills/add-subtitle/skill_main.py --presentation /path/to/presentation
+```
+
+注入内容：
+- 生成 `src/components/Subtitle.tsx` + `Subtitle.css`（黑字白底圆角描边标签，舞台 1920×1080 坐标 px）
+- patch `src/App.tsx` 挂载 `<Subtitle text={stepText} />`（幂等，可重复运行）
+
+要求 presentation 是标准 web-video-presentation 结构（`App.tsx` 含 `stepText` 和 `<Stage>`），否则报错不动文件。
 
 ## 参数
 
