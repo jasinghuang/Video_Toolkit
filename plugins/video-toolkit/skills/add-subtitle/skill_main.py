@@ -1,30 +1,22 @@
 #!/usr/bin/env python3
 """
-srt-html — SRT subtitle to animated HTML converter.
-Converts standard SRT files to HTML pages with Karaoke-style character-by-character highlighting.
+add-subtitle — 把 SRT 字幕以"黑字白底圆角描边标签"样式叠加到视频上，
+输出自包含 HTML 播放页。约定输入 SRT 每条 ≤12 字（超出由上游 text-refine 切分）。
 """
 
 import argparse
 import re
 import subprocess
 import sys
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 
 TEMPLATES_DIR = Path(__file__).parent / "templates"
 
-PALETTES = {
-    "resend": {"highlight": "#ff801f", "unhighlight": "#f0f0f0", "bar_bg": "rgba(0,0,0,0.50)"},
-    "neon":   {"highlight": "#00ffaa", "unhighlight": "#2a2a3a", "bar_bg": "rgba(0,20,10,0.55)"},
-    "sakura": {"highlight": "#ff6b9d", "unhighlight": "#f0e6ea", "bar_bg": "rgba(30,10,15,0.50)"},
-    "ocean":  {"highlight": "#00b4d8", "unhighlight": "#caf0f8", "bar_bg": "rgba(0,10,20,0.50)"},
-    "fire":   {"highlight": "#ff4500", "unhighlight": "#ffe8cc", "bar_bg": "rgba(20,5,0,0.50)"},
-}
-
 
 def check_jinja2():
     try:
-        import jinja2
+        import jinja2  # noqa: F401
         return True
     except ImportError:
         return False
@@ -41,12 +33,9 @@ class Subtitle:
     start: float
     end: float
     text: str
-    chars: list = field(default_factory=list)
 
     def __post_init__(self):
-        text = self.text.replace("\n", " ")
-        self.text = text
-        self.chars = list(text)
+        self.text = self.text.replace("\n", " ")
 
 
 def parse_timestamp(ts: str) -> float:
@@ -67,25 +56,20 @@ def parse_srt(srt_path: Path) -> list[Subtitle]:
         lines = block.strip().split("\n")
         if len(lines) < 3:
             continue
-
         try:
             index = int(lines[0].strip())
         except ValueError:
             continue
-
         time_match = re.match(
             r"(\d+:\d+:\d+[,.]\d+)\s*-->\s*(\d+:\d+:\d+[,.]\d+)", lines[1].strip()
         )
         if not time_match:
             continue
-
         start = parse_timestamp(time_match.group(1))
         end = parse_timestamp(time_match.group(2))
         text = "\n".join(lines[2:]).strip()
-
         if text:
             subtitles.append(Subtitle(index=index, start=start, end=end, text=text))
-
     return subtitles
 
 
@@ -96,78 +80,31 @@ def ensure_relative(video_path: Path, output_dir: Path) -> str:
         return video_path.name
 
 
-def render_html(
-    subtitles: list[Subtitle],
-    template_name: str,
-    output_path: Path,
-    srt_name: str,
-    video_path: str | None = None,
-    style_name: str = "karaoke",
-    theme: dict | None = None,
-    font_family: str = "FZLanTingHei",
-    subtitles2: list[Subtitle] | None = None,
-):
-    from jinja2 import Environment, FileSystemLoader
-
-    env = Environment(
-        loader=FileSystemLoader(str(TEMPLATES_DIR)),
-        autoescape=True,
-    )
-
-    template = env.get_template(template_name)
-
+def render_html(subtitles, output_path: Path, srt_name: str, video_path: str):
     from dataclasses import asdict
 
-    if theme is None:
-        theme = PALETTES["resend"]
+    from jinja2 import Environment, FileSystemLoader
 
+    env = Environment(loader=FileSystemLoader(str(TEMPLATES_DIR)), autoescape=True)
+    # 让 tojson 直出中文字符（默认 ensure_ascii=True 会转义成 \uXXXX）
+    env.policies["json.dumps_kwargs"]["ensure_ascii"] = False
+    template = env.get_template("player.html.j2")
     html = template.render(
         subtitles=[asdict(s) for s in subtitles],
-        subtitles2=[asdict(s) for s in subtitles2] if subtitles2 else None,
         srt_name=srt_name,
         video_path=video_path,
-        font_family=font_family,
-        font_hint=f"请在系统中安装{font_family}字体以获得最佳效果",
-        style_name=style_name,
-        theme=theme,
     )
-
     output_path.write_text(html, encoding="utf-8")
     print(f"  Saved: {output_path}")
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Convert SRT subtitles to animated HTML",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-Examples:
-  python skill_main.py subtitle.srt
-  python skill_main.py subtitle.srt --video video.mp4
-  python skill_main.py subtitle.srt --video video.mp4 --lyric
-  python skill_main.py subtitle.srt -o ~/Desktop
-  python skill_main.py subtitle.srt --palette neon
-  python skill_main.py subtitle.srt --highlight-color #00ffaa --font-family "Noto Sans SC"
-  python skill_main.py subtitle.srt --srt2 en.srt
-        """,
+        description="Overlay SRT subtitles onto a video as a self-contained HTML page",
     )
-
     parser.add_argument("srt_file", type=str, help="Input SRT file path")
-    parser.add_argument("--video", type=str, help="Video file path (generates player version)")
-    parser.add_argument("--lyric", action="store_true", help="Generate lyric (standalone) version")
-    parser.add_argument("--style", type=str, default="karaoke", help="Animation style name (default: karaoke)")
+    parser.add_argument("--video", type=str, required=True, help="Video file path (required)")
     parser.add_argument("--output", "-o", type=str, help="Output directory")
-
-    # Visual params
-    parser.add_argument("--palette", type=str, choices=list(PALETTES.keys()), help="Color palette preset")
-    parser.add_argument("--highlight-color", type=str, help="Override highlight color (e.g. #ff0000)")
-    parser.add_argument("--unhighlight-color", type=str, help="Override unhighlight color")
-    parser.add_argument("--bar-bg", type=str, help="Override subtitle bar background")
-    parser.add_argument("--font-family", type=str, default="FZLanTingHei", help="Font family (default: FZLanTingHei)")
-
-    # Bilingual
-    parser.add_argument("--srt2", type=str, help="Second SRT file for bilingual subtitles")
-
     args = parser.parse_args()
 
     if not check_jinja2():
@@ -175,87 +112,43 @@ Examples:
 
     srt_path = Path(args.srt_file).expanduser()
     if not srt_path.exists():
-        print(f"Error: File not found: {srt_path}")
+        print(f"Error: SRT file not found: {srt_path}")
+        sys.exit(1)
+
+    video_path = Path(args.video).expanduser()
+    if not video_path.exists():
+        print(f"Error: Video file not found: {video_path}")
         sys.exit(1)
 
     output_dir = Path(args.output).expanduser() if args.output else srt_path.parent
     output_dir.mkdir(parents=True, exist_ok=True)
 
     base_name = srt_path.stem
-
     subtitles = parse_srt(srt_path)
     if not subtitles:
         print("Error: No valid subtitles found in SRT file")
         sys.exit(1)
 
-    # Build theme from palette + overrides
-    theme = dict(PALETTES[args.palette] if args.palette else PALETTES["resend"])
-    if args.highlight_color:
-        theme["highlight"] = args.highlight_color
-    if args.unhighlight_color:
-        theme["unhighlight"] = args.unhighlight_color
-    if args.bar_bg:
-        theme["bar_bg"] = args.bar_bg
-
-    # Bilingual subtitles
-    subtitles2 = None
-    if args.srt2:
-        srt2_path = Path(args.srt2).expanduser()
-        if not srt2_path.exists():
-            print(f"Error: Second SRT file not found: {srt2_path}")
-            sys.exit(1)
-        subtitles2 = parse_srt(srt2_path)
-
-    generate_player = bool(args.video)
-    generate_lyric = args.lyric
-
-    if not generate_player and not generate_lyric:
-        generate_lyric = True
+    video_rel = ensure_relative(video_path, output_dir)
 
     print(f"\n{'=' * 60}")
-    print(f"srt-html — SRT Subtitle to Animated HTML")
+    print("add-subtitle — Overlay subtitles onto video")
     print(f"{'=' * 60}")
-    print(f"  Input:  {srt_path.name}")
+    print(f"  Input:     {srt_path.name}")
+    print(f"  Video:     {video_path.name}")
     print(f"  Subtitles: {len(subtitles)} entries")
-    print(f"  Style:  {args.style}")
-    print(f"  Font:   {args.font_family}")
-    print(f"  Palette: highlight={theme['highlight']} unhighlight={theme['unhighlight']}")
-    if subtitles2:
-        print(f"  SRT2:   {srt2_path.name} ({len(subtitles2)} entries)")
-    if generate_player:
-        print(f"  Player: {base_name}_player.html")
-    if generate_lyric:
-        print(f"  Lyric:  {base_name}_lyric.html")
+    print(f"  Output:    {base_name}_subtitle.html")
     print(f"{'=' * 60}\n")
 
-    render_kwargs = dict(
+    render_html(
         subtitles=subtitles,
         srt_name=base_name,
-        style_name=args.style,
-        theme=theme,
-        font_family=args.font_family,
-        subtitles2=subtitles2,
+        video_path=video_rel,
+        output_path=output_dir / f"{base_name}_subtitle.html",
     )
 
-    if generate_player:
-        video_path = Path(args.video).expanduser()
-        video_rel = ensure_relative(video_path, output_dir)
-        render_html(
-            **render_kwargs,
-            template_name="player.html.j2",
-            output_path=output_dir / f"{base_name}_player.html",
-            video_path=video_rel,
-        )
-
-    if generate_lyric:
-        render_html(
-            **render_kwargs,
-            template_name="lyric.html.j2",
-            output_path=output_dir / f"{base_name}_lyric.html",
-        )
-
     print(f"\n{'=' * 60}")
-    print(f"Done!")
+    print("Done!")
     print(f"{'=' * 60}\n")
 
 
