@@ -54,3 +54,28 @@ def test_build_subtitle_css_contains_fixed_params():
     assert "box-shadow: 0 10px 32px rgba(0, 0, 0, 0.28)" in css
     assert "white-space: nowrap" in css
     assert "FZLanTingHei" in css
+
+
+from presentation import patch_app_tsx  # noqa: E402
+
+
+def test_patch_adds_import_and_mounts_subtitle():
+    patched = patch_app_tsx(FIXTURE_APP)
+    assert 'import { Subtitle } from "./components/Subtitle";' in patched
+    assert "<Subtitle text={stepText} />" in patched
+    # 原 Stage 内容保留
+    assert "<Stage" in patched and "</Stage>" in patched
+
+
+def test_patch_is_idempotent():
+    once = patch_app_tsx(FIXTURE_APP)
+    twice = patch_app_tsx(once)
+    assert once == twice
+
+
+def test_patch_only_one_import_line():
+    once = patch_app_tsx(FIXTURE_APP)
+    twice = patch_app_tsx(once)
+    # 第二次不重复加 import
+    assert twice.count('import { Subtitle }') == 1
+    assert twice.count("<Subtitle text={stepText} />") == 1

@@ -1,6 +1,7 @@
 """presentation 注入模式：给 web-video-presentation 产出的 Vite+React
 presentation 注入一个字幕层（显示当前 step 的 narration）。"""
 
+import re
 from pathlib import Path
 
 
@@ -86,3 +87,35 @@ def build_subtitle_css() -> str:
         }
         """
     )
+
+
+SUBTITLE_IMPORT = 'import { Subtitle } from "./components/Subtitle";'
+
+
+def patch_app_tsx(content: str) -> str:
+    """给 App.tsx 文本加 Subtitle 的 import 和挂载。幂等。
+
+    - import 加在连续 import 块的末尾。
+    - 挂载点：<Stage ...> 块内、</Stage> 之前插入 <Subtitle text={stepText} />。
+    - 已含 import 视为已注入，原样返回。
+    """
+    if SUBTITLE_IMPORT in content:
+        return content
+
+    # 1) 在第一段连续 import 行之后插入 Subtitle import
+    content = re.sub(
+        r"((?:^import[^\n]*\n)+)",
+        lambda m: m.group(1) + SUBTITLE_IMPORT + "\n",
+        content,
+        count=1,
+        flags=re.MULTILINE,
+    )
+
+    # 2) 在 <Stage ...>...</Stage> 块的 </Stage> 之前挂载 Subtitle
+    content = re.sub(
+        r"(<Stage[^>]*>[\s\S]*?)(</Stage>)",
+        lambda m: m.group(1) + "      <Subtitle text={stepText} />\n    " + m.group(2),
+        content,
+        count=1,
+    )
+    return content
