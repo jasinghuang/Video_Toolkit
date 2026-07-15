@@ -8,7 +8,7 @@
 
 | 插件 | 定位 | 包含 Skill |
 |------|------|-----------|
-| **video-toolkit** | 视频下载、转录、校准、字幕动画 | `video-downloader` `audio-transcribe` `text-refine` `srt-html` |
+| **video-toolkit** | 视频下载、转录、校准、字幕叠加 | `video-downloader` `audio-transcribe` `text-refine` `add-subtitle` |
 | **writting-assistant** | 小红书文案全自动创作 + 爆款标题 | `writting-assistant` `golden-title` |
 | **xiaohongshu-card** | 图文卡片排版 + 封面概念图提示词 | `make-html-card` `cover-image-prompt` |
 
@@ -48,7 +48,7 @@ npx skills add jasinghuang/perhapsjas_skill_market -g --plugin xiaohongshu-card 
 把字幕做成卡拉OK动画效果
 ```
 
-四个 skill 串起来：`video-downloader` 拉视频 → `audio-transcribe` 出字幕 → `text-refine` 纠错润色 → `srt-html` 生成带动画的 HTML。
+四个 skill 串起来：`video-downloader` 拉视频 → `audio-transcribe` 出字幕 → `text-refine` 纠错润色并切分到每条 ≤12 字 → `add-subtitle` 把字幕叠加到视频上输出 HTML。
 
 ### 主线二 · 小红书图文：文案 → 标题 → 卡片 → 封面
 
@@ -100,22 +100,14 @@ python ${CLAUDE_PLUGIN_ROOT}/skills/video-downloader/skill_main.py --aria2 "URL"
 
 Claude 直接校对 ASR 文本：修正错别字/同音字/专业术语、删除 Whisper 冗余词和重复伪影、清理平台水印广告和幻觉内容、补标点。非中文先翻译成中文再校准。输入 SRT/MD/TXT，输出 `{原名}_refined.md`。**无需额外依赖**，Claude 自身就是校准引擎。
 
-#### `srt-html` — 字幕转 HTML 动画
+#### `add-subtitle` — 字幕叠加到视频
 
-把 SRT 转成带动画效果的网页，可视频叠加或纯字幕播放。
-
-- **动画样式**：`karaoke`（逐字高亮，默认）/ `fade`（淡入淡出）/ `typewriter`（打字机）/ `word-karaoke`（按词高亮，适合英文）
-- **配色预设**：`resend`（暖橙，默认）/ `neon`（赛博）/ `sakura`（樱粉）/ `ocean`（海洋）/ `fire`（火焰）
-- **两种模式**：`--video` 生成视频+字幕叠加播放器；`--lyric` 生成纯字幕动画（含进度条和字幕列表导航）
-- **双语字幕**：`--srt2` 传入第二语言 SRT；支持自定义颜色、字体
+把 SRT 字幕以"黑字白底圆角描边标签"样式叠加到视频上，输出自包含 HTML 播放页，自动适配横竖屏。
 
 ```bash
-python ${CLAUDE_PLUGIN_ROOT}/skills/srt-html/skill_main.py subtitle.srt --video video.mp4
-python ${CLAUDE_PLUGIN_ROOT}/skills/srt-html/skill_main.py subtitle.srt --style fade --palette neon
-python ${CLAUDE_PLUGIN_ROOT}/skills/srt-html/skill_main.py zh.srt --srt2 en.srt
+python ${CLAUDE_PLUGIN_ROOT}/skills/add-subtitle/skill_main.py subtitle.srt --video video.mp4
+python ${CLAUDE_PLUGIN_ROOT}/skills/add-subtitle/skill_main.py subtitle.srt --video video.mp4 -o ~/Desktop
 ```
-
-依赖 jinja2，脚本自动安装。
 
 ### writting-assistant
 
@@ -159,7 +151,7 @@ python ${CLAUDE_PLUGIN_ROOT}/skills/srt-html/skill_main.py zh.srt --srt2 en.srt
 | `video-downloader` | 自动装 yt-dlp；可选 Node.js ≥ 20（YouTube）、ffmpeg、aria2 |
 | `audio-transcribe` | Mac：`pip3 install mlx-whisper zhconv` + `brew install ffmpeg`；Windows：`pip install faster-whisper zhconv` |
 | `text-refine` | 无 |
-| `srt-html` | 无（jinja2 自动安装） |
+| `add-subtitle` | 无（jinja2 自动安装） |
 | `writting-assistant` | 无（Python 3 用于存档脚本） |
 | `golden-title` | 无 |
 | `make-html-card` | 无 |
@@ -177,7 +169,7 @@ python ${CLAUDE_PLUGIN_ROOT}/skills/srt-html/skill_main.py zh.srt --srt2 en.srt
     │   ├── video-downloader/
     │   ├── audio-transcribe/     # backends/ 分 Mac/Windows 后端
     │   ├── text-refine/
-    │   └── srt-html/             # templates/ 内置动画与配色模板
+    │   └── add-subtitle/         # 单一模板：字幕标签叠加到视频
     ├── writting-assistant/skills/
     │   ├── writting-assistant/
     │   │   ├── references/       # 人设、质检标准
