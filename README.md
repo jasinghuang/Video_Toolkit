@@ -39,16 +39,16 @@ npx skills add jasinghuang/perhapsjas_skill_market -g --plugin xiaohongshu-card 
 
 装好后直接跟 Claude 说话，skill 会按关键词自动触发。
 
-### 主线一 · 视频：下载 → 转录 → 校准 → 字幕动画
+### 主线一 · 视频：下载 → 转录 → 校准 → 字幕叠加
 
 ```text
 下载这个视频 https://www.bilibili.com/video/BV1xx411c7mD
 把刚下的 video.mp4 转录成字幕
 帮我校准这个字幕，有错别字
-把字幕做成卡拉OK动画效果
+把字幕叠加到视频上
 ```
 
-四个 skill 串起来：`video-downloader` 拉视频 → `audio-transcribe` 出字幕 → `text-refine` 纠错润色并切分到每条 ≤12 字 → `add-subtitle` 把字幕叠加到视频上输出 HTML。
+四个 skill 串起来：`video-downloader` 拉视频 → `audio-transcribe` 出字幕 → `text-refine` 纠错润色（约定切分到每条 ≤12 字） → `add-subtitle` 把字幕叠加到视频上输出 HTML。
 
 ### 主线二 · 小红书图文：文案 → 标题 → 卡片 → 封面
 
@@ -184,5 +184,5 @@ python ${CLAUDE_PLUGIN_ROOT}/skills/add-subtitle/skill_main.py subtitle.srt --vi
 ## 说明
 
 - 所有 skill 均在 `strict: false` 模式下运行，`plugins/*/skills/` 下的 skill 会被自动发现并加载，无需在 `marketplace.json` 逐个显式声明。
-- 视频线建议串起来用：下载 → 转录 → 校准 → 字幕动画，一条命令接一条，中间产物自动衔接。
+- 视频线建议串起来用：下载 → 转录 → 校准 → 字幕叠加，一条命令接一条，中间产物自动衔接。
 - 小红书线里 `writting-assistant` 和 `golden-title` 配合最好：前者出正文，后者专攻标题。
