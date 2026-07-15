@@ -113,7 +113,7 @@ CSS 在 `src/components/Subtitle.css`。字幕层在舞台内（`Stage` 内）�
   display: inline-block;
   font-family: "FZLanTingHei", "PingFang SC", "Microsoft YaHei", sans-serif;
   font-weight: 600;
-  font-size: 52px;                  /* 初步值，实现时 mockup 标定 */
+  font-size: 40px;                  /* 初步值，实现时 mockup 标定 */
   line-height: 1.2;
   letter-spacing: 0.06em;
   color: #000;

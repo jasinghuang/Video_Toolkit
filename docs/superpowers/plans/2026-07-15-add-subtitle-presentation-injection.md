@@ -84,7 +84,7 @@ cd /Users/jasing/Documents/Work/Create_knowledge_explanation_videos/video_test_0
     .subtitle-badge {
       display: inline-block;
       font-family: "FZLanTingHei","PingFang SC","Microsoft YaHei",sans-serif;
-      font-weight: 600; font-size: 52px; line-height: 1.2; letter-spacing: 0.06em;
+      font-weight: 600; font-size: 40px; line-height: 1.2; letter-spacing: 0.06em;
       color: #000; background: #fff;
       border: 2.5px solid #000; border-radius: 18px; padding: 12px 40px;
       box-shadow: 0 10px 32px rgba(0,0,0,0.28); white-space: nowrap;
@@ -286,7 +286,7 @@ def test_build_subtitle_css_contains_fixed_params():
     assert "border: 2.5px solid #000" in css
     assert "border-radius: 18px" in css
     assert "padding: 12px 40px" in css
-    assert "font-size: 52px" in css
+    assert "font-size: 40px" in css
     assert "box-shadow: 0 10px 32px rgba(0, 0, 0, 0.28)" in css
     assert "white-space: nowrap" in css
     assert "FZLanTingHei" in css
@@ -356,7 +356,7 @@ def build_subtitle_css() -> str:
           display: inline-block;
           font-family: "FZLanTingHei", "PingFang SC", "Microsoft YaHei", sans-serif;
           font-weight: 600;
-          font-size: 52px;
+          font-size: 40px;
           line-height: 1.2;
           letter-spacing: 0.06em;
           color: #000;
