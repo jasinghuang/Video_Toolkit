@@ -4,8 +4,8 @@ presentation 注入一个字幕层（显示当前 step 的 narration）。"""
 import re
 from pathlib import Path
 
-# Matches single/double-quoted and template-literal strings with >= 10 chars
-_STRING_RE = re.compile(r"""['"`]([^'"`\n]{10,})['"`]""")
+# Matches single/double-quoted and template-literal strings (any length)
+_STRING_RE = re.compile(r"""['"`]([^'"`\n]+)['"`]""")
 
 
 def _is_chinese_text(text: str) -> bool:

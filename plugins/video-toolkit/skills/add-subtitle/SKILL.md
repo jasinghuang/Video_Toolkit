@@ -85,6 +85,7 @@ Summary: 1 PASS, 1 WARN, 2 FAIL
 | `--video` | 视频文件（视频模式） | 视频模式必需 |
 | `--output`, `-o` | 输出目录（视频模式） | SRT 同目录 |
 | `--presentation` | presentation 目录（注入模式） | —— |
+| `--check` | 检测模式：只诊断 presentation，不动文件 | —— |
 
 `srt_file`/`--video`（视频模式）与 `--presentation`（注入模式）**互斥**。
 

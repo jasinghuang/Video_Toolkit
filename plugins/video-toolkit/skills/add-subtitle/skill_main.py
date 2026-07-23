@@ -115,7 +115,7 @@ def main():
 
     # presentation 模式
     if args.presentation:
-        from presentation import check_presentation, format_check_report, inject_presentation
+        from presentation import check_presentation, format_check_report, inject_presentation, scan_long_narrations
 
         pres_path = Path(args.presentation).expanduser()
         if not pres_path.is_dir():
@@ -147,7 +147,6 @@ def main():
             print(f"  Target: {pres_path}")
             inject_presentation(pres_path)
             # 文案扫描告警
-            from presentation import scan_long_narrations
             long_lines = scan_long_narrations(pres_path)
             if long_lines:
                 print(f"\n  ⚠ {len(long_lines)} narration(s) exceed 18 chars:")

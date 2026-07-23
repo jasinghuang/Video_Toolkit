@@ -108,8 +108,8 @@ def test_help_lists_presentation_flag():
     assert "--presentation" in result.stdout
 
 
-def test_check_mode_reports_pass_on_clean_presentation():
-    """干净的已注入 project 应该 report all pass"""
+def test_check_mode_reports_fail_on_long_narrations():
+    """fixture 含超长 narration，--check 正确返回失败"""
     import shutil
     import tempfile
 
@@ -118,10 +118,11 @@ def test_check_mode_reports_pass_on_clean_presentation():
         tmp_pres = Path(tmp) / "pres"
         shutil.copytree(str(fixture_pres), str(tmp_pres))
         # 先注入
-        subprocess.run(
+        result = subprocess.run(
             [sys.executable, str(SCRIPT), "--presentation", str(tmp_pres)],
             capture_output=True, text=True,
         )
+        assert result.returncode == 0
         # check（cli 层暂不开放 --max-chars，用 presentation 默认 18）
         # fixture 超长文案会导致 narration FAIL——确认 exit code != 0
         result = subprocess.run(
