@@ -106,25 +106,56 @@ def main():
     parser.add_argument("--video", type=str, help="Video file path (video mode, required with srt_file)")
     parser.add_argument("--presentation", type=str, help="Presentation directory (inject subtitle layer)")
     parser.add_argument("--output", "-o", type=str, help="Output directory (video mode)")
+    parser.add_argument("--check", action="store_true", help="Check mode: diagnose presentation only, no writes")
     args = parser.parse_args()
 
-    # presentation 注入模式
+    # --check 与 srt_file/--video 互斥
+    if args.check and (args.srt_file or args.video):
+        parser.error("--check 与 srt_file/--video 互斥")
+
+    # presentation 模式
     if args.presentation:
-        if args.srt_file or args.video:
-            parser.error("--presentation 与 srt_file/--video 互斥")
-        from presentation import inject_presentation
+        from presentation import check_presentation, format_check_report, inject_presentation
 
         pres_path = Path(args.presentation).expanduser()
         if not pres_path.is_dir():
             print(f"Error: Presentation directory not found: {pres_path}")
             sys.exit(1)
 
-        print(f"\n{'=' * 60}")
-        print("add-subtitle — Inject subtitle layer into presentation")
-        print(f"{'=' * 60}")
-        print(f"  Target: {pres_path}")
-        inject_presentation(pres_path)
-        print(f"{'=' * 60}\nDone!\n{'=' * 60}\n")
+        if args.check:
+            # 只读诊断模式
+            print(f"\n{'=' * 60}")
+            print("add-subtitle --check")
+            print(f"{'=' * 60}")
+            print(f"  Target: {pres_path}")
+            print()
+            results = check_presentation(pres_path)
+            print(format_check_report(results))
+            print(f"\n{'=' * 60}\n")
+            # exit 0 if all pass, 1 otherwise
+            has_issues = any(
+                e["status"] in ("fail", "warn") for e in results.values()
+            )
+            sys.exit(1 if has_issues else 0)
+        else:
+            # 修复模式（原逻辑 + 末尾文案扫描告警）
+            if args.srt_file or args.video:
+                parser.error("--presentation 与 srt_file/--video 互斥")
+            print(f"\n{'=' * 60}")
+            print("add-subtitle — Inject subtitle layer into presentation")
+            print(f"{'=' * 60}")
+            print(f"  Target: {pres_path}")
+            inject_presentation(pres_path)
+            # 文案扫描告警
+            from presentation import scan_long_narrations
+            long_lines = scan_long_narrations(pres_path)
+            if long_lines:
+                print(f"\n  ⚠ {len(long_lines)} narration(s) exceed 18 chars:")
+                for item in long_lines:
+                    text_preview = item["text"][:30] + ("..." if len(item["text"]) > 30 else "")
+                    print(f"    {item['file']}  L{item['line']}  \"{text_preview}\" ({item['char_count']}字)")
+                print("  → 建议在口播稿中将以上文案拆分为多个 step")
+            print(f"{'=' * 60}\nDone!\n{'=' * 60}\n")
         return
 
     # 视频模式（原有逻辑）
