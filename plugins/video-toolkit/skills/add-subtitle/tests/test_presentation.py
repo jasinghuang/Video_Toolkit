@@ -136,3 +136,37 @@ def test_inject_refuses_missing_app_tsx(tmp_path: Path):
     (pres / "src").mkdir(parents=True)  # 没有 App.tsx
     with pytest.raises(ValueError, match="App.tsx"):
         inject_presentation(pres)
+
+
+from presentation import scan_long_narrations  # noqa: E402
+
+
+def test_scan_long_narrations_finds_overlong():
+    pres = Path(__file__).resolve().parent / "fixtures" / "sample-presentation"
+    long_lines = scan_long_narrations(pres, max_chars=18)
+    assert len(long_lines) == 2
+    # 按文件行号排序，第一段超长在 line 3（0-index 数组索引 1 → narrations.ts line 2+1+1）
+    assert long_lines[0]["text"].startswith("这一句")
+    assert long_lines[0]["char_count"] > 18
+    assert long_lines[1]["text"].startswith("另外一句")
+    assert "narrations.ts" in str(long_lines[0]["file"])
+
+
+def test_scan_long_narrations_empty_when_no_narrations_dir(tmp_path: Path):
+    pres = tmp_path / "presentation"
+    (pres / "src").mkdir(parents=True)
+    (pres / "src" / "App.tsx").write_text("// empty", encoding="utf-8")
+    result = scan_long_narrations(pres, max_chars=18)
+    assert result == []
+
+
+def test_scan_long_narrations_empty_when_all_short(tmp_path: Path):
+    pres = tmp_path / "presentation"
+    chapters_dir = pres / "src" / "chapters" / "01-intro"
+    chapters_dir.mkdir(parents=True)
+    (chapters_dir / "narrations.ts").write_text(
+        'export const narrations = ["短句一", "短句二", "短句三"];\n',
+        encoding="utf-8",
+    )
+    result = scan_long_narrations(pres, max_chars=18)
+    assert result == []

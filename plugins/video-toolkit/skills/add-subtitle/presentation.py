@@ -4,6 +4,42 @@ presentation 注入一个字幕层（显示当前 step 的 narration）。"""
 import re
 from pathlib import Path
 
+# Matches single/double-quoted and template-literal strings with >= 10 chars
+_STRING_RE = re.compile(r"""['"`]([^'"`\n]{10,})['"`]""")
+
+
+def _is_chinese_text(text: str) -> bool:
+    """Check if text contains CJK characters (vs code identifiers)."""
+    return any('一' <= c <= '鿿' or '　' <= c <= '〿'
+               for c in text)
+
+
+def scan_long_narrations(pres_dir: Path, max_chars: int = 18) -> list[dict]:
+    """Scan src/chapters/**/narrations.ts for narration strings > max_chars.
+
+    Returns a list of dicts: {file, line, text, char_count}. Empty if all ok.
+    """
+    chapters_dir = pres_dir / "src" / "chapters"
+    if not chapters_dir.is_dir():
+        return []
+
+    long_lines = []
+    for narr_file in sorted(chapters_dir.rglob("narrations.ts")):
+        for lineno, line in enumerate(narr_file.read_text(encoding="utf-8").splitlines(), 1):
+            for m in _STRING_RE.finditer(line):
+                text = m.group(1)
+                if not _is_chinese_text(text):
+                    continue
+                char_count = len(text)
+                if char_count > max_chars:
+                    long_lines.append({
+                        "file": str(narr_file),
+                        "line": lineno,
+                        "text": text,
+                        "char_count": char_count,
+                    })
+    return long_lines
+
 
 def validate_presentation(content: str) -> None:
     """校验 App.tsx 文本是标准 web-video-presentation 结构。
