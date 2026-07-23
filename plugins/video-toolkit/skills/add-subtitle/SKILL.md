@@ -38,7 +38,11 @@ python ${CLAUDE_PLUGIN_ROOT}/skills/add-subtitle/skill_main.py subtitle.srt --vi
 给 [web-video-presentation](https://github.com/ConardLi/garden-skills) 产出的 presentation（Vite+React 项目）注入字幕层：在舞台底部显示当前 step 的 narration，随 step 推进自动切换、和口播音频天然同步（step 驱动，无需 srt/时间戳）。默认显示，按 `H` 键临时隐藏。
 
 ```bash
+# 修复模式：注入/更新字幕层（覆盖组件文件，幂等 patch App.tsx）
 python ${CLAUDE_PLUGIN_ROOT}/skills/add-subtitle/skill_main.py --presentation /path/to/presentation
+
+# 检测模式：只诊断，不动文件（exit code 0 = 全部通过，1 = 有问题）
+python ${CLAUDE_PLUGIN_ROOT}/skills/add-subtitle/skill_main.py --presentation /path/to/presentation --check
 ```
 
 注入内容：
@@ -46,6 +50,32 @@ python ${CLAUDE_PLUGIN_ROOT}/skills/add-subtitle/skill_main.py --presentation /p
 - patch `src/App.tsx` 挂载 `<Subtitle text={stepText} />`（幂等，可重复运行）
 
 要求 presentation 是标准 web-video-presentation 结构（`App.tsx` 含 `stepText` 和 `<Stage>`），否则报错不动文件。
+
+### --check 检测项（4 项）
+
+| 检测项 | 严重度 | 说明 |
+|--------|--------|------|
+| 结构兼容 | FAIL | App.tsx 是否含 `stepText` + `<Stage` |
+| 注入完整 | FAIL | App.tsx 是否已有 Subtitle import + 挂载 |
+| 组件新鲜度 | WARN | Subtitle.tsx/.css 是否存在且与模板一致 |
+| 文案合规 | FAIL | 扫描 `src/chapters/*/narrations.ts`，narration ≤18 字 |
+
+输出示例：
+
+```
+=== add-subtitle --check ===
+  Target: /path/to/presentation
+
+[PASS] 结构兼容 — App.tsx 含 stepText + <Stage
+[FAIL] 注入完整 — 未注入：缺少 Subtitle import 和挂载
+[WARN] 组件新鲜度 — 组件缺失: Subtitle.tsx, Subtitle.css
+[FAIL] 文案合规 — 2 条 narration 超过 18 字
+  src/chapters/01-intro/narrations.ts  L2  "这一句超过十八个字的限制需要被检测..." (22字)
+
+Summary: 1 PASS, 1 WARN, 2 FAIL
+```
+
+重复运行 `--presentation`（不加 `--check`）即可修复所有 FAIL/WARN（文案超长除外，需手动拆分 step）。
 
 ## 参数
 
@@ -60,7 +90,9 @@ python ${CLAUDE_PLUGIN_ROOT}/skills/add-subtitle/skill_main.py --presentation /p
 
 ## 输入约定
 
-每条字幕 **≤12 字**、单行显示。超长条由上游 `text-refine` 切分；本 skill 不切分。
+每条字幕 **≤12 字**（视频模式），单行显示。超长条由上游 `text-refine` 切分；本 skill 不切分。
+
+presentation 注入模式下，每条 narration **≤18 字**。Subtitle 组件对超长文本做截断兜底（`text.slice(0, 18) + "…"`），但建议在口播稿中提前拆分 step。运行 `--check` 可检测超长文案。
 
 ## 输出
 
