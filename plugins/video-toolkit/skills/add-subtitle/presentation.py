@@ -203,6 +203,8 @@ def build_subtitle_tsx() -> str:
           text: string;
         }
 
+        const MAX_CHARS = 18;
+
         export function Subtitle({ text }: SubtitleProps) {
           const [hidden, setHidden] = useState(false);
           useEffect(() => {
@@ -213,9 +215,10 @@ def build_subtitle_tsx() -> str:
             return () => window.removeEventListener("keydown", onKey);
           }, []);
           if (!text || hidden) return null;
+          const display = text.length > MAX_CHARS ? text.slice(0, MAX_CHARS) + "…" : text;
           return (
             <div className="subtitle-layer">
-              <span className="subtitle-badge">{text}</span>
+              <span className="subtitle-badge">{display}</span>
             </div>
           );
         }
@@ -250,6 +253,9 @@ def build_subtitle_css() -> str:
           padding: 12px 40px;
           box-shadow: 0 10px 32px rgba(0, 0, 0, 0.28);
           white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 90%;
         }
         """
     )
