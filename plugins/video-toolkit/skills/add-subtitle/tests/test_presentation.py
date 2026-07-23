@@ -138,7 +138,7 @@ def test_inject_refuses_missing_app_tsx(tmp_path: Path):
         inject_presentation(pres)
 
 
-from presentation import scan_long_narrations  # noqa: E402
+from presentation import scan_long_narrations, check_presentation, format_check_report  # noqa: E402
 
 
 def test_scan_long_narrations_finds_overlong():
@@ -170,3 +170,85 @@ def test_scan_long_narrations_empty_when_all_short(tmp_path: Path):
     )
     result = scan_long_narrations(pres, max_chars=18)
     assert result == []
+
+
+# ── check_presentation ──────────────────────────────────────────────
+
+import shutil
+
+
+def test_check_passes_clean_presentation():
+    pres = Path(__file__).resolve().parent / "fixtures" / "sample-presentation"
+    from presentation import inject_presentation
+    import tempfile
+    # 复制 fixture 到临时目录避免污染
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_pres = Path(tmp) / "pres"
+        shutil.copytree(str(pres), str(tmp_pres))
+        inject_presentation(tmp_pres)
+        result = check_presentation(tmp_pres, max_chars=100)  # high limit to pass narration check
+        assert result["structure"]["status"] == "pass"
+        assert result["injection"]["status"] == "pass"
+        assert result["components"]["status"] == "pass"
+
+
+def test_check_catches_missing_injection():
+    pres = Path(__file__).resolve().parent / "fixtures" / "sample-presentation"
+    import tempfile
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_pres = Path(tmp) / "pres"
+        shutil.copytree(str(pres), str(tmp_pres))
+        # 不注入，直接 check
+        result = check_presentation(tmp_pres, max_chars=100)
+        assert result["injection"]["status"] == "fail"
+        assert result["components"]["status"] == "warn"  # 组件文件不存在
+
+
+def test_check_rejects_non_standard_structure(tmp_path: Path):
+    pres = tmp_path / "presentation"
+    (pres / "src").mkdir(parents=True)
+    (pres / "src" / "App.tsx").write_text(
+        'export default function App() { return <div>no stage</div>; }\n',
+        encoding="utf-8",
+    )
+    result = check_presentation(pres, max_chars=18)
+    assert result["structure"]["status"] == "fail"
+    assert "stepText" in result["structure"]["msg"]
+
+
+def test_check_catches_long_narrations():
+    pres = Path(__file__).resolve().parent / "fixtures" / "sample-presentation"
+    import tempfile
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_pres = Path(tmp) / "pres"
+        shutil.copytree(str(pres), str(tmp_pres))
+        result = check_presentation(tmp_pres, max_chars=18)
+        assert result["narrations"]["status"] == "fail"
+        assert len(result["narrations"]["long_lines"]) == 2
+
+
+def test_format_check_report_all_pass():
+    results = {
+        "structure":  {"status": "pass", "msg": "App.tsx 含 stepText + <Stage"},
+        "injection":  {"status": "pass", "msg": "Subtitle import + 挂载完整"},
+        "components": {"status": "pass", "msg": "Subtitle.tsx/.css 与模板一致", "detail": "ok"},
+        "narrations": {"status": "pass", "msg": "所有 narration ≤18 字", "long_lines": []},
+    }
+    report = format_check_report(results)
+    assert "[PASS]" in report
+    assert "[FAIL]" not in report
+    assert "[WARN]" not in report
+
+
+def test_format_check_report_with_failures():
+    results = {
+        "structure":  {"status": "pass", "msg": "ok"},
+        "injection":  {"status": "fail", "msg": "未找到 Subtitle import"},
+        "components": {"status": "warn", "msg": "Subtitle.tsx 版本过旧", "detail": "stale"},
+        "narrations": {"status": "fail", "msg": "2 条超长", "long_lines": [
+            {"file": "src/chapters/01/narrations.ts", "line": 2, "text": "abc" * 7, "char_count": 21},
+        ]},
+    }
+    report = format_check_report(results)
+    assert "[FAIL]" in report
+    assert "[WARN]" in report

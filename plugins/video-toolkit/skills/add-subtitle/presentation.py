@@ -41,6 +41,136 @@ def scan_long_narrations(pres_dir: Path, max_chars: int = 18) -> list[dict]:
     return long_lines
 
 
+def check_presentation(pres_dir: Path, max_chars: int = 18) -> dict:
+    """Run 4 checks on a presentation directory. Read-only, no side effects.
+
+    Returns a dict with keys: structure, injection, components, narrations.
+    Each value has 'status' ("pass"|"fail"|"warn") and 'msg'.
+    """
+    app_path = pres_dir / "src" / "App.tsx"
+    components_dir = pres_dir / "src" / "components"
+    sub_tsx = components_dir / "Subtitle.tsx"
+    sub_css = components_dir / "Subtitle.css"
+
+    # 1) 结构兼容
+    if not app_path.exists():
+        structure = {"status": "fail", "msg": f"App.tsx 不存在: {app_path}"}
+    else:
+        app_content = app_path.read_text(encoding="utf-8")
+        try:
+            validate_presentation(app_content)
+            structure = {"status": "pass", "msg": "App.tsx 含 stepText + <Stage"}
+        except ValueError as e:
+            structure = {"status": "fail", "msg": str(e)}
+
+    # 2) 注入完整性
+    if not app_path.exists():
+        injection = {"status": "fail", "msg": "App.tsx 不存在，无法检查注入"}
+    else:
+        has_import = SUBTITLE_IMPORT in app_content
+        has_mount = "<Subtitle text={stepText} />" in app_content
+        if has_import and has_mount:
+            injection = {"status": "pass", "msg": "Subtitle import + 挂载完整"}
+        elif has_import:
+            injection = {"status": "fail", "msg": "import 存在但缺少 <Subtitle> 挂载"}
+        elif has_mount:
+            injection = {"status": "fail", "msg": "挂载存在但缺少 import 行"}
+        else:
+            injection = {"status": "fail", "msg": "未注入：缺少 Subtitle import 和挂载"}
+
+    # 3) 组件新鲜度
+    if not sub_tsx.exists() or not sub_css.exists():
+        missing = []
+        if not sub_tsx.exists():
+            missing.append("Subtitle.tsx")
+        if not sub_css.exists():
+            missing.append("Subtitle.css")
+        components = {
+            "status": "warn",
+            "msg": f"组件缺失: {', '.join(missing)}",
+            "detail": "missing",
+        }
+    else:
+        current_tsx = sub_tsx.read_text(encoding="utf-8")
+        current_css = sub_css.read_text(encoding="utf-8")
+        expected_tsx = build_subtitle_tsx()
+        expected_css = build_subtitle_css()
+        tsx_match = current_tsx == expected_tsx
+        css_match = current_css == expected_css
+        if tsx_match and css_match:
+            components = {
+                "status": "pass",
+                "msg": "Subtitle.tsx/.css 与模板一致",
+                "detail": "ok",
+            }
+        else:
+            stale = []
+            if not tsx_match:
+                stale.append("Subtitle.tsx")
+            if not css_match:
+                stale.append("Subtitle.css")
+            components = {
+                "status": "warn",
+                "msg": f"组件过期: {', '.join(stale)}（内容与最新模板不一致）",
+                "detail": "stale",
+            }
+
+    # 4) 文案合规
+    long_lines = scan_long_narrations(pres_dir, max_chars=max_chars)
+    if not long_lines:
+        narrations = {"status": "pass", "msg": f"所有 narration ≤{max_chars} 字", "long_lines": []}
+    else:
+        narrations = {
+            "status": "fail",
+            "msg": f"{len(long_lines)} 条 narration 超过 {max_chars} 字",
+            "long_lines": long_lines,
+        }
+
+    return {
+        "structure": structure,
+        "injection": injection,
+        "components": components,
+        "narrations": narrations,
+    }
+
+
+def format_check_report(results: dict) -> str:
+    """Format check_presentation() results as structured terminal text."""
+    labels = {
+        "structure": "结构兼容",
+        "injection": "注入完整",
+        "components": "组件新鲜度",
+        "narrations": "文案合规",
+    }
+    status_mark = {"pass": "[PASS]", "warn": "[WARN]", "fail": "[FAIL]"}
+
+    lines = []
+    lines.append("=== add-subtitle --check ===")
+    for key in ["structure", "injection", "components", "narrations"]:
+        entry = results[key]
+        mark = status_mark.get(entry["status"], "[????]")
+        label = labels[key]
+        lines.append(f"{mark} {label} — {entry['msg']}")
+
+    # 文案超长详情
+    long_lines = results["narrations"].get("long_lines", [])
+    if long_lines:
+        lines.append("")
+        for item in long_lines:
+            text_preview = item["text"][:30] + ("..." if len(item["text"]) > 30 else "")
+            lines.append(f"  {item['file']}  L{item['line']}  \"{text_preview}\" ({item['char_count']}字)")
+
+    # 摘要
+    statuses = [e["status"] for e in results.values()]
+    fail_count = statuses.count("fail")
+    warn_count = statuses.count("warn")
+    pass_count = statuses.count("pass")
+    lines.append("")
+    lines.append(f"Summary: {pass_count} PASS, {warn_count} WARN, {fail_count} FAIL")
+
+    return "\n".join(lines)
+
+
 def validate_presentation(content: str) -> None:
     """校验 App.tsx 文本是标准 web-video-presentation 结构。
 
