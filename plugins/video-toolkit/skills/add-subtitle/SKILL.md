@@ -6,9 +6,9 @@ description: >
   自动适配 16:9 / 4:3 / 3:4 / 9:16 等多种视频比例。约定输入 SRT 每条 ≤12 字
   （超出由上游 text-refine 切分）。当用户要给视频加字幕、字幕叠加、
   生成字幕播放页、srt 转 html、presentation 字幕、注入字幕层时触发此 skill。
-  也可给 web-video-presentation
-  产出的 presentation（Vite+React 项目）注入字幕层（显示当前 narration，
-  随 step 自动切换）。依赖 jinja2（视频模式自动安装）。
+  也可给 web-video-presentation 产出的 presentation（Vite+React 项目）
+  注入字幕层（显示当前 narration，随 step 自动切换），运行 --check 可诊断
+  presentation 项目的字幕注入状态与文案合规性。依赖 jinja2（视频模式自动安装）。
 ---
 
 # add-subtitle
@@ -118,14 +118,33 @@ presentation 注入模式下，每条 narration **≤18 字**。Subtitle 组件�
 
 ## 与其他 skill 配合
 
+视频模式：
+
 ```
 video-downloader → audio-transcribe → text-refine → add-subtitle
     下载视频          转录字幕         校准/切分字幕   叠加字幕到视频
 ```
 
+Presentation 模式：
+
+```
+web-video-presentation → add-subtitle --presentation → add-subtitle --check
+     制作项目                注入/更新字幕层                诊断检测
+```
+
 ## 示例
+
+**视频模式：**
 
 ```
 用户: 给这个视频加上字幕 subtitle.srt --video clip.mp4
 用户: add-subtitle video.srt --video video.mp4 -o ~/Desktop
+```
+
+**Presentation 模式：**
+
+```
+用户: 给 presentation 注入字幕
+用户: 检查一下 presentation 的字幕有没有问题
+用户: 更新字幕层到最新版本
 ```
