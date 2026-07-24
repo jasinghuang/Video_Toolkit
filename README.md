@@ -2,13 +2,13 @@
 
 面向内容创作者的 Claude Code 插件集。一条龙覆盖：**视频下载转录 → 文案创作 → 图文卡片排版 → 封面概念图提示词**。装好之后直接用大白话跟 Claude 说需求，不用记命令。
 
-共 **3 个插件、8 个 skill**。
+共 **3 个插件、9 个 skill**。
 
 ## 插件与 Skill 一览
 
 | 插件 | 定位 | 包含 Skill |
 |------|------|-----------|
-| **video-toolkit** | 视频下载、转录、校准、字幕叠加 | `video-downloader` `audio-transcribe` `text-refine` `add-subtitle` |
+| **video-toolkit** | 视频下载、转录、校准、字幕叠加、网页演示视频 | `video-downloader` `audio-transcribe` `text-refine` `add-subtitle` `web-video-presentation` |
 | **writting-assistant** | 小红书文案全自动创作 + 爆款标题 | `writting-assistant` `golden-title` |
 | **xiaohongshu-card** | 图文卡片排版 + 封面概念图提示词 | `make-html-card` `cover-image-prompt` |
 
@@ -49,6 +49,12 @@ npx skills add jasinghuang/perhapsjas_skill_market -g --plugin xiaohongshu-card 
 ```
 
 四个 skill 串起来：`video-downloader` 拉视频 → `audio-transcribe` 出字幕 → `text-refine` 纠错润色（约定切分到每条 ≤12 字） → `add-subtitle` 把字幕叠加到视频上输出 HTML。
+
+**拓展**：拿到校准后的口播稿后，用 `web-video-presentation` 把稿子做成点击驱动的 16:9 网页演示，录屏就是成品视频：
+
+```text
+把这篇口播稿做成网页演示视频
+```
 
 ### 主线二 · 小红书图文：文案 → 标题 → 卡片 → 封面
 
@@ -109,6 +115,22 @@ python ${CLAUDE_PLUGIN_ROOT}/skills/add-subtitle/skill_main.py subtitle.srt --vi
 python ${CLAUDE_PLUGIN_ROOT}/skills/add-subtitle/skill_main.py subtitle.srt --video video.mp4 -o ~/Desktop
 ```
 
+#### `web-video-presentation` — 网页演示视频制作
+
+把文章或口播稿做成"看起来像视频"的点击驱动 16:9 网页演示（Vite + React + TS），可选合成口播音频。方法论驱动：脚本 → 大纲 → 对齐 → 逐章开发 → 可选 TTS → 录屏出片。
+
+- **一次产出** `script.md` + `outline.md`（口播稿 + 章节开发计划）
+- **一次对齐** 5 件事（稿子 / outline / 主题 / 素材 / 开发模式）
+- **逐章开发**：第 1 章强制验收 → 后续按 A 逐章 / B 顺序 / C 并行三种模式
+- **23 套内置主题**（瑞士克莱因蓝 / 森林墨 / 沙丘 / 霓虹赛博……）
+- **可选音频合成**：内置 MiniMax + OpenAI TTS，可换 ElevenLabs / edge-tts / Azure 等
+- **?auto=1 一镜到底录屏**，音视频天然同步
+
+```bash
+bash ${CLAUDE_PLUGIN_ROOT}/skills/web-video-presentation/scripts/scaffold.sh ./presentation --theme=<主题id>
+bash ${CLAUDE_PLUGIN_ROOT}/skills/web-video-presentation/scripts/scaffold.sh --list-themes
+```
+
 ### writting-assistant
 
 #### `writting-assistant` — 小红书文案全自动创作
@@ -152,6 +174,7 @@ python ${CLAUDE_PLUGIN_ROOT}/skills/add-subtitle/skill_main.py subtitle.srt --vi
 | `audio-transcribe` | Mac：`pip3 install mlx-whisper zhconv` + `brew install ffmpeg`；Windows：`pip install faster-whisper zhconv` |
 | `text-refine` | 无 |
 | `add-subtitle` | 无（jinja2 自动安装） |
+| `web-video-presentation` | 无（脚手架自带；可选 mmx-cli 用于 MiniMax TTS 或 OPENAI_API_KEY 用于 OpenAI TTS） |
 | `writting-assistant` | 无（Python 3 用于存档脚本） |
 | `golden-title` | 无 |
 | `make-html-card` | 无 |
@@ -170,6 +193,7 @@ python ${CLAUDE_PLUGIN_ROOT}/skills/add-subtitle/skill_main.py subtitle.srt --vi
     │   ├── audio-transcribe/     # backends/ 分 Mac/Windows 后端
     │   ├── text-refine/
     │   └── add-subtitle/         # 单一模板：字幕标签叠加到视频
+    │   └── web-video-presentation/  # 方法论驱动：16:9 网页演示视频 + 23 主题
     ├── writting-assistant/skills/
     │   ├── writting-assistant/
     │   │   ├── references/       # 人设、质检标准

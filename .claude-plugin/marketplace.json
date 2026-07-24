@@ -11,14 +11,15 @@
   "plugins": [
     {
       "name": "Video_Toolkit",
-      "description": "视频内容一站工具：video-downloader (Bilibili/YouTube下载) + audio-transcribe (跨平台转录) + text-refine (Claude校准翻译)",
+      "description": "视频内容一站工具：video-downloader (Bilibili/YouTube下载) + audio-transcribe (跨平台转录) + text-refine (Claude校准翻译) + add-subtitle (字幕叠加) + web-video-presentation (网页演示视频制作)",
       "source": "./plugins/video-toolkit",
       "strict": false,
       "skills": [
         "./skills/video-downloader",
         "./skills/audio-transcribe",
         "./skills/text-refine",
-        "./skills/add-subtitle"
+        "./skills/add-subtitle",
+        "./skills/web-video-presentation"
       ]
     },
     {
