@@ -1,0 +1,27 @@
+{
+  "id": "block-frame",
+  "name": "BlockFrame",
+  "nameZh": "色块框架",
+  "description": "Maximalist neobrutalist deck. Five-pastel palette (pink, cyan, green, yellow, cream) + pure black + warm off-white. Space Grotesk display. Inter body. Chunky 3px black borders. Hard 8px offset shadows. Tilted decorative elements. Black close-frame with yellow shadow.",
+  "descriptionZh": "极繁新粗野主义演示系统。五彩粉彩调色板（粉、青、绿、黄、奶油色）+ 纯黑 + 暖白。Space Grotesk 展示字体。Inter 正文。粗 3px 黑色边框。8px 硬偏移阴影。倾斜装饰元素。黑色结束框架 + 黄色阴影。",
+  "mood": ["bold", "playful", "graphic", "fresh", "pop", "confident"],
+  "bestFor": [
+    "创意机构推介",
+    "独立 SaaS 发布",
+    "设计师作品集",
+    "品牌重塑",
+    "现代创业公司演示"
+  ],
+  "avoidFor": [
+    "传统正式场景",
+    "安静 / 机构规范性内容"
+  ],
+  "formality": "medium-low",
+  "source": "beautiful-html-templates/block-frame",
+  "preview": {
+    "shell": "#FFFDF5",
+    "surface": "#FFFDF5",
+    "text": "#000000",
+    "accent": "#FE90E8"
+  }
+}

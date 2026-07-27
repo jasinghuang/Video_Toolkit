@@ -14,10 +14,10 @@
 .hk-kicker {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
-  margin-bottom: var(--space-6);
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xl);
   font-family: var(--font-mono);
-  font-size: var(--t-cue);
+  font-size: var(--t-micro);
   color: var(--accent);
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -32,18 +32,18 @@
 .hk-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-5);
+  gap: var(--space-lg);
   align-items: center;
 }
 .hk-ghost {
   aspect-ratio: 16 / 9;
-  border: var(--rule-w) dashed var(--rule);
+  border: 1px dashed var(--rule);
   border-radius: var(--r-card);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: stretch;
-  padding: var(--space-4);
+  padding: var(--space-md);
   background: var(--surface);
 }
 .hk-ghost-num {
@@ -54,7 +54,7 @@
 }
 .hk-ghost-label {
   font-family: var(--font-mono);
-  font-size: var(--t-cue);
+  font-size: var(--t-micro);
   color: var(--text-faint);
   text-transform: uppercase;
   letter-spacing: 0.2em;
@@ -67,14 +67,14 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-md);
 }
 .hk-solo-img-wrap {
   position: relative;
   aspect-ratio: 16 / 9;
   border-radius: var(--r-card);
   overflow: hidden;
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--card-shadow);
   background: var(--surface-2);
 }
 .hk-solo-img {
@@ -85,9 +85,9 @@
 }
 .hk-stamp {
   position: absolute;
-  top: var(--space-4);
-  right: var(--space-4);
-  padding: var(--space-2) var(--space-3);
+  top: var(--space-md);
+  right: var(--space-md);
+  padding: var(--space-2) var(--space-sm);
   border: 3px solid var(--accent);
   color: var(--accent);
   font-family: var(--font-display-en);
@@ -109,7 +109,7 @@
   justify-content: space-between;
   align-items: baseline;
   font-family: var(--font-mono);
-  font-size: var(--t-cue);
+  font-size: var(--t-micro);
   color: var(--text-2);
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -128,19 +128,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-6);
+  gap: var(--space-xl);
   justify-content: center;
 }
 .hk-mini-row {
   display: flex;
-  gap: var(--space-3);
+  gap: var(--space-sm);
 }
 .hk-mini {
   width: 140px;
   aspect-ratio: 16 / 9;
   object-fit: cover;
   border-radius: calc(var(--r-card) * 0.5);
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--card-shadow);
   animation: hk-mini-shrink var(--dur-base) var(--ease-quart) backwards;
 }
 @keyframes hk-mini-shrink {
@@ -160,7 +160,7 @@
 .hk-hero {
   margin: 0;
   font-family: var(--font-display-en);
-  font-size: var(--t-display-1);
+  font-size: var(--t-display);
   letter-spacing: -0.025em;
   color: var(--text);
   line-height: 0.95;
@@ -178,7 +178,7 @@
 .hk-quote {
   margin: 0;
   font-family: var(--font-display-cn);
-  font-size: var(--t-display-2);
+  font-size: var(--t-h1);
   color: var(--text);
 }
 .hk-brush {

@@ -17,7 +17,7 @@ interface Props {
  *   .stage-frame  ← raw 1920×1080 box, scaled from top-left into the fitter.
  *
  * Surface colors come from the active theme's CSS custom properties
- * (var(--shell), var(--surface)) — see themes/<id>/tokens.css.
+ * (var(--shell), var(--surface)) — see themes/<id>/theme.css.
  */
 export function Stage({ onAdvance, children }: Props) {
   const scale = useStageScale();

@@ -7,14 +7,14 @@
   color: var(--text);
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
+  gap: var(--space-xl);
 }
 
 /* ── masthead ── */
 .lr-masthead {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-sm);
 }
 .lr-rule {
   flex: 1;
@@ -23,7 +23,7 @@
 }
 .lr-kicker {
   font-family: var(--font-mono);
-  font-size: var(--t-cue);
+  font-size: var(--t-micro);
   letter-spacing: 0.18em;
   color: var(--accent);
   text-transform: uppercase;
@@ -34,12 +34,12 @@
 .lr-intro {
   justify-content: center;
   align-items: stretch;
-  gap: var(--space-5);
+  gap: var(--space-lg);
 }
 .lr-intro-h {
   margin: 0;
   font-family: var(--font-display-cn);
-  font-size: var(--t-display-2);
+  font-size: var(--t-h1);
   text-align: center;
   letter-spacing: -0.01em;
 }
@@ -49,23 +49,23 @@
   font-size: var(--t-h3);
   color: var(--text-2);
   text-align: center;
-  margin-bottom: var(--space-5);
+  margin-bottom: var(--space-lg);
 }
 
 /* ── grid (3 slots, fixed layout) ── */
 .lr-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-5);
+  gap: var(--space-lg);
 }
 
 /* ── slot base ── */
 .lr-slot {
   border-radius: var(--r-card);
-  padding: var(--space-5);
+  padding: var(--space-lg);
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-sm);
   min-height: 360px;
   transition: opacity var(--dur-base) var(--ease-quart),
               filter   var(--dur-base) var(--ease-quart),
@@ -74,7 +74,7 @@
 
 /* ghost: 虚线边 + 大灰序号 */
 .lr-slot-ghost {
-  border: var(--rule-w) dashed var(--rule);
+  border: 1px dashed var(--rule);
   background: transparent;
   opacity: 0.55;
 }
@@ -84,9 +84,9 @@
 
 /* active: 红框 + 实心面板 + 巨号砸下 */
 .lr-slot-active {
-  border: var(--rule-w) solid var(--accent);
+  border: 1px solid var(--accent);
   background: var(--surface);
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--card-shadow);
 }
 .lr-slot-active .lr-slot-num {
   color: var(--accent);
@@ -100,7 +100,7 @@
 
 /* past: 灰化 */
 .lr-slot-past {
-  border: var(--rule-w) solid var(--rule);
+  border: 1px solid var(--rule);
   background: transparent;
   opacity: 0.7;
   filter: grayscale(0.4);
@@ -111,17 +111,17 @@
 
 /* ── slot internals ── */
 .lr-slot-num {
-  font-family: var(--hero-num-font, var(--font-display-en));
-  font-style: var(--hero-num-style, normal);
-  font-weight: var(--hero-num-weight, 700);
-  font-size: calc(var(--t-display-2) * 0.85);
-  letter-spacing: var(--hero-num-track, -0.02em);
+  font-family: var(--font-display-en);
+  font-style: normal;
+  font-weight: 700;
+  font-size: calc(var(--t-h1) * 0.85);
+  letter-spacing: -0.02em;
   line-height: 1;
 }
 .lr-slot-content {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-sm);
 }
 .lr-slot-title {
   font-family: var(--font-display-cn);

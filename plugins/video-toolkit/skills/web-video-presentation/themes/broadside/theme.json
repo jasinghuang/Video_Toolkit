@@ -1,0 +1,27 @@
+{
+  "id": "broadside",
+  "name": "Broadside",
+  "nameZh": "号外",
+  "description": "Protest-poster editorial dual-surface system. Dark ink canvas with warm cream text and a single fire-orange accent. Barlow 900 lowercase display at 13vw — type as graphic primitive. Work Sans body. IBM Plex Mono chrome. Fadelist three-stage pattern.",
+  "descriptionZh": "抗议海报式编辑双表面系统。深墨色画布 + 暖奶油色文字 + 单一火焰橙强调色。Barlow 900 小写展示字体 13vw——字体即图形。Work Sans 正文。IBM Plex Mono 信息栏。三阶段渐隐列表模式。",
+  "mood": ["editorial", "dramatic", "loud", "graphic", "newspaper"],
+  "bestFor": [
+    "品牌宣言 / 创始人愿景演讲",
+    "杂志 / 文化提案",
+    "双语 EN/CN 演示",
+    "设计演讲",
+    "活动发布"
+  ],
+  "avoidFor": [
+    "安静 / 温馨场景",
+    "传统机构正式报告"
+  ],
+  "formality": "medium-high",
+  "source": "beautiful-html-templates/broadside",
+  "preview": {
+    "shell": "#0A0A0A",
+    "surface": "#111111",
+    "text": "#F0ECE5",
+    "accent": "#E85D26"
+  }
+}

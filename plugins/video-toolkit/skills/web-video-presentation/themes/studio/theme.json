@@ -1,0 +1,26 @@
+{
+  "id": "studio",
+  "name": "Studio",
+  "nameZh": "工作室",
+  "description": "Near-black + acid yellow dual-surface system. Barlow 900 uppercase display at maximum scale. Type-as-graphic-mass. IBM Plex Mono chrome. Sharp brutalist modernism — no shadows, no rounded corners, no third color.",
+  "descriptionZh": "近黑 + 酸黄双表面系统。Barlow 900 大写展示字体极限放大。字体即图形体块。IBM Plex Mono 信息栏。锐利粗野现代主义 —— 无阴影、无圆角、无第三色。",
+  "mood": ["electric", "bold", "graphic", "high-contrast", "design-led"],
+  "bestFor": [
+    "设计工作室 / 创意机构推介",
+    "品牌展示 / 艺术指导评审",
+    "时尚 / 运动品牌提案",
+    "双语 EN/CN 演示"
+  ],
+  "avoidFor": [
+    "安静 / 传统正式场景",
+    "信息密度高的内容"
+  ],
+  "formality": "medium",
+  "source": "beautiful-html-templates/studio",
+  "preview": {
+    "shell": "#111111",
+    "surface": "#1C1C1C",
+    "text": "#F5D200",
+    "accent": "#F5D200"
+  }
+}
