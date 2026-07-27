@@ -1,0 +1,26 @@
+{
+  "id": "raw-grid",
+  "name": "Raw Grid",
+  "nameZh": "原始网格",
+  "description": "Neobrutalist presentation system where 3px solid black borders ARE the layout. System sans-serif at weight 900 uppercase for all display — no web fonts loaded. White canvas + black structure + two muted pastel accents (blush pink and sage green) + neutral gray. Hard offset shadows in solid black at 6px and 4px — never blurred, never colored. Oversized decorative numerals at 0.15–0.35 opacity sit behind content as wallpaper. Black label pills are the universal section tag. Zero rounded corners, zero gradients, zero softness.",
+  "descriptionZh": "新野蛮主义演示系统，3px 实心黑边框即布局。系统无衬线字体 900 粗细大写展示——不加载网络字体。白色画布 + 黑色结构 + 两种柔和粉彩强调色（粉红和鼠尾草绿）+ 中性灰。6px/4px 实心黑色硬偏移阴影——无模糊、无彩色。超大装饰性数字以 0.15-0.35 不透明度作为壁纸衬在内容后方。黑色标签药丸为通用章节标签。",
+  "mood": ["raw", "punchy", "energetic", "confident", "graphic"],
+  "bestFor": [
+    "创业融资路演",
+    "加速器演示日",
+    "创始人演讲",
+    "独立产品发布",
+    "品牌演示"
+  ],
+  "avoidFor": [
+    "需要柔和、温暖或有意图安静氛围的场景"
+  ],
+  "formality": "medium-low",
+  "source": "beautiful-html-templates/raw-grid",
+  "preview": {
+    "shell": "#FFFFFF",
+    "surface": "#FFFFFF",
+    "text": "#0A0A0A",
+    "accent": "#F2D4CF"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "peoples-platform",
+  "name": "People's Platform",
+  "nameZh": "人民讲坛",
+  "description": "WPA-poster energy: electric blue + amber orange + hot red on warm cream. Alfa Slab One UPPERCASE display at extreme sizes. Caveat Brush handwritten interrupt. Stacked offset text-shadow signature. Paper grain overlay on every surface.",
+  "descriptionZh": "WPA 海报能量：电光蓝 + 琥珀橙 + 热红在黑奶油色上。Alfa Slab One 大写展示字体。Caveat Brush 手写打断。堆叠偏移文字阴影签名。每张页面都有纸张颗粒叠加。",
+  "mood": ["activist", "loud", "graphic", "honest", "expressive"],
+  "bestFor": ["文化评论 / 宣言", "社区 / 公民演讲", "创始人心声 / 使命陈述", "竞选提案", "设计演讲"],
+  "avoidFor": ["需要制度克制的正式场合", "安静 / 传统内容"],
+  "formality": "medium-low",
+  "source": "beautiful-html-templates/peoples-platform",
+  "preview": {
+    "shell": "#111111",
+    "surface": "#F5F2EA",
+    "text": "#2C2CDC",
+    "accent": "#F2A03A"
+  }
+}

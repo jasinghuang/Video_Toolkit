@@ -1,0 +1,458 @@
+/* ======================================================================
+ * Theme · sakura-chroma
+ *   Vintage Japanese cassette-package: warm cream paper with six-color
+ *   primary palette + warm-brown ink. Big Shoulders Display 900 condensed
+ *   industrial display. Albert Sans body. Petal-cluster blobs, diagonal
+ *   ribbon bands, starburst seals, red stamps. Halftone-dot paper texture.
+ *   Catalogue-grid product cards with colored topstrips.
+ *
+ *   Source: beautiful-html-templates/templates/sakura-chroma/
+ *
+ *   Character signatures:
+ *     • warm cream paper (--surface) + warm brown ink (--text / --rule)
+ *     • Big Shoulders Display 900 with negative tracking for every display
+ *     • Six primary accent colors: red, pink, orange, yellow, green, blue
+ *     • Petal-cluster blobs (overlapping perfect circles) as decorative anchors
+ *     • Diagonal multi-color ribbon bands at -22° or +22°
+ *     • 12-point starburst seals (ink fill, cream text) and red rectangular stamps
+ *     • 4px-period halftone-dot paper texture at 16%
+ *     • Hard offset shadow: 8px 8px 0 ink, zero blur
+ *     • catalogue product cards with colored topstrip + mono spec rows
+ *     • No border-radius anywhere except 50% for petals
+ * ====================================================================== */
+:root {
+  /* ─── Palette ─── */
+  --shell:          #0E0E0E;    /* dark stage letterbox */
+  --surface:        #F1E6CB;    /* warm cream paper — primary surface */
+  --surface-2:      #E5D6B0;    /* slightly darker paper for cards, layering */
+  --surface-3:      #D4C49A;    /* deepest cream for nested regions */
+
+  --surface-alt:    #3A2516;    /* warm brown — alternate surface */
+
+  --text:           #3A2516;    /* warm brown ink */
+  --text-2:         #5C4A3A;    /* lighter brown for secondary text */
+  --text-mute:      #8A7A6A;    /* muted brown */
+  --text-faint:     #B0A090;    /* faint brown */
+
+  --text-on-alt:       #F1E6CB;    /* cream text on brown surface */
+  --text-2-on-alt:     #C8BDA0;    /* lighter cream on brown */
+  --text-mute-on-alt:  rgba(241,230,203,0.55);  /* muted cream on brown */
+  --text-faint-on-alt: rgba(241,230,203,0.30);  /* faint cream on brown */
+
+  --rule:           #3A2516;    /* warm brown ink border/rule */
+  --rule-on-alt:    rgba(241,230,203,0.20);  /* subtle rule on brown */
+
+  --accent:       #E5392A;    /* red — primary emphasis color */
+  --accent-soft:  rgba(229,57,42,0.12);
+
+  /* Five additional primary accent colors — sakura-chroma's expanded palette */
+  --accent-pink:    #E54489;
+  --accent-orange:  #F09131;
+  --accent-yellow:  #F0BC2A;
+  --accent-green:   #3D9F47;
+  --accent-blue:    #3F8BC4;
+
+  /* ─── Typography ─── */
+  --font-display-en: "Big Shoulders Display", sans-serif;
+  --font-display-cn: "ZCOOL XiaoWei", serif;
+  --font-body:       "Albert Sans", "LXGW WenKai", sans-serif;
+  --font-mono:       "JetBrains Mono", monospace;
+  --font-jp:         "Noto Sans JP", sans-serif;
+  --font-features:   "tnum", "ss01";
+
+  /* ─── Type scale ─── */
+  --t-display:  clamp(80px, 14vw, 280px);
+  --t-h1:       clamp(70px, 8.4vw, 168px);
+  --t-h2:       clamp(52px, 5.6vw, 100px);
+  --t-h3:       clamp(28px, 2.6vw, 48px);
+  --t-body:     16px;
+  --t-caption:  13px;
+  --t-micro:    11px;
+
+  /* ─── Spacing scale ─── */
+  --space-unit: 8px;
+  --space-xs:   4px;
+  --space-sm:   8px;
+  --space-md:   16px;
+  --space-lg:   24px;
+  --space-xl:   48px;
+  --space-2xl:  96px;
+
+  /* ─── Radii — sakura-chroma is strict rectangles except 50% for petals ─── */
+  --r-card: 0;
+
+  /* ─── Stage ─── */
+  --stage-pad-x: 80px;
+  --stage-pad-y: 64px;
+  --shadow-stage:
+    0 0 0 1px rgba(0,0,0,0.04);
+
+  /* ─── Motion: moderate, playful — catalogue-paced ─── */
+  --ease-quart:    cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-expo:     cubic-bezier(0.86, 0, 0.07, 1);
+  --dur-quick:     300ms;
+  --dur-base:      500ms;
+  --dur-slow:      800ms;
+
+  /* ─── Decoration ─── */
+  /* 4px-period halftone-dot paper texture at 16% opacity */
+  --surface-pattern:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='4' height='4'><circle cx='1' cy='1' r='0.5' fill='%233A2516' opacity='0.16'/></svg>");
+  --surface-pattern-size: 4px 4px;
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * MUST classes — the 12-class contract
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* .display — Hero headline (Latin) — Big Shoulders Display 900 */
+.display {
+  font-family: var(--font-display-en);
+  font-size: var(--t-display);
+  font-weight: 900;
+  line-height: 0.84;
+  letter-spacing: -0.025em;
+  color: var(--text);
+}
+/* Sakura-chroma signature: red em emphasis (NOT italic) */
+.display em,
+.display i {
+  color: var(--accent);
+  font-style: normal;
+}
+
+/* .display-cn — Hero headline (Chinese) — ZCOOL XiaoWei 400 */
+.display-cn {
+  font-family: var(--font-display-cn);
+  font-size: var(--t-display);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: 0;
+  color: var(--text);
+}
+
+/* .body — Body text — Albert Sans 400 */
+.body {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-2);
+}
+
+/* .body-sm — Smaller / caption body — Albert Sans 400 */
+.body-sm {
+  font-family: var(--font-body);
+  font-size: var(--t-caption);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-mute);
+}
+
+/* .label — Uppercase tracked label — Albert Sans 700 */
+.label {
+  font-family: var(--font-body);
+  font-size: var(--t-caption);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--text-2);
+}
+
+/* .stat-value — Large stat number — Big Shoulders Display 900, accent red */
+.stat-value {
+  font-family: var(--font-display-en);
+  font-size: var(--t-h1);
+  font-weight: 900;
+  line-height: 0.86;
+  letter-spacing: -0.025em;
+  color: var(--accent);
+}
+
+/* .stat-label — Stat description — Albert Sans 600 */
+.stat-label {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+/* .card — Card container — 1.5px ink border, paper bg, sharp corners */
+.card {
+  background: var(--surface);
+  border: 1.5px solid var(--rule);
+  border-radius: var(--r-card);
+  padding: var(--space-lg);
+}
+
+/* .divider — Horizontal rule — 1.5px solid ink */
+.divider {
+  width: 100%;
+  height: 1.5px;
+  background: var(--rule);
+  border: 0;
+  margin: var(--space-md) 0;
+}
+
+/* .quote — Pull quote — Big Shoulders Display 900, ink, red em emphasis */
+.quote {
+  font-family: var(--font-display-en);
+  font-size: var(--t-h2);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: -0.018em;
+  color: var(--text);
+}
+.quote em,
+.quote i {
+  color: var(--accent);
+  font-style: normal;
+}
+
+/* .tag — Badge / chip — JetBrains Mono with color background */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: var(--accent);
+  color: var(--surface);
+  width: fit-content;
+}
+
+/* .meta — Metadata / footnote — JetBrains Mono */
+.meta {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  color: var(--text-mute);
+  letter-spacing: 0.02em;
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * Sakura-chroma extensions (MAY — not part of the contract)
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* ─── Surface-alt: warm brown background, cream text ─── */
+.surface-alt {
+  background: var(--surface-alt);
+  color: var(--text-on-alt);
+}
+.surface-alt .body { color: var(--text-2-on-alt); }
+.surface-alt .body-sm { color: var(--text-mute-on-alt); }
+.surface-alt .label { color: var(--text-mute-on-alt); }
+.surface-alt .meta { color: var(--text-faint-on-alt); }
+.surface-alt .divider { background: var(--rule-on-alt); }
+.surface-alt .card {
+  background: var(--surface-alt);
+  border-color: var(--rule-on-alt);
+}
+.surface-alt .display { color: var(--text-on-alt); }
+.surface-alt .display em { color: var(--accent); }
+.surface-alt .quote { color: var(--text-on-alt); }
+.surface-alt .quote em { color: var(--accent); }
+.surface-alt .stat-value { color: var(--accent); }
+.surface-alt .stat-label { color: var(--text-on-alt); }
+.surface-alt .tag {
+  background: var(--accent);
+  color: var(--surface);
+}
+
+/* ─── Shadow — hard 8px offset, zero blur ─── */
+.shadow-hard {
+  box-shadow: 8px 8px 0 var(--rule);
+}
+
+/* ─── Petal-cluster decorative circles ─── */
+.petal {
+  position: absolute;
+  border-radius: 50%;
+  aspect-ratio: 1 / 1;
+}
+
+/* ─── Starburst seal ─── */
+.seal {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  background: var(--surface-alt);
+  color: var(--text-on-alt);
+  /* 12-point starburst clip-path */
+  clip-path: polygon(50% 0%, 60% 8%, 73% 4%, 76% 17%, 89% 18%, 87% 31%, 100% 35%, 92% 47%, 100% 60%, 87% 64%, 90% 77%, 76% 78%, 75% 91%, 62% 88%, 53% 100%, 42% 90%, 30% 96%, 25% 84%, 12% 86%, 13% 73%, 0% 70%, 7% 58%, 0% 47%, 11% 39%, 4% 27%, 17% 25%, 13% 12%, 27% 14%, 25% 1%, 38% 7%);
+  font-family: var(--font-display-en);
+  font-weight: 900;
+  font-size: clamp(22px, 2vw, 38px);
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+
+/* ─── Red rectangular stamp ─── */
+.stamp {
+  position: absolute;
+  background: var(--accent);
+  color: var(--surface);
+  padding: clamp(8px, 1vh, 14px) clamp(12px, 1.4vw, 22px);
+  font-family: var(--font-display-en);
+  font-weight: 900;
+  font-size: clamp(14px, 1.1vw, 20px);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  transform: rotate(-3deg);
+  border-radius: 0;
+}
+
+/* ─── Colored topstrip for product cards ─── */
+.topstrip {
+  width: 100%;
+  height: clamp(18px, 2vh, 32px);
+}
+.card .topstrip {
+  border-radius: 0;
+}
+.card.c-red    .topstrip { background: var(--accent); }
+.card.c-pink   .topstrip { background: var(--accent-pink); }
+.card.c-orange .topstrip { background: var(--accent-orange); }
+.card.c-blue   .topstrip { background: var(--accent-blue); }
+
+/* ─── Color chip variants ─── */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--surface);
+  width: fit-content;
+  border-radius: 0;
+}
+.chip.c-red    { background: var(--accent); }
+.chip.c-pink   { background: var(--accent-pink); }
+.chip.c-orange { background: var(--accent-orange); }
+.chip.c-blue   { background: var(--accent-blue); }
+.chip.c-green  { background: var(--accent-green); }
+.chip.c-yellow { background: var(--accent-yellow); color: var(--text); }
+
+/* ─── Ink checkbox (spec-list style) ─── */
+.checkbox {
+  display: inline-block;
+  width: clamp(14px, 1.1vw, 20px);
+  height: clamp(14px, 1.1vw, 20px);
+  border: 2px solid var(--rule);
+  background: transparent;
+}
+.checkbox.checked {
+  background: var(--rule);
+  position: relative;
+}
+.checkbox.checked::after {
+  content: '\00D7';
+  position: absolute;
+  inset: 0;
+  color: var(--surface);
+  font-family: var(--font-display-en);
+  font-weight: 900;
+  display: grid;
+  place-items: center;
+  font-size: 1.2em;
+  line-height: 1;
+}
+
+/* ─── Stat card with top rule ─── */
+.stat-card {
+  padding: var(--space-md) var(--space-md) var(--space-md) 0;
+  border-top: 1.5px solid var(--rule);
+}
+
+/* ─── Em-dash bullet list ─── */
+.bullet-list {
+  list-style: none;
+  padding-left: 0;
+}
+.bullet-list li::before {
+  content: '\2014';
+  margin-right: 0.5em;
+  color: var(--accent);
+}
+
+/* ─── Kicker / eyebrow label ─── */
+.kicker {
+  font-family: var(--font-body);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: var(--t-caption);
+  color: var(--text-2);
+}
+
+/* ─── Product card name (Big Shoulders 900, card context) ─── */
+.card-name {
+  font-family: var(--font-display-en);
+  font-weight: 900;
+  font-size: var(--t-h3);
+  line-height: 0.94;
+  letter-spacing: -0.012em;
+  color: var(--text);
+}
+
+/* ─── Spec row (JetBrains Mono for tabular data) ─── */
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+.spec-row .key { opacity: 0.7; }
+
+/* ─── Topbar pattern (title + meta-label + ink rule) ─── */
+.topbar {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  border-bottom: 1.5px solid var(--rule);
+  padding-bottom: clamp(12px, 1.4vh, 22px);
+  gap: 30px;
+}
+.topbar .title {
+  font-family: var(--font-display-en);
+  font-weight: 900;
+  font-size: var(--t-h2);
+  line-height: 0.9;
+  letter-spacing: -0.018em;
+  color: var(--text);
+}
+.topbar .title em {
+  color: var(--accent);
+  font-style: normal;
+}
+.topbar .label {
+  font-family: var(--font-body);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: var(--t-caption);
+  color: var(--text);
+  text-align: right;
+}
+
+/* ─── Kicker/label above a topbar (eyebrow) ─── */
+.eyebrow {
+  font-family: var(--font-body);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: var(--t-caption);
+  color: var(--text-2);
+  margin-bottom: var(--space-sm);
+}

@@ -1,0 +1,337 @@
+/* ======================================================================
+ * Theme · neo-grid-bold
+ *   Off-white ecru paper + ink black + neon yellow accent.
+ *   Space Grotesk 700 uppercase brutalist display with negative tracking.
+ *   JetBrains Mono uppercase chrome for labels, page numbers, metadata.
+ *   Universal 12-column × 8-row block grid for editorial poster density.
+ *   No shadows, no rounded corners — pure color-block adjacency.
+ *
+ *   Source: beautiful-html-templates/templates/neo-grid-bold/
+ *
+ *   Character signatures:
+ *     • 12×8 css-grid panel composition (universal frame)
+ *     • Space Grotesk 700 uppercase every display moment
+ *     • neon-yellow accent as panel fill + inline <mark> swatch
+ *     • JetBrains Mono uppercase at 0.08-0.12em tracking for all chrome
+ *     • paper/ink/lemon three-color panel system
+ *     • blockmark + corner-mark 2×2 diagonal stamp
+ *     • persistent page-number tag bottom-left
+ * ====================================================================== */
+:root {
+  /* ─── Palette ─── */
+  --shell:        #1A1A1A;    /* dark grey stage letterbox frame */
+  --surface:      #ECECE8;    /* putty ecru — slide background behind grid inset */
+  --surface-2:    #F5F4EF;    /* warm ecru paper — default panel fill */
+  --surface-3:    #E6E3DD;    /* slightly deeper ecru for tonal variation */
+  --surface-alt:  #0A0A0A;    /* ink black — inverted panel surface */
+
+  --text:         #0A0A0A;    /* ink black on paper/lemon surfaces */
+  --text-2:       #3D3D3D;    /* slightly softer black for secondary text */
+  --text-mute:    #8A8A85;    /* muted graphite */
+  --text-faint:   rgba(10,10,10,0.35); /* faint graphite */
+
+  --text-on-alt:        #F5F4EF;    /* paper text on ink surface */
+  --text-2-on-alt:      rgba(245,244,239,0.7);
+  --text-mute-on-alt:   rgba(245,244,239,0.4);
+  --text-faint-on-alt:  rgba(245,244,239,0.2);
+
+  --rule:         #0A0A0A;    /* ink black — dividers, borders */
+  --rule-on-alt:  rgba(245,244,239,0.18);  /* subtle rule on ink */
+
+  --accent:       #E6FF3D;    /* neon yellow — the only chromatic accent */
+  --accent-soft:  rgba(230,255,61,0.15);
+  --accent-glow:  rgba(230,255,61,0.4);
+
+  /* ─── Typography ─── */
+  --font-display-en: "Space Grotesk", "Noto Sans SC", system-ui, sans-serif;
+  --font-display-cn: "Noto Sans SC", "Source Han Sans SC", system-ui, sans-serif;
+  --font-body:       "Space Grotesk", "Noto Sans SC", system-ui, sans-serif;
+  --font-mono:       "JetBrains Mono", "SF Mono", ui-monospace, monospace;
+  --font-features:   "tnum", "ss01";
+
+  /* ─── Type scale ─── */
+  --t-display:  clamp(72px, 10vw, 200px);  /* Space Grotesk 700 uppercase */
+  --t-h1:       clamp(56px, 7vw, 132px);
+  --t-h2:       clamp(44px, 5vw, 88px);
+  --t-h3:       clamp(28px, 3vw, 44px);    /* card headline */
+  --t-body:     18px;                       /* Space Grotesk 400 */
+  --t-caption:  14px;
+  --t-micro:    11px;
+
+  /* ─── Spacing scale ─── */
+  --space-unit: 8px;
+  --space-xs:   4px;
+  --space-sm:   8px;
+  --space-md:   16px;
+  --space-lg:   24px;
+  --space-xl:   48px;
+  --space-2xl:  96px;
+
+  /* ─── Radii — strict zero everywhere ─── */
+  --r-card: 0;
+
+  /* ─── Stage ─── */
+  --stage-pad-x: 40px;         /* the universal 40px frame inset */
+  --stage-pad-y: 40px;
+  --shadow-stage: none;        /* no shadows */
+  --card-shadow: none;
+
+  /* ─── Motion: punchy editorial cadence ─── */
+  --ease-quart:    cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-expo:     cubic-bezier(0.86, 0, 0.07, 1);
+  --dur-quick:     200ms;
+  --dur-base:      500ms;
+  --dur-slow:      800ms;
+  --dur-cinematic: 1000ms;
+
+  /* ─── Decoration ─── */
+  /* No background pattern — pure flat color panels */
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * MUST classes — the 12-class contract
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* .display — Hero / cover headline — Space Grotesk 700 uppercase */
+.display {
+  font-family: var(--font-display-en);
+  font-size: var(--t-display);
+  font-weight: 700;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+.surface-alt .display {
+  color: var(--text-on-alt);
+}
+
+/* .display-cn — Hero headline (Chinese) */
+.display-cn {
+  font-family: var(--font-display-cn);
+  font-size: var(--t-display);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: 0;
+  color: var(--text);
+}
+.surface-alt .display-cn {
+  color: var(--text-on-alt);
+}
+
+/* .body — Body text — Space Grotesk 400 */
+.body {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--text-2);
+}
+.surface-alt .body {
+  color: var(--text-2-on-alt);
+}
+
+/* .body-sm — Caption / small body */
+.body-sm {
+  font-family: var(--font-body);
+  font-size: var(--t-caption);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-mute);
+}
+.surface-alt .body-sm {
+  color: var(--text-mute-on-alt);
+}
+
+/* .label — Mono uppercase label — JetBrains Mono */
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+}
+.surface-alt .label {
+  color: var(--text-mute-on-alt);
+}
+
+/* .stat-value — Large stat number — Space Grotesk 700 */
+.stat-value {
+  font-family: var(--font-display-en);
+  font-size: var(--t-h1);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--accent);        /* Neo-Grid: yellow stats */
+}
+.surface-alt .stat-value {
+  color: var(--text-on-alt);
+}
+
+/* .stat-label — Stat description — mono uppercase */
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+}
+.surface-alt .stat-label {
+  color: var(--text-mute-on-alt);
+}
+
+/* .card — Card panel — strict rectangle, fill-based */
+.card {
+  background: var(--surface-2);
+  border-radius: var(--r-card);
+  padding: var(--space-lg);
+  position: relative;
+  overflow: hidden;
+}
+.surface-alt .card {
+  background: var(--text-mute-on-alt);
+}
+
+/* .divider — Horizontal rule */
+.divider {
+  width: 100%;
+  height: 1.5px;
+  background: var(--rule);
+  border: 0;
+  margin: var(--space-md) 0;
+}
+.surface-alt .divider {
+  background: var(--rule-on-alt);
+}
+
+/* .quote — Pull quote — Space Grotesk 700, uppercase */
+.quote {
+  font-family: var(--font-display-en);
+  font-size: var(--t-h2);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  color: var(--text);
+  border-left: 3px solid var(--accent);
+  padding-left: var(--space-lg);
+}
+.surface-alt .quote {
+  color: var(--text-on-alt);
+  border-left-color: var(--accent);
+}
+
+/* .tag — Badge / pill — strict rectangle, solid fill */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 0;            /* strict rectangle */
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: var(--accent);
+  color: var(--text);
+}
+.surface-alt .tag {
+  background: var(--text-on-alt);
+  color: var(--surface-alt);
+}
+
+/* .meta — Metadata / footnote — mono */
+.meta {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  color: var(--text-faint);
+}
+.surface-alt .meta {
+  color: var(--text-faint-on-alt);
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * Neo-Grid Bold-specific extensions
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* Dual-surface helper: apply to step root for ink-black full surface */
+.surface-alt {
+  background: var(--surface-alt);
+  color: var(--text-on-alt);
+}
+.surface-alt .display,
+.surface-alt .display-cn { color: var(--text-on-alt); }
+.surface-alt .body { color: var(--text-2-on-alt); }
+.surface-alt .body-sm { color: var(--text-mute-on-alt); }
+.surface-alt .label { color: var(--text-mute-on-alt); }
+.surface-alt .meta { color: var(--text-faint-on-alt); }
+.surface-alt .divider { background: var(--rule-on-alt); }
+.surface-alt .card { background: rgba(245,244,239,0.06); }
+.surface-alt .tag {
+  background: var(--text-on-alt);
+  color: var(--surface-alt);
+}
+
+/* Lemon panel helper — yellow fill, ink text */
+.card-lemon {
+  background: var(--accent);
+  color: var(--text);
+}
+.card-lemon .body { color: var(--text-2); }
+
+/* Ink panel helper — black fill, paper text */
+.card-ink {
+  background: var(--surface-alt);
+  color: var(--text-on-alt);
+}
+.card-ink .body { color: var(--text-2-on-alt); }
+.card-ink .label { color: var(--text-mute-on-alt); }
+.card-ink .meta { color: var(--text-faint-on-alt); }
+
+/* Inline highlight mark — neon-yellow swatch */
+.highlight-mark {
+  display: inline;
+  background: var(--accent);
+  color: var(--text);
+  padding: 0 6px;
+}
+
+/* Em-dash bullet markers */
+.bullet-list {
+  list-style: none;
+  padding-left: 0;
+}
+.bullet-list li::before {
+  content: "\2014";  /* em-dash */
+  margin-right: 0.5em;
+  color: var(--accent);
+}
+
+/* Blockmark — 2×2 diagonal stamp */
+.blockmark {
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 4px;
+  width: 36px;
+  height: 36px;
+}
+.blockmark span { background: currentColor; }
+.blockmark span:nth-child(2) { background: transparent; }
+.blockmark span:nth-child(3) { background: transparent; }
+.blockmark span:nth-child(4) { background: currentColor; }
+
+/* Page number tag — bottom-left, three variants */
+.pagenum {
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  letter-spacing: 0.04em;
+  padding: 8px 14px;
+  background: var(--surface-2);
+  color: var(--text);
+}
+.pagenum.invert { background: var(--surface-alt); color: var(--text-on-alt); }
+.pagenum.lemon  { background: var(--accent); color: var(--text); }

@@ -1,0 +1,451 @@
+/* ======================================================================
+ * Theme · creative-mode
+ *   Neo-brutalist editorial slide system.
+ *   Warm cream canvas with 4px ink borders, hard offset drop-shadows.
+ *   Four-color accent palette: forest green, hot pink, burnt orange, yellow.
+ *   Archivo Black uppercase display at 0.92 line-height.
+ *   JetBrains Mono for metadata/labels. Space Grotesk for body.
+ *   Flat color-blocking: no gradients, no rounded cards (except topbar pill).
+ *
+ *   Source: beautiful-html-templates/templates/creative-mode/
+ *
+ *   Character signatures:
+ *     • warm cream (#EFE9D9) + near-black ink (#0F0F0F)
+ *     • 4px solid ink borders on all structural elements
+ *     • Archivo Black uppercase with 0.92 line-height
+ *     • hard offset shadows: 24px/24px (hero) and 18px/18px (diagram)
+ *     • JetBrains Mono topbar + slide-meta on every slide
+ *     • 2-3 accent fills per slide (never all 4 simultaneously)
+ *     • green background for closing slide only (full-bleed impact)
+ *     • rotated stamp (-6deg) and badge (-4deg) elements
+ *     • 0px corner radius on all structural elements
+ *     • fixed 1920×1080 canvas
+ * ====================================================================== */
+:root {
+  /* ─── Palette ─── */
+  --shell:        #000000;    /* black letterbox */
+  --surface:      #EFE9D9;    /* warm cream — primary canvas */
+  --surface-2:    #E4DCC4;    /* cream-2 — table fill */
+  --surface-alt:  #1F8A4C;    /* forest green — dominant accent / closing */
+
+  --text:         #0F0F0F;    /* near-black ink */
+  --text-2:       #2A2A2A;    /* ink-2 — softer text */
+  --text-mute:    #555555;
+  --text-faint:   rgba(15,15,15,0.2);
+
+  --text-on-alt:       #EFE9D9;    /* cream on green */
+  --text-2-on-alt:     rgba(239,233,217,0.75);
+  --text-mute-on-alt:  rgba(239,233,217,0.55);
+  --text-faint-on-alt: rgba(239,233,217,0.25);
+
+  --rule:          #0F0F0F;    /* ink — all borders */
+  --rule-on-alt:   rgba(239,233,217,0.20);
+
+  --accent:       #1F8A4C;    /* forest green */
+  --accent-pink:  #F06CA8;    /* hot pink */
+  --accent-orange:#E85A1F;    /* burnt orange */
+  --accent-yellow:#F5C518;    /* sunshine yellow */
+  --accent-soft:  rgba(31,138,76,0.12);
+  --accent-glow:  rgba(31,138,76,0.3);
+
+  /* ─── Typography ─── */
+  --font-display-en: "Archivo Black", "Noto Serif SC", sans-serif;
+  --font-display-cn: "Noto Serif SC", serif;
+  --font-body:       "Space Grotesk", "Noto Serif SC", system-ui, sans-serif;
+  --font-mono:       "JetBrains Mono", "Noto Sans Mono CJK SC", monospace;
+  --font-features:   "tnum";
+
+  /* ─── Type scale (1920×1080 fixed canvas) ─── */
+  --t-display:  220px;        /* Archivo Black uppercase */
+  --t-h1:       160px;        /* primary deck title */
+  --t-h1-xl:    140px;        /* section-opening display */
+  --t-h2:       100px;        /* section headline + panel */
+  --t-h3:       96px;         /* mid-weight section headline */
+  --t-h3-sm:    84px;         /* data-heavy layouts */
+  --t-h4:       72px;         /* grid layout headlines */
+  --t-body:     28px;         /* Space Grotesk 400 */
+  --t-body-sm:  24px;         /* card body */
+  --t-caption:  24px;         /* JetBrains Mono label size */
+  --t-micro:    24px;         /* metadata size */
+
+  /* ─── Spacing scale (1920×1080) ─── */
+  --space-unit: 8px;
+  --space-xs:   4px;
+  --space-sm:   8px;
+  --space-md:   16px;
+  --space-lg:   24px;
+  --space-xl:   48px;
+  --space-2xl:  96px;
+
+  /* ─── Radii ─── */
+  --r-card: 0;                /* strictly square */
+  --r-pill: 999px;            /* topbar pill only */
+  --r-circle: 50%;            /* decorative circles */
+
+  /* ─── Stage ─── */
+  --stage-pad-x: 96px;
+  --stage-pad-y: 96px;
+  --shadow-stage: none;
+  --card-shadow: 24px 24px 0 var(--accent-orange), 24px 24px 0 4px var(--rule);
+  --shadow-stack: 18px 18px 0 var(--rule);
+
+  /* ─── Motion ─── */
+  --ease-slide:  cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-slide:   0.6s;
+  --ease-enter:  cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-enter:   0.5s;
+  --dur-reveal:  0.5s;
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * MUST classes — the 12-class contract
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* .display — Hero headline — Archivo Black uppercase */
+.display {
+  font-family: var(--font-display-en);
+  font-size: var(--t-h1);
+  font-weight: 400;           /* Archivo Black is intrinsically heavy */
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;  /* Non-negotiable: uppercase always */
+  color: var(--text);
+}
+.surface-alt .display {
+  color: var(--text-on-alt);
+}
+
+/* .display-cn — Hero headline (Chinese) */
+.display-cn {
+  font-family: var(--font-display-cn);
+  font-size: var(--t-h1);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: 0;
+  color: var(--text);
+}
+.surface-alt .display-cn {
+  color: var(--text-on-alt);
+}
+
+/* .body — Body text — Space Grotesk 400 */
+.body {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--text-2);
+}
+.surface-alt .body {
+  color: var(--text-2-on-alt);
+}
+
+/* .body-sm — Caption / small body */
+.body-sm {
+  font-family: var(--font-body);
+  font-size: var(--t-body-sm);
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--text-mute);
+}
+.surface-alt .body-sm {
+  color: var(--text-mute-on-alt);
+}
+
+/* .label — Mono uppercase label */
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text);
+}
+.surface-alt .label {
+  color: var(--text-on-alt);
+}
+
+/* .stat-value — Large stat figure — Archivo Black uppercase */
+.stat-value {
+  font-family: var(--font-display-en);
+  font-size: var(--t-h3);
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--text);
+}
+.surface-alt .stat-value {
+  color: var(--text-on-alt);
+}
+
+/* .stat-label — Stat description */
+.stat-label {
+  font-family: var(--font-body);
+  font-size: var(--t-body-sm);
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--text-2);
+}
+.surface-alt .stat-label {
+  color: var(--text-2-on-alt);
+}
+
+/* .card — Card container — 4px ink border */
+.card {
+  border: 4px solid var(--rule);
+  border-radius: var(--r-card);
+  padding: var(--space-lg);
+  background: var(--surface);
+}
+.card.accent-green {
+  background: var(--accent);
+  color: var(--text-on-alt);
+}
+.card.accent-pink {
+  background: var(--accent-pink);
+  color: var(--text);
+}
+.card.accent-orange {
+  background: var(--accent-orange);
+  color: var(--text-on-alt);
+}
+.card.accent-yellow {
+  background: var(--accent-yellow);
+  color: var(--text);
+}
+.surface-alt .card {
+  background: var(--surface-alt);
+  border-color: var(--rule-on-alt);
+  color: var(--text-on-alt);
+}
+
+/* .divider — Horizontal rule — 4px ink */
+.divider {
+  width: 100%;
+  height: 4px;
+  background: var(--rule);
+  border: 0;
+  margin: var(--space-md) 0;
+}
+.surface-alt .divider {
+  background: var(--rule-on-alt);
+}
+
+/* .quote — Pull quote */
+.quote {
+  font-family: var(--font-display-en);
+  font-size: var(--t-body);
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--text);
+  border-left: 4px solid var(--rule);
+  padding-left: var(--space-lg);
+}
+.surface-alt .quote {
+  color: var(--text-on-alt);
+  border-left-color: var(--rule-on-alt);
+}
+
+/* .tag — Badge / pill — 999px radius topbar badge */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: var(--r-pill);
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border: 2px solid var(--rule);
+  color: var(--text);
+  background: transparent;
+}
+.surface-alt .tag {
+  border-color: var(--rule-on-alt);
+  color: var(--text-on-alt);
+}
+
+/* .meta — Metadata / footnote */
+.meta {
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+}
+.surface-alt .meta {
+  color: var(--text-faint-on-alt);
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * Creative Mode-specific extensions
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* Surface-alt helper: green background (closing slide) */
+.surface-alt {
+  background: var(--surface-alt);
+  color: var(--text-on-alt);
+}
+.surface-alt .body { color: var(--text-2-on-alt); }
+.surface-alt .body-sm { color: var(--text-mute-on-alt); }
+.surface-alt .label { color: var(--text-on-alt); }
+.surface-alt .meta { color: var(--text-faint-on-alt); }
+.surface-alt .divider { background: var(--rule-on-alt); }
+
+/* .topbar — JetBrains Mono chrome at top */
+.topbar {
+  position: absolute;
+  left: 64px;
+  right: 64px;
+  top: 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* .slide-meta — Footer chrome */
+.slide-meta {
+  position: absolute;
+  left: 64px;
+  right: 64px;
+  bottom: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.slide-meta .dot {
+  width: 10px;
+  height: 10px;
+  background: var(--rule);
+  border-radius: var(--r-circle);
+  display: inline-block;
+  margin: 0 14px;
+  transform: translateY(-2px);
+}
+
+/* .kicker — Inverted mono label (black bg, cream text) */
+.kicker {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  background: var(--text);
+  color: var(--text-on-alt);
+  padding: 8px 16px;
+}
+
+/* .marker — Archivo Black featured marker */
+.marker {
+  font-family: var(--font-display-en);
+  font-size: 46px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  background: var(--accent-pink);
+  border: 4px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* .stamp — Rotated stamp element */
+.stamp {
+  background: var(--accent-pink);
+  border: 4px solid var(--surface);
+  border-radius: 0;
+  transform: rotate(-6deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.stamp .inner {
+  border: 4px solid var(--surface);
+  border-radius: var(--r-circle);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* .badge — Rotated badge */
+.badge {
+  background: var(--accent-yellow);
+  border: 4px solid var(--rule);
+  padding: 14px 22px;
+  font-family: var(--font-display-en);
+  font-size: 28px;
+  text-transform: uppercase;
+  transform: rotate(-4deg);
+}
+
+/* .hard-shadow — Featured block with hard offset shadow */
+.hard-shadow {
+  box-shadow: var(--card-shadow);
+}
+.hard-shadow-stack {
+  box-shadow: var(--shadow-stack);
+}
+
+/* .stat-cell — 4px bordered cell for stat grid */
+.stat-cell {
+  border: 4px solid var(--rule);
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.stat-cell.green  { background: var(--accent); color: var(--text-on-alt); }
+.stat-cell.pink   { background: var(--accent-pink); }
+.stat-cell.cream  { background: var(--surface); }
+.stat-cell.orange { background: var(--accent-orange); color: var(--text-on-alt); }
+
+/* .step-arrow — CSS triangle arrow between step cards */
+.step-arrow {
+  width: 0;
+  height: 0;
+  border-top: 18px solid transparent;
+  border-bottom: 18px solid transparent;
+  border-left: 24px solid var(--rule);
+}
+
+/* .table-brutal — Comparison table */
+.table-brutal {
+  border: 4px solid var(--rule);
+  display: grid;
+}
+.table-brutal .head {
+  background: var(--text);
+  color: var(--surface);
+  font-family: var(--font-display-en);
+  font-size: 28px;
+  text-transform: uppercase;
+}
+.table-brutal .head > div {
+  border-right: 3px solid var(--surface);
+}
+.table-brutal .row > div {
+  padding: 18px 26px;
+  border-right: 3px solid var(--rule);
+  border-bottom: 3px solid var(--rule);
+}
+.table-brutal .row > div:last-child { border-right: 0; }
+.table-brutal .row:last-child > div { border-bottom: 0; }
+.table-brutal .col-pink   { background: var(--accent-pink); }
+.table-brutal .col-green  { background: var(--accent); color: var(--text-on-alt); }
+.table-brutal .col-orange { background: var(--accent-orange); color: var(--text-on-alt); }

@@ -1,0 +1,26 @@
+{
+  "id": "bold-poster",
+  "name": "Bold Poster",
+  "nameZh": "大胆海报",
+  "description": "Populist editorial poster system. White canvas with deep brown-black ink and single saturated tomato-red accent. Shrikhand display at poster scale (often rotated), Libre Baskerville literary serif body, Space Grotesk mono chrome. Heavy ink borders, stacked text-shadow, red em-dash bullets.",
+  "descriptionZh": "大众编辑海报系统。白色画布配深棕黑墨水和单色饱和番茄红强调色。Shrikhand 展示字体海报级缩放（常带旋转），Libre Baskerville 文学衬线正文，Space Grotesk 等宽信息栏。粗重墨水边框、堆叠文字阴影、红色破折号项目符号。",
+  "mood": ["bold", "editorial", "loud", "confident", "dramatic", "graphic"],
+  "bestFor": [
+    "品牌宣言 / 创始人愿景",
+    "杂志 / 文化提案",
+    "创意评审",
+    "艺术 / 文化展示"
+  ],
+  "avoidFor": [
+    "需要每页高信息密度的场景",
+    "安静 / 保守正式场景"
+  ],
+  "formality": "medium",
+  "source": "beautiful-html-templates/bold-poster",
+  "preview": {
+    "shell": "#FFFFFF",
+    "surface": "#FFFFFF",
+    "text": "#1C1410",
+    "accent": "#D8000F"
+  }
+}

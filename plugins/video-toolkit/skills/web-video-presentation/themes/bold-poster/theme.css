@@ -1,0 +1,386 @@
+/* ======================================================================
+ * Theme · bold-poster
+ *   Populist editorial poster: white canvas, deep brown-black ink,
+ *   single saturated tomato-red accent. Shrikhand display at poster
+ *   scale (routinely tilted), Libre Baskerville literary serif body,
+ *   Space Grotesk mono chrome. Heavy ink borders, stacked text-shadow,
+ *   red em-dash bullets.
+ *
+ *   Source: beautiful-html-templates/templates/bold-poster/
+ *
+ *   Character signatures:
+ *     • Shrikhand display at 100-320px, rotated -6° to +2°
+ *     • Libre Baskerville 400 body (editorial register)
+ *     • Space Grotesk 600 uppercase labels (2-3px tracking)
+ *     • 3px + 1.5px double-border tabular grids
+ *     • 4px red leftbar on editorial cards
+ *     • Stacked text-shadow on red-panel display type
+ *     • Red em-dash / round-bullet list markers
+ * ====================================================================== */
+:root {
+  /* ─── Palette ─── */
+  --shell:        #FFFFFF;    /* white stage letterbox */
+  --surface:      #FFFFFF;    /* white canvas — newsprint paper */
+  --surface-2:    #F5F2EF;    /* warm off-white — alternating panels */
+  --surface-3:    #F5F2EF;
+  --surface-alt:  #D8000F;    /* saturated tomato red — full-bleed panel */
+  --surface-alt-2:#1C1410;    /* deep brown-black — dark panel */
+
+  --text:         #1C1410;    /* deep brown-black — ink */
+  --text-2:       rgba(28,20,16,0.75);
+  --text-mute:    rgba(28,20,16,0.5);
+  --text-faint:   rgba(28,20,16,0.12);
+
+  --text-on-alt:        #FFFFFF;            /* white on red */
+  --text-2-on-alt:      rgba(255,255,255,0.7);
+  --text-mute-on-alt:   rgba(255,255,255,0.5);
+  --text-faint-on-alt:  rgba(255,255,255,0.15);
+
+  --text-on-alt-2:       #FFFFFF;            /* white on dark */
+  --text-2-on-alt-2:     rgba(255,255,255,0.7);
+
+  --rule:          #1C1410;    /* ink — heavy borders */
+  --rule-on-alt:   rgba(255,255,255,0.2);
+
+  --accent:       #D8000F;    /* saturated tomato red */
+  --accent-soft:  rgba(216,0,15,0.08);
+  --accent-glow:  rgba(216,0,15,0.15);
+
+  /* ─── Typography ─── */
+  --font-display-en: "Shrikhand", "Noto Serif SC", cursive;
+  --font-display-cn: "Noto Serif SC", "Source Han Serif SC", serif;
+  --font-body:       "Libre Baskerville", "Noto Serif SC", Georgia, serif;
+  --font-mono:       "Space Grotesk", "Noto Sans SC", sans-serif;
+  --font-features:   "tnum", "ss01";
+
+  /* ─── Type scale ─── */
+  --t-display:  clamp(72px, 16vw, 220px);
+  --t-h1:       clamp(56px, 10vw, 140px);
+  --t-h2:       clamp(36px, 6vw, 72px);
+  --t-h3:       clamp(24px, 4vw, 52px);
+  --t-body:     clamp(13px, 1.2vw, 16px);
+  --t-caption:  11px;
+  --t-micro:    10px;
+
+  /* ─── Spacing scale ─── */
+  --space-unit: 8px;
+  --space-xs:   4px;
+  --space-sm:   8px;
+  --space-md:   16px;
+  --space-lg:   24px;
+  --space-xl:   48px;
+  --space-2xl:  96px;
+
+  /* ─── Radii — 0 everywhere except 4px hint-pill ─── */
+  --r-card: 0;
+  --r-pill: 0;
+
+  /* ─── Stage ─── */
+  --stage-pad-x: 56px;
+  --stage-pad-y: 48px;
+  --shadow-stage: none;
+  --card-shadow: none;
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * MUST classes — the 12-class contract
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* .display — Hero headline — Shrikhand, uppercase-style, often tilted */
+.display {
+  font-family: var(--font-display-en);
+  font-size: var(--t-display);
+  font-weight: 400;  /* Shrikhand only has weight 400 */
+  line-height: 0.88;
+  letter-spacing: 1px;
+  color: var(--text);
+}
+.surface-alt .display {
+  color: var(--text-on-alt);
+  text-shadow: 2px 2px 0 rgba(28,20,16,0.25), 4px 4px 0 rgba(28,20,16,0.2), 6px 6px 0 rgba(28,20,16,0.15);
+}
+.surface-alt-2 .display {
+  color: var(--text-on-alt-2);
+}
+
+/* .display-cn — Hero headline (Chinese) */
+.display-cn {
+  font-family: var(--font-display-cn);
+  font-size: var(--t-display);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0;
+  color: var(--text);
+}
+.surface-alt .display-cn {
+  color: var(--text-on-alt);
+}
+.surface-alt-2 .display-cn {
+  color: var(--text-on-alt-2);
+}
+
+/* .body — Body text — Libre Baskerville 400 */
+.body {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: 400;
+  line-height: 1.75;
+  color: var(--text);
+}
+.surface-alt .body {
+  color: var(--text-on-alt);
+  opacity: 0.85;
+}
+.surface-alt-2 .body {
+  color: var(--text-on-alt-2);
+  opacity: 0.65;
+}
+
+/* .body-sm — Caption / small body */
+.body-sm {
+  font-family: var(--font-body);
+  font-size: var(--t-caption);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text);
+  opacity: 0.7;
+}
+.surface-alt .body-sm {
+  color: var(--text-on-alt);
+}
+.surface-alt-2 .body-sm {
+  color: var(--text-on-alt-2);
+}
+
+/* .label — Uppercase mono label — Space Grotesk 600 red */
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent);
+}
+.surface-alt .label {
+  color: var(--text-on-alt);
+}
+.surface-alt-2 .label {
+  color: var(--accent);
+}
+
+/* .stat-value — Large stat number — Shrikhand red, rotated */
+.stat-value {
+  font-family: var(--font-display-en);
+  font-size: clamp(120px, 26vw, 320px);
+  font-weight: 400;
+  line-height: 0.82;
+  color: var(--accent);
+  transform: rotate(-6deg);
+  display: inline-block;
+}
+.surface-alt .stat-value {
+  color: var(--text-on-alt);
+}
+.surface-alt-2 .stat-value {
+  color: var(--accent);
+}
+
+/* .stat-label — Stat description — Space Grotesk uppercase */
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text);
+}
+.surface-alt .stat-label {
+  color: var(--text-on-alt);
+}
+.surface-alt-2 .stat-label {
+  color: var(--text-on-alt-2);
+}
+
+/* .card — Editorial card — red leftbar pattern */
+.card {
+  background: transparent;
+  border-radius: var(--r-card);
+  padding: var(--space-lg) var(--space-md);
+  border-left: 4px solid var(--accent);
+  padding-left: 18px;
+}
+.surface-alt .card {
+  border-left-color: var(--accent);
+}
+.surface-alt-2 .card {
+  border-left: 3px solid var(--accent);
+}
+
+/* .divider — Horizontal rule */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(28,20,16,0.08);
+  border: 0;
+  margin: var(--space-md) 0;
+}
+.surface-alt .divider {
+  background: rgba(255,255,255,0.15);
+}
+.surface-alt-2 .divider {
+  background: rgba(255,255,255,0.1);
+}
+
+/* .quote — Pull quote — Shrikhand red on red panel */
+.quote {
+  font-family: var(--font-display-en);
+  font-size: clamp(32px, 7vw, 90px);
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--text);
+  padding-left: 0;
+  border-left: none;
+}
+.surface-alt .quote {
+  color: var(--text-on-alt);
+  text-shadow: 2px 2px 0 rgba(28,20,16,0.25), 4px 4px 0 rgba(28,20,16,0.2), 6px 6px 0 rgba(28,20,16,0.15);
+}
+
+/* .tag — Badge / pill — outlined red, sharp corners */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 12px;
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border: 1.5px solid var(--accent);
+  color: var(--accent);
+  background: transparent;
+}
+.surface-alt .tag {
+  border-color: var(--text-on-alt);
+  color: var(--text-on-alt);
+}
+.surface-alt-2 .tag {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* .meta — Metadata / footnote — mono */
+.meta {
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text);
+  opacity: 0.5;
+}
+.surface-alt .meta {
+  color: var(--text-on-alt);
+}
+.surface-alt-2 .meta {
+  color: var(--text-on-alt-2);
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * Bold Poster-specific extensions (MAY — not part of contract)
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* Surface helper classes */
+.surface-alt {
+  background: var(--surface-alt);
+  color: var(--text-on-alt);
+}
+.surface-alt-2 {
+  background: var(--surface-alt-2);
+  color: var(--text-on-alt-2);
+}
+
+/* Red leftbar card — 4px solid red left rule */
+.red-leftbar-card {
+  border-left: 4px solid var(--accent);
+  padding-left: 18px;
+}
+
+/* Tabular bordered grid — 3px ink outer + 1.5px ink inner */
+.tabular-grid {
+  border: 3px solid var(--rule);
+}
+.tabular-grid .cell {
+  border: 1.5px solid var(--rule);
+  padding: 22px 20px;
+}
+
+/* Footer link — Space Grotesk uppercase with 2px red underline */
+.link-footer {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 4px;
+  transition: color 0.3s;
+}
+.link-footer:hover {
+  color: var(--accent);
+}
+
+/* Bullet list — red em-dash marker */
+.bullet-list {
+  list-style: none;
+  padding: 0;
+}
+.bullet-list li {
+  padding-left: 14px;
+  position: relative;
+  margin-bottom: 5px;
+  font-family: var(--font-mono);
+  font-size: clamp(10px, 0.9vw, 12px);
+  line-height: 1.45;
+  color: var(--text);
+  opacity: 0.8;
+}
+.bullet-list li::before {
+  content: "\2014";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* Red panel — full-bleed saturated red surface */
+.red-panel-surface {
+  background: var(--surface-alt);
+  color: var(--text-on-alt);
+}
+
+/* Dark panel — full-bleed deep brown-black surface */
+.dark-panel-surface {
+  background: var(--surface-alt-2);
+  color: var(--text-on-alt-2);
+}
+
+/* Pillar panel — vertical column with 3px ink right border */
+.pillar-panel {
+  flex: 1;
+  padding: 32px 24px;
+  border-right: 3px solid var(--rule);
+}
+
+/* Progress bar — 5px thick red strip */
+.progress-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 5px;
+  background: var(--accent);
+  z-index: 100;
+  transition: width 0.5s cubic-bezier(0.22,1,0.36,1);
+}

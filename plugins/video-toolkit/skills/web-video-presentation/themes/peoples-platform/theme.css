@@ -1,0 +1,532 @@
+/* ======================================================================
+ * Theme · peoples-platform
+ *   WPA-poster energy: electric blue + amber orange + hot red on warm
+ *   cream paper. Alfa Slab One UPPERCASE display at extreme sizes.
+ *   Caveat Brush handwritten interrupt. Stacked offset text-shadow
+ *   signature. Paper grain overlay on every surface.
+ *
+ *   Source: beautiful-html-templates/templates/peoples-platform/
+ *
+ *   character signatures:
+ *     • stacked offset text-shadow (orange → red → red-deep)
+ *     • paper grain overlay on every slide (.grain)
+ *     • electric blue alternate surface (--surface-alt)
+ *     • 6px ink borders on all major structural divisions
+ *     • Caveat Brush script interrupt (lowercase, rotated)
+ *     • orange bottom ribbon (.ribbon)
+ *     • diamond bullets (.bullet-diamond)
+ *     • inset cream frame on blue-background steps
+ * ====================================================================== */
+:root {
+  /* ─── Palette ─── */
+  --shell:        #111111;    /* dark letterbox */
+  --surface:      #F5F2EA;    /* warm paper — primary surface */
+  --surface-2:    #EDE8DB;    /* slightly deeper paper for cards */
+  --surface-3:    #E4DDCF;    /* deepest paper for nested surfaces */
+  --surface-alt:  #2C2CDC;    /* electric blue — alternate surface */
+  --text:         #0E0E14;    /* deep ink — primary text */
+  --text-2:       #2A2A30;    /* lighter ink for secondary text */
+  --text-mute:    #5A5A63;    /* muted ink */
+  --text-faint:   #96969C;    /* faint ink */
+  --text-on-alt:  #F4E9D6;    /* warm cream text on blue surface */
+  --text-2-on-alt:#C0BAA8;    /* muted cream on blue */
+  --rule:         #C8C0B0;    /* warm hairline on paper */
+  --rule-on-alt:  rgba(244,233,214,0.15);  /* subtle rule on blue */
+  --accent:       #F2A03A;    /* amber orange — energy accent */
+  --accent-soft:  rgba(242,160,58,0.15);
+  --accent-glow:  rgba(242,160,58,0.40);
+  --accent-shadow:#E83A2A;    /* hot red — shadow/depth color ONLY */
+  --accent-deep:  #B7281C;    /* deep red — outermost shadow layer */
+  --blue:         #2C2CDC;    /* electric blue (alias for --surface-alt) */
+  --blue-deep:    #1B1BB0;    /* deeper blue for multi-layer shadows */
+  --ink:          #0E0E14;    /* ink (alias for --text) */
+  --cream:        #F4E9D6;    /* warm cream (alias for --text-on-alt) */
+
+  /* ─── Typography ─── */
+  --font-display-en: "Alfa Slab One", Georgia, serif;
+  --font-display-cn: "Noto Serif SC", "Source Han Serif SC", serif;
+  --font-body:       "Archivo Narrow", "Noto Sans SC", -apple-system, sans-serif;
+  --font-script:     "Caveat Brush", cursive;
+  --font-mono:       "DM Mono", "SF Mono", ui-monospace, monospace;
+  --font-features:   "tnum", "ss01", "zero";
+
+  /* ─── Type scale ─── */
+  --t-display:  clamp(80px, 9.5vw, 260px);
+  --t-h1:       clamp(72px, 7.5vw, 140px);
+  --t-h2:       clamp(60px, 6.5vw, 120px);
+  --t-h3:       clamp(40px, 4.5vw, 78px);
+  --t-body:     28px;
+  --t-caption:  24px;
+  --t-micro:    11px;
+
+  /* ─── Spacing scale (8px base) ─── */
+  --space-unit: 8px;
+  --space-xs:   4px;
+  --space-sm:   8px;
+  --space-md:   16px;
+  --space-lg:   24px;
+  --space-xl:   48px;
+  --space-2xl:  96px;
+
+  /* ─── Radii ─── */
+  --r-card: 0px;    /* sharp — protest-poster aesthetic */
+
+  /* ─── Stage ─── */
+  --stage-pad-x: 90px;
+  --stage-pad-y: 80px;
+  --shadow-stage:
+    0 60px 160px rgba(14,14,20,0.30),
+    0 0 0 1px rgba(0,0,0,0.04);
+
+  /* ─── Motion: punchy, fast ─── */
+  --ease-quart:    cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-expo:     cubic-bezier(0.86, 0, 0.07, 1);
+  --dur-quick:     200ms;
+  --dur-base:      300ms;
+  --dur-slow:      800ms;
+
+  /* ─── Decoration: paper grain dot-grid colours ─── */
+  --grain-dark:  rgba(0,0,0,0.06);
+  --grain-light: rgba(255,255,255,0.05);
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * MUST classes — the 12-class contract
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* .display — Hero headline (Latin)
+ *   Alfa Slab One UPPERCASE with signature stacked orange text-shadow.
+ *   Orange is the "shouting" voice; the red shadows give it the WPA
+ *   letterpress-thickness feel. */
+.display {
+  font-family: var(--font-display-en);
+  font-size: var(--t-display);
+  font-weight: 400;
+  line-height: 0.86;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-shadow:
+    6px 6px 0 var(--accent-shadow),
+    12px 12px 0 var(--accent-deep);
+}
+/* Peopes-platform signature: script interrupt inside display */
+.display .script {
+  display: inline-block;
+  font-family: var(--font-script);
+  font-size: max(64px, 0.38em);
+  font-weight: 400;
+  text-transform: lowercase;
+  color: var(--accent-shadow);
+  transform: rotate(-2deg);
+  margin: 0 0.08em;
+  text-shadow: none;
+  line-height: 0.9;
+}
+
+/* .display-cn — Hero headline (Chinese) */
+.display-cn {
+  font-family: var(--font-display-cn);
+  font-size: var(--t-display);
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  color: var(--text);
+}
+
+/* .body — Body text */
+.body {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--text-2);
+}
+
+/* .body-sm — Caption */
+.body-sm {
+  font-family: var(--font-body);
+  font-size: var(--t-caption);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-mute);
+}
+
+/* .label — Uppercase mono label (DM Mono, 24px, wide tracking) */
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--text-mute);
+}
+
+/* .stat-value — Large stat number (Alfa Slab One, orange, red shadow) */
+.stat-value {
+  font-family: var(--font-display-en);
+  font-size: clamp(80px, 7vw, 130px);
+  font-weight: 400;
+  line-height: 0.88;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-shadow:
+    5px 5px 0 var(--accent-shadow),
+    10px 10px 0 var(--accent-deep);
+  font-variant-numeric: tabular-nums;
+}
+
+/* .stat-label — Stat description (Archivo Narrow body) */
+.stat-label {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text-2);
+}
+
+/* .card — Card container (sharp, surface-2, 6px ink border) */
+.card {
+  background: var(--surface-2);
+  border-radius: var(--r-card);
+  border: 6px solid var(--ink);
+  padding: var(--space-lg);
+  box-shadow: none;
+}
+
+/* .divider — Horizontal rule (6px solid ink) */
+.divider {
+  width: 100%;
+  height: 6px;
+  background: var(--ink);
+  border: 0;
+  margin: var(--space-md) 0;
+}
+
+/* .quote — Pull quote (Alfa Slab One UPPERCASE, orange on blue) */
+.quote {
+  font-family: var(--font-display-en);
+  font-size: var(--t-h3);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-shadow:
+    5px 5px 0 var(--accent-shadow),
+    10px 10px 0 var(--accent-deep);
+}
+
+/* .tag — Badge / pill (DM Mono, uppercase tracked, pill shape) */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 20px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  border: 3px solid var(--text);
+  color: var(--text);
+}
+
+/* .meta — Metadata / footnote (DM Mono, micro) */
+.meta {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-faint);
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * Peopes-platform-specific extensions (MAY — not part of the contract)
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* ─── Grain overlay ───
+ *  Paper texture pseudo-element. Apply `.grain` to the step root.
+ *  Two overlapping radial-gradient dot grids simulate screen-print
+ *  halftone texture. Mix-blend-mode: multiply makes it feel printed. */
+.grain {
+  position: relative;
+}
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(var(--grain-dark) 1px, transparent 1px),
+    radial-gradient(var(--grain-light) 1px, transparent 1px);
+  background-size: 3px 3px, 5px 5px;
+  background-position: 0 0, 1px 2px;
+  mix-blend-mode: multiply;
+  opacity: 0.5;
+  z-index: 1;
+}
+
+/* ─── Stacked text-shadow utility ───
+ *  Use to give any element the signature letterpress depth.
+ *  Four tiers scale with text size. Apply in addition to display/stat
+ *  or standalone on custom elements. */
+.shadow-stack-sm {
+  text-shadow: 3px 3px 0 var(--accent-shadow);
+}
+.shadow-stack-md {
+  text-shadow: 5px 5px 0 var(--accent-shadow);
+}
+.shadow-stack-lg {
+  text-shadow:
+    6px 6px 0 var(--accent-shadow),
+    12px 12px 0 var(--accent-deep);
+}
+.shadow-stack-xl {
+  text-shadow:
+    10px 10px 0 var(--accent-shadow),
+    20px 20px 0 var(--accent-deep);
+}
+.shadow-stack-jumbo {
+  text-shadow:
+    12px 12px 0 var(--accent-shadow),
+    24px 24px 0 var(--accent-deep);
+}
+
+/* ─── Surface-alt: electric blue background ───
+ *  Apply to a step root for high-emphasis blue-background moments.
+ *  Inverts text to cream, adds an inset decorative cream frame. */
+.surface-alt {
+  background: var(--surface-alt);
+  color: var(--text-on-alt);
+}
+.surface-alt .body { color: var(--text-2-on-alt); }
+.surface-alt .body-sm { color: var(--text-2-on-alt); opacity: 0.7; }
+.surface-alt .label { color: rgba(192,186,168,0.6); }
+.surface-alt .meta { color: rgba(192,186,168,0.4); }
+.surface-alt .divider { background: var(--rule-on-alt); }
+.surface-alt .tag {
+  border-color: var(--text-on-alt);
+  color: var(--text-on-alt);
+}
+.surface-alt .card {
+  background: rgba(244,233,214,0.08);
+  border: 6px solid var(--rule-on-alt);
+}
+.surface-alt .display {
+  /* preserve orange text on blue — the orange pops harder */
+  color: var(--accent);
+  text-shadow:
+    6px 6px 0 var(--accent-shadow),
+    12px 12px 0 var(--accent-deep);
+}
+/* Inset decorative frame on blue surfaces */
+.surface-alt::after {
+  content: "";
+  position: absolute;
+  inset: 48px;
+  border: 6px solid var(--cream);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ─── Display-ink: blue display type for section headings on paper ───
+ *  When a section heading needs to be ink-blue instead of accent-orange
+ *  (e.g. TOC, section dividers), add this alongside .display. */
+.display-ink {
+  color: var(--blue);
+  text-shadow:
+    5px 5px 0 var(--accent-shadow);
+}
+
+/* ─── Script class: Caveat Brush handwritten interrupt ───
+ *  Lowercase, slightly rotated. Use once per slide as a human warmth
+ *  moment — never for body text or structural labels. */
+.script {
+  font-family: var(--font-script);
+  font-weight: 400;
+  text-transform: lowercase;
+  display: inline-block;
+}
+
+/* ─── Short accent divider ───
+ *  36px wide, 6px tall, orange. Signature separator for peopes-platform. */
+.divider-accent-short {
+  width: 36px;
+  height: 6px;
+  background: var(--accent);
+  border: 0;
+  margin: var(--space-md) 0;
+}
+
+/* ─── Diamond bullet ───
+ *  Apply to a <ul> or a wrapper. Each <li> gets a diamond ::before
+ *  marker: 24px rotated square in red (or orange on blue surfaces). */
+.bullet-diamond {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.bullet-diamond li {
+  position: relative;
+  padding-left: 48px;
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text-2);
+}
+.bullet-diamond li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 24px;
+  height: 24px;
+  background: var(--accent-shadow);
+  border-radius: 4px;
+  transform: rotate(45deg);
+}
+/* On blue surfaces, diamonds are orange */
+.surface-alt .bullet-diamond li::before {
+  background: var(--accent);
+}
+.surface-alt .bullet-diamond li {
+  color: var(--text-on-alt);
+}
+
+/* ─── Orange ribbon marquee ───
+ *  Bottom-anchored strip, full-width. Use on data-heavy slides. */
+.ribbon {
+  width: 100%;
+  height: 60px;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  overflow: hidden;
+  padding: 0 var(--stage-pad-x);
+  font-family: var(--font-mono);
+  font-size: 24px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--blue);
+  font-weight: 600;
+  border-top: 6px solid var(--ink);
+}
+
+/* ─── Topbar pattern ───
+ *  Full-width 90px blue bar anchored to the top of a step.
+ *  Contains DM Mono 24px label text at 0.18em tracking. */
+.topbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 90px;
+  background: var(--blue);
+  color: var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--stage-pad-x);
+  font-family: var(--font-mono);
+  font-size: 24px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border-bottom: 6px solid var(--cream);
+}
+
+/* ─── KPI card ───
+ *  Data card with 5px ink border, paper background, alt blue variant. */
+.kpi-card {
+  border: 5px solid var(--ink);
+  padding: 28px 30px;
+  background: var(--surface);
+}
+.kpi-card .kpi-label {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+.kpi-card .kpi-value {
+  margin-top: 10px;
+  font-family: var(--font-display-en);
+  font-size: clamp(52px, 5vw, 88px);
+  font-weight: 400;
+  line-height: 0.9;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-shadow:
+    4px 4px 0 var(--accent-shadow);
+}
+.kpi-card.alt {
+  background: var(--blue);
+  color: var(--cream);
+}
+.kpi-card.alt .kpi-label { color: var(--cream); }
+.kpi-card.alt .kpi-value { color: var(--accent); }
+
+/* ─── Inset frame ───
+ *  Decorative 6px cream border inset 48px from step edges.
+ *  Use on blue-background steps to reinforce poster/placard feel. */
+.frame-inset {
+  position: absolute;
+  inset: 48px;
+  border: 6px solid var(--cream);
+  pointer-events: none;
+}
+
+/* ─── Stamp ───
+ *  Rotated rectangular stamp with Alfa Slab One text,
+ *  cream border, and red box-shadow. */
+.stamp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 32px;
+  font-family: var(--font-display-en);
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--blue);
+  border: 5px solid var(--cream);
+  box-shadow: 6px 6px 0 var(--accent-shadow);
+  transform: rotate(-3deg);
+}
+
+/* ─── Underline rule ───
+ *  Heavy 14px ink rectangle, 30% width. Full-stop after a manifesto
+ *  headline. */
+.underline-rule {
+  width: 30%;
+  height: 14px;
+  background: var(--ink);
+  border: 0;
+  margin-top: 60px;
+}
+
+/* ─── Lede block ───
+ *  Archivo Narrow 500, 28px, with ink left-border. */
+.lede {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 1.35;
+  color: var(--text-2);
+  border-left: 4px solid var(--ink);
+  padding-left: 50px;
+  max-width: 560px;
+}
+.lede-top {
+  border-left: none;
+  padding-left: 0;
+  border-top: 6px solid var(--ink);
+  padding-top: 24px;
+}

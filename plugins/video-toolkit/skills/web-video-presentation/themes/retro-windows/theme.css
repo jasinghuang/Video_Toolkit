@@ -1,0 +1,519 @@
+/* ======================================================================
+ * Theme · retro-windows
+ *   Windows 95 chrome: beveled gray windows, navy gradient title bars,
+ *   MS Sans Serif system font, Press Start 2P pixel accents, VT323
+ *   terminal mono. Bevel-based depth — no blurred shadows. CRT scanline
+ *   overlay. Dense application-UI composition. Retro status colors
+ *   (green/red/yellow/cyan) with fixed semantic meanings.
+ *
+ *   Source: beautiful-html-templates/templates/retro-windows/
+ *
+ *   Character signatures:
+ *     • win-window: beveled-raised gray chrome, navy gradient title bar
+ *     • bevel-based depth: two-tone asymmetric borders + inset shadows
+ *     • CRT scanline overlay at 3% opacity
+ *     • MS Sans Serif body — fixed pixel sizes, no fluid type
+ *     • Press Start 2P .display for nostalgic hero moments
+ *     • VT323 terminal mono for nav hints and terminal regions
+ *     • Status colors: green (OK), red (warning), yellow (moderate), cyan (tertiary)
+ *     • Zero border-radius everywhere — strict rectangles
+ * ====================================================================== */
+:root {
+  /* ─── Palette ─── */
+  --shell:        #606060;    /* darker gray desktop background behind windows */
+  --surface:      #D4D0C8;    /* light gray chrome — button face, window body */
+  --surface-2:    #C0C0C0;    /* medium gray — table headers, nav dots, bg-gray */
+  --surface-3:    #A0A0A0;    /* darker gray — nested surfaces, inactive gradients */
+  --surface-alt:  #FFFFFF;    /* white — content well (sunken panel interior) */
+
+  --text:         #222222;    /* dark gray for body text — softer than pure black */
+  --text-2:       #555555;    /* gray for secondary text, captions, hints */
+  --text-mute:    #888888;    /* muted gray for fine print, status context */
+  --text-faint:   #AAAAAA;    /* faint gray for decorative metadata */
+
+  --text-on-alt:      #000080;  /* navy on white — headlines in content wells */
+  --text-2-on-alt:    #555555;  /* gray on white — captions in content wells */
+  --text-mute-on-alt: #888888;  /* muted on white */
+  --text-faint-on-alt:#AAAAAA;  /* faint on white */
+
+  --rule:          #808080;    /* shadow gray — bevel dark border, hr-top */
+  --rule-on-alt:   #C0C0C0;   /* light gray rule on white surfaces */
+
+  /* Accent system */
+  --accent:       #000080;    /* navy — primary brand, title bars, progress fills */
+  --accent-2:     #008000;    /* green — status OK, success, growth */
+  --accent-3:     #800000;    /* red — status warning, error, danger */
+  --accent-4:     #808000;    /* yellow — status moderate, caution */
+  --accent-5:     #008080;    /* cyan — tertiary chart data, secondary status */
+  --accent-soft:  rgba(0,0,128,0.08);  /* navy at 8% — subtle highlight */
+  --accent-glow:  transparent;         /* no glow in retro system */
+
+  /* ─── Typography ─── */
+  --font-display-en: "MS Sans Serif", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  --font-pixel:      "Press Start 2P", cursive;
+  --font-terminal:   "VT323", monospace;
+  --font-display-cn: "Noto Sans SC", sans-serif;
+  --font-body:       "MS Sans Serif", "Segoe UI", Tahoma, Geneva, Verdana, "Noto Sans SC", sans-serif;
+  --font-mono:       "VT323", "Courier New", monospace;
+
+  /* ─── Type scale — fixed pixel sizes (not fluid) ─── */
+  --t-display:  32px;
+  --t-h1:       22px;
+  --t-h2:       18px;
+  --t-h3:       14px;
+  --t-body:     16px;
+  --t-caption:  14px;
+  --t-micro:    12px;
+
+  /* ─── Spacing scale — 8px base, tight (Win95 dense) ─── */
+  --space-unit: 8px;
+  --space-xs:   4px;
+  --space-sm:   8px;
+  --space-md:   16px;
+  --space-lg:   24px;
+  --space-xl:   32px;
+  --space-2xl:  48px;
+
+  /* ─── Radii — strictly 0 everywhere ─── */
+  --r-card: 0;
+
+  /* ─── Stage — more compact padding for dense UI ─── */
+  --stage-pad-x: 32px;
+  --stage-pad-y: 24px;
+  --shadow-stage: none;            /* no blurred shadows — bevel only */
+  --card-shadow:  none;            /* no card shadows */
+
+  /* ─── Motion: crisp, 300ms, no frills ─── */
+  --ease-quart: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-expo:  cubic-bezier(0.86, 0, 0.07, 1);
+  --dur-quick:  150ms;
+  --dur-base:   300ms;
+  --dur-slow:   500ms;
+
+  /* ─── Decoration ─── */
+  /* CRT scanline overlay: 3px-period horizontal lines at 3% black */
+  --crt-overlay:
+    repeating-linear-gradient(
+      0deg,
+      rgba(0,0,0,0.03) 0px,
+      rgba(0,0,0,0.03) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * MUST classes — the 12-class contract
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* .display — Hero headline (Press Start 2P pixel font) */
+.display {
+  font-family: var(--font-pixel);
+  font-size: var(--t-display);
+  font-weight: 400;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-align: center;
+}
+/* Use sparingly — one or two moments per deck (splash, closing) */
+
+/* .display-cn — Hero headline (Chinese) */
+.display-cn {
+  font-family: var(--font-display-cn);
+  font-size: var(--t-display);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--accent);
+  text-align: center;
+}
+
+/* .body — Body text (MS Sans Serif stack) */
+.body {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+/* .body-sm — Small body / caption */
+.body-sm {
+  font-family: var(--font-body);
+  font-size: var(--t-caption);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-2);
+}
+
+/* .label — Uppercase label (MS Sans Serif, small) */
+.label {
+  font-family: var(--font-body);
+  font-size: var(--t-micro);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-2);
+}
+
+/* .stat-value — Large metric number */
+.stat-value {
+  font-family: var(--font-body);
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+/* .stat-label — Metric description */
+.stat-label {
+  font-family: var(--font-body);
+  font-size: var(--t-micro);
+  font-weight: 400;
+  color: var(--text-2);
+}
+
+/* .card — Raised-bevel panel container */
+.card {
+  background: var(--surface);
+  border: 2px solid #FFFFFF;
+  border-right-color: #000000;
+  border-bottom-color: #000000;
+  box-shadow:
+    inset 1px 1px 0 #FFFFFF,
+    inset -1px -1px 0 #404040;
+  border-radius: var(--r-card);
+  padding: var(--space-md);
+}
+
+/* .divider — Beveled horizontal rule */
+.divider {
+  width: 100%;
+  height: 0;
+  border: none;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid #FFFFFF;
+  margin: var(--space-md) 0;
+}
+
+/* .quote — Pull quote in system sans */
+.quote {
+  font-family: var(--font-body);
+  font-size: var(--t-h1);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text);
+  border-left: 2px solid var(--accent);
+  padding: var(--space-sm) 0 var(--space-sm) var(--space-lg);
+}
+
+/* .tag — Button-style raised-bevel badge */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 24px;
+  border-radius: var(--r-card);
+  font-family: var(--font-body);
+  font-size: var(--t-caption);
+  font-weight: 400;
+  background: var(--surface);
+  border: 2px solid #FFFFFF;
+  border-right-color: #000000;
+  border-bottom-color: #000000;
+  color: var(--text);
+}
+
+/* .meta — Micro metadata / footnote */
+.meta {
+  font-family: var(--font-terminal);
+  font-size: var(--t-micro);
+  color: var(--text-mute);
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * Retro-windows-specific extensions (MAY — not part of the contract)
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* ─── Surface-alt: white content well ─── */
+.surface-alt {
+  background: var(--surface-alt);
+  color: var(--text-on-alt);
+}
+.surface-alt .body { color: var(--text-2-on-alt); }
+.surface-alt .body-sm { color: var(--text-mute-on-alt); }
+.surface-alt .label { color: var(--text-mute-on-alt); }
+.surface-alt .meta { color: var(--text-faint-on-alt); }
+.surface-alt .divider {
+  border-top-color: var(--rule-on-alt);
+  border-bottom-color: var(--surface-alt);
+}
+.surface-alt .card {
+  background: var(--surface-2);
+  border: 2px solid var(--rule);
+  border-right-color: var(--surface-alt);
+  border-bottom-color: var(--surface-alt);
+  box-shadow:
+    inset 1px 1px 0 var(--rule),
+    inset -1px -1px 0 var(--surface-alt);
+}
+
+/* ─── CRT scanline overlay — fixed full-viewport ─── */
+.crt-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: var(--crt-overlay);
+}
+
+/* ─── Bevel utility classes ─── */
+.bevel-raised {
+  background: var(--surface);
+  border: 2px solid #FFFFFF;
+  border-right-color: #000000;
+  border-bottom-color: #000000;
+  box-shadow:
+    inset 1px 1px 0 #FFFFFF,
+    inset -1px -1px 0 #404040;
+}
+
+.bevel-sunken {
+  background: var(--surface-alt);
+  border: 2px solid #404040;
+  border-right-color: #FFFFFF;
+  border-bottom-color: #FFFFFF;
+  padding: var(--space-sm);
+}
+
+/* ─── Win95 title bar ─── */
+.title-bar {
+  background: linear-gradient(90deg, var(--accent) 0%, #0000A0 100%);
+  color: #FFFFFF;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.title-bar.inactive {
+  background: linear-gradient(90deg, #808080 0%, #A0A0A0 100%);
+}
+
+/* ─── Win95 group box (sunken with notched title) ─── */
+.group-box {
+  border: 2px solid #404040;
+  border-right-color: #FFFFFF;
+  border-bottom-color: #FFFFFF;
+  padding: 20px 18px 16px 18px;
+  position: relative;
+  background: var(--surface);
+}
+
+.group-box-title {
+  position: absolute;
+  top: -10px;
+  left: 12px;
+  background: var(--surface);
+  padding: 0 8px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* ─── Win95 raised panel ─── */
+.panel-raised {
+  background: var(--surface);
+  border: 2px solid #FFFFFF;
+  border-right-color: #000000;
+  border-bottom-color: #000000;
+  box-shadow:
+    inset 1px 1px 0 #FFFFFF,
+    inset -1px -1px 0 #404040;
+  padding: var(--space-md);
+}
+
+/* ─── Win95 sunken panel (white interior) ─── */
+.panel-sunken {
+  background: var(--surface-alt);
+  border: 2px solid #404040;
+  border-right-color: #FFFFFF;
+  border-bottom-color: #FFFFFF;
+  padding: var(--space-sm);
+}
+
+/* ─── Win95 button ─── */
+.btn-retro {
+  background: var(--surface);
+  border: 2px solid #FFFFFF;
+  border-right-color: #000000;
+  border-bottom-color: #000000;
+  padding: 6px 24px;
+  font-family: var(--font-body);
+  font-size: var(--t-caption);
+  cursor: pointer;
+  color: var(--text);
+  position: relative;
+}
+.btn-retro:active {
+  border: 2px solid #000000;
+  border-right-color: #FFFFFF;
+  border-bottom-color: #FFFFFF;
+}
+.btn-retro:focus {
+  outline: 1px dotted #000000;
+  outline-offset: -4px;
+}
+
+/* ─── Win95 progress bar ─── */
+.progress-bar {
+  width: 100%;
+  height: 24px;
+  background: var(--surface-alt);
+  border: 2px solid #404040;
+  border-right-color: #FFFFFF;
+  border-bottom-color: #FFFFFF;
+  padding: 2px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  transition: width var(--dur-base) ease;
+}
+
+/* ─── Win95 chevron list ─── */
+.retro-list {
+  list-style: none;
+  padding-left: 0;
+}
+.retro-list li {
+  padding: 5px 0 5px 22px;
+  position: relative;
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--text);
+}
+.retro-list li::before {
+  content: ">";
+  position: absolute;
+  left: 4px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ─── Win95 checkbox ─── */
+.retro-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: var(--t-caption);
+  padding: 3px 0;
+  color: var(--text);
+}
+.check-box {
+  width: 16px;
+  height: 16px;
+  background: var(--surface-alt);
+  border: 2px solid #000000;
+  border-right-color: #FFFFFF;
+  border-bottom-color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ─── Win95 table ─── */
+.retro-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-body);
+  font-size: var(--t-caption);
+}
+.retro-table th {
+  background: var(--surface-2);
+  border: 1px solid #404040;
+  padding: 6px 10px;
+  text-align: left;
+  font-weight: 700;
+  color: var(--text);
+}
+.retro-table td {
+  border: 1px solid var(--surface-2);
+  padding: 6px 10px;
+  background: var(--surface-alt);
+  color: var(--text);
+}
+.retro-table tr:nth-child(even) td {
+  background: #F0F0F0;
+}
+
+/* ─── Win95 tree view ─── */
+.tree-item {
+  font-family: var(--font-body);
+  font-size: var(--t-caption);
+  padding: 2px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text);
+}
+
+/* ─── Win95 marquee ─── */
+.marquee-container {
+  overflow: hidden;
+  white-space: nowrap;
+  background: var(--surface-alt);
+  border: 1px inset var(--surface-2);
+  padding: 3px 0;
+}
+.marquee-text {
+  display: inline-block;
+  animation: marquee 14s linear infinite;
+  font-family: var(--font-terminal);
+  font-size: 16px;
+  color: var(--text);
+}
+@keyframes marquee {
+  0%   { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+/* ─── Status color utilities ─── */
+.text-status-ok       { color: var(--accent-2); }
+.text-status-warn     { color: var(--accent-3); }
+.text-status-moderate { color: var(--accent-4); }
+.text-status-tertiary { color: var(--accent-5); }
+.text-accent          { color: var(--accent); }
+
+/* ─── Zero border-radius on all structural elements ─── */
+img, button, input, textarea, select, table, th, td, div, span, nav, header, footer, section, article, aside, main {
+  border-radius: 0;
+}
+
+/* ─── Win95 scrollbar ─── */
+::-webkit-scrollbar {
+  width: 16px;
+}
+::-webkit-scrollbar-track {
+  background: var(--surface-2);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--surface-2);
+  border: 2px solid #FFFFFF;
+  border-right-color: #000000;
+  border-bottom-color: #000000;
+}

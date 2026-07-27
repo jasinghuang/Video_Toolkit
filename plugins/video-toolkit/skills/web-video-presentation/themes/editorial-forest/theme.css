@@ -1,0 +1,437 @@
+/* ======================================================================
+ * Theme · editorial-forest
+ *   Serif-led editorial system in the register of a literary quarterly.
+ *   Source Serif 4 at weight 500 with optical-size axis, up to 220px.
+ *   JetBrains Mono uppercase at wide tracking for all chrome.
+ *   Deep forest green + dusty rose pink + oat cream paper.
+ *   No shadows — elevation through color-block contrast and 2px rules.
+ *   Every slide carries a mono topbar; most carry a mono footline.
+ *
+ *   Source: beautiful-html-templates/templates/editorial-forest/
+ *
+ *   Character signatures:
+ *     • Source Serif 4 weight 500 for all editorial moments
+ *     • JetBrains Mono weight 500 uppercase + wide tracking for chrome
+ *     • 5-color editorial set: green, pink, cream + near-duplicates
+ *     • 2px hairline rules as the separator language
+ *     • card radii: 6px (topic tiles), 8px (step tiles)
+ *     • 130px monogram circle: the identity stamp
+ *     • topbar (mono label + monogram/counter) on every slide
+ *     • footline on heavier slides (cover, data, summary)
+ *     • fixed 1920×1080 canvas
+ * ====================================================================== */
+:root {
+  /* ─── Palette ─── */
+  --shell:        #111111;    /* dark letterbox */
+  --surface:      #EFE7D4;    /* oat cream — primary surface */
+  --surface-2:    #E6DCC4;    /* cream-2 — darker cream */
+  --surface-3:    #2E4A2A;    /* green — dark surface */
+  --surface-4:    #E89CB1;    /* pink — accent surface */
+  --surface-5:    #3A5A36;    /* green-lite — secondary green */
+  --surface-alt:  #243A21;    /* green-deep — darker green */
+
+  --text:         #1A1A17;    /* warm near-black on cream */
+  --text-2:       #2E4A2A;    /* green on cream */
+  --text-mute:    #3A5A36;    /* green-lite */
+  --text-faint:   rgba(26,26,23,0.2);
+
+  --text-on-alt:       #EFE7D4;    /* cream on green */
+  --text-2-on-alt:     #E89CB1;    /* pink on green */
+  --text-mute-on-alt:  rgba(239,231,212,0.65);
+  --text-faint-on-alt: rgba(239,231,212,0.25);
+
+  /* Green-deep: text on pink */
+  --text-on-pink:      #243A21;    /* green-deep on pink */
+  --text-2-on-pink:    rgba(36,58,33,0.75);
+  --text-mute-on-pink: rgba(36,58,33,0.55);
+
+  --rule:          #2E4A2A;    /* green — primary rule on cream */
+  --rule-on-alt:   #E89CB1;    /* pink rule on green */
+  --rule-on-pink:  #D27E96;    /* pink-deep rule on pink */
+
+  --accent:       #2E4A2A;    /* forest green — signature */
+  --accent-soft:  rgba(46,74,42,0.12);
+  --accent-glow:  rgba(46,74,42,0.2);
+  --accent-pink:  #E89CB1;    /* dusty rose pink */
+  --accent-pink-deep: #D27E96;
+
+  /* ─── Typography ─── */
+  --font-display-en: "Source Serif 4", "Source Serif Pro", "LXGW WenKai TC", "Noto Serif SC", Georgia, serif;
+  --font-display-cn: "LXGW WenKai TC", "Noto Serif SC", serif;
+  --font-body:       "Source Serif 4", "Source Serif Pro", "Noto Serif SC", Georgia, serif;
+  --font-mono:       "JetBrains Mono", "Noto Sans Mono CJK SC", ui-monospace, Menlo, monospace;
+  --font-features:   "tnum", "ss01";
+
+  /* ─── Type scale (1920×1080 fixed canvas) ─── */
+  --t-display:  220px;        /* Source Serif 4 weight 500 */
+  --t-h1:       140px;        /* statement / big idea */
+  --t-h1-xl:    96px;         /* primary section headline on cream */
+  --t-h2:       84px;         /* primary section headline on green */
+  --t-h2-sm:    80px;         /* stat-row introductory headline */
+  --t-h3:       68px;         /* title inside step tile */
+  --t-h3-sm:    56px;         /* title inside topic tile */
+  --t-body:     30px;         /* standard body (weight 400) */
+  --t-body-sm:  26px;         /* body inside card (weight 400) */
+  --t-caption:  24px;         /* mono footnote size */
+  --t-micro:    26px;         /* mono label size */
+
+  /* ─── Spacing scale (1920×1080) ─── */
+  --space-unit: 8px;
+  --space-xs:   4px;
+  --space-sm:   8px;
+  --space-md:   16px;
+  --space-lg:   24px;
+  --space-xl:   48px;
+  --space-2xl:  96px;
+
+  /* ─── Radii ─── */
+  --r-card: 6px;              /* topic tiles */
+  --r-card-step: 8px;         /* step tiles */
+  --r-pill: 2px;              /* legend swatch */
+  --r-monogram: 50%;          /* monogram circle */
+
+  /* ─── Stage ─── */
+  --stage-pad-x: 120px;
+  --stage-pad-y: 96px;
+  --shadow-stage: none;
+  --card-shadow: none;
+
+  /* ─── Motion ─── */
+  --ease-slide:  cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-slide:   0.6s;
+  --ease-enter:  cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-enter:   0.5s;
+  --dur-reveal:  0.5s;
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * MUST classes — the 12-class contract
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* .display — Hero headline — Source Serif 4 weight 500, negative tracking */
+.display {
+  font-family: var(--font-display-en);
+  font-size: var(--t-h1-xl);
+  font-weight: 500;
+  line-height: 0.96;
+  letter-spacing: -0.02em;
+  color: var(--text-2);       /* green on cream by default */
+}
+.surface-alt .display {
+  color: var(--text-on-alt);  /* cream on green */
+}
+
+/* .display-cn — Hero headline (Chinese) */
+.display-cn {
+  font-family: var(--font-display-cn);
+  font-size: var(--t-h1-xl);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0;
+  color: var(--text-2);
+}
+.surface-alt .display-cn {
+  color: var(--text-on-alt);
+}
+
+/* .body — Body text — Source Serif 4 weight 400 */
+.body {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: 400;
+  line-height: 1.38;
+  color: var(--text);
+}
+.surface-alt .body {
+  color: var(--text-on-alt);
+}
+
+/* .body-sm — Caption / small body */
+.body-sm {
+  font-family: var(--font-body);
+  font-size: var(--t-body-sm);
+  font-weight: 400;
+  line-height: 1.34;
+  color: var(--text-mute);
+}
+.surface-alt .body-sm {
+  color: var(--text-mute-on-alt);
+}
+
+/* .label — Mono uppercase label with wide tracking */
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--text-mute);
+}
+.surface-alt .label {
+  color: var(--text-mute-on-alt);
+}
+
+/* .stat-value — Large stat figure — Source Serif 4 weight 500 */
+.stat-value {
+  font-family: var(--font-display-en);
+  font-size: var(--t-display);
+  font-weight: 500;
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  color: var(--accent-pink);
+}
+.surface-alt .stat-value {
+  color: var(--text-on-alt);
+}
+
+/* .stat-label — Stat description */
+.stat-label {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: 400;
+  line-height: 1.32;
+  color: var(--text);
+}
+.surface-alt .stat-label {
+  color: var(--text-on-alt);
+}
+
+/* .card — Card container */
+.card {
+  background: var(--surface-2);
+  border-radius: var(--r-card);
+  padding: 40px;
+  border: 2px solid var(--rule);
+}
+.card.fill-green {
+  background: var(--surface-3);
+  color: var(--accent-pink);
+  border-color: var(--surface-3);
+}
+.card.fill-pink {
+  background: var(--surface-4);
+  color: var(--text-on-pink);
+  border-color: var(--accent-pink-deep);
+}
+.card.fill-green-lite {
+  background: var(--surface-5);
+  color: var(--accent-pink);
+  border-color: var(--surface-5);
+}
+.surface-alt .card {
+  background: var(--surface-alt);
+  border-color: var(--rule-on-alt);
+  color: var(--text-on-alt);
+}
+
+/* .divider — Horizontal rule — 2px hairline */
+.divider {
+  width: 100%;
+  height: 2px;
+  background: var(--rule);
+  border: 0;
+  margin: var(--space-md) 0;
+}
+.surface-alt .divider {
+  background: var(--rule-on-alt);
+}
+
+/* .quote — Pull quote — Source Serif 4 */
+.quote {
+  font-family: var(--font-display-en);
+  font-size: var(--t-h1);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  padding-left: var(--space-lg);
+  border-left: 2px solid var(--accent-pink);
+}
+.surface-alt .quote {
+  color: var(--text-on-alt);
+  border-left-color: var(--text-2-on-alt);
+}
+
+/* .tag — Badge / chip */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 12px;
+  border-radius: var(--r-pill);
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  border: 2px solid currentColor;
+  color: var(--text-2);
+}
+.surface-alt .tag {
+  color: var(--text-on-alt);
+}
+
+/* .meta — Metadata / footnote */
+.meta {
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-faint);
+}
+.surface-alt .meta {
+  color: var(--text-faint-on-alt);
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * Editorial Forest-specific extensions
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* Surface-alt helpers */
+.surface-alt {
+  background: var(--surface-alt);
+  color: var(--text-on-alt);
+}
+.surface-pink {
+  background: var(--surface-4);
+  color: var(--text-on-pink);
+}
+.surface-pink .body { color: var(--text-2-on-pink); }
+.surface-pink .body-sm { color: var(--text-mute-on-pink); }
+.surface-pink .label { color: var(--text-on-pink); }
+.surface-pink .meta { color: var(--text-faint-on-alt); }
+.surface-pink .divider { background: var(--rule-on-pink); }
+.surface-pink .display { color: var(--text-on-pink); }
+.surface-pink .stat-value { color: var(--text-on-pink); }
+
+.surface-alt .body { color: var(--text-2-on-alt); }
+.surface-alt .body-sm { color: var(--text-mute-on-alt); }
+.surface-alt .label { color: var(--text-mute-on-alt); }
+.surface-alt .meta { color: var(--text-faint-on-alt); }
+.surface-alt .divider { background: var(--rule-on-alt); }
+
+/* .topbar — Mono label + monogram row */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* .footline — Mono footer row */
+.footline {
+  position: absolute;
+  bottom: 80px;
+  left: 120px;
+  right: 120px;
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 28px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* .monogram-circle — 130px outlined circle identity stamp */
+.monogram-circle {
+  width: 130px;
+  height: 130px;
+  border-radius: var(--r-monogram);
+  border: 2px solid var(--accent-pink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 28px;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+}
+
+/* .topic-tile — 6px radius tile with ordinal */
+.topic-tile {
+  border-radius: var(--r-card);
+  padding: 40px 40px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* .step-tile — 8px radius step card with 2.5px border */
+.step-tile {
+  border-radius: var(--r-card-step);
+  padding: 40px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  border: 2.5px solid var(--rule);
+  background: var(--surface);
+  color: var(--text-2);
+  min-height: 470px;
+}
+.step-tile.fill-green {
+  background: var(--surface-3);
+  color: var(--accent-pink);
+  border-color: var(--surface-3);
+}
+.step-tile.fill-pink {
+  background: var(--surface-4);
+  color: var(--text-on-pink);
+  border-color: var(--accent-pink-deep);
+}
+
+/* .kpi-block — Mono tag + serif figure + description */
+.kpi-block {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.kpi-block .kpi-tag {
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.kpi-block .kpi-figure {
+  font-family: var(--font-display-en);
+  font-size: var(--t-display);
+  font-weight: 500;
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+}
+
+/* .meta-dl — Definition list row */
+.meta-dl {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 36px;
+  border-top: 2px solid var(--rule);
+  padding-top: 32px;
+}
+.meta-dl dt {
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.meta-dl dd {
+  font-family: var(--font-body);
+  font-size: 32px;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* .bar-chart-bar — 56px wide bar with radiused top */
+.bar-chart-bar {
+  width: 56px;
+  border-radius: 3px 3px 0 0;
+  position: relative;
+}
+.bar-chart-bar.pink { background: var(--accent-pink); }
+.bar-chart-bar.cream { background: var(--surface); }
+.bar-chart-bar.green { background: var(--surface-3); }

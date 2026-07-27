@@ -1,0 +1,429 @@
+/* ======================================================================
+ * Theme · blue-professional
+ *   Warm cream paper + electric cobalt blue — consulting-grade restraint.
+ *   Space Grotesk display/chrome + Inter body.
+ *   Tinted cards at 4% cobalt opacity with 1.5px translucent cobalt borders.
+ *
+ *   Source: beautiful-html-templates/templates/blue-professional/
+ *
+ *   Character signatures:
+ *     • warm cream canvas (--surface) — never pure white, never gray
+ *     • single saturated cobalt (--accent) — every eyebrow, metric, CTA
+ *     • Space Grotesk (display, chrome) + Inter (body) — never substitute
+ *     • cards are 4% cobalt tints with 20%-opacity borders, 10-14px radii
+ *     • pill-shaped chrome (tag pill, CTA button) with full 100px radius
+ *     • near-black headlines, cobalt eyebrows + numerals, muted gray body
+ * ====================================================================== */
+:root {
+  /* ─── Palette ─── */
+  --shell:        #FDFAE7;    /* warm cream stage letterbox */
+  --surface:      #FDFAE7;    /* warm cream — universal canvas */
+  --surface-2:    rgba(30,43,250,0.04);  /* cobalt at 4% — card bg */
+  --surface-3:    rgba(30,43,250,0.08);  /* cobalt at 8% — accent light */
+  --surface-alt:  #FFFFFF;    /* pure white for contrast panels */
+  --surface-alt-2:#FFFFFF;
+
+  --text:         #111111;    /* near-black — primary text */
+  --text-2:       #6B6B6B;    /* muted gray — body paragraphs */
+  --text-mute:    #9A9A9A;    /* light gray — tertiary metadata */
+  --text-faint:   rgba(0,0,0,0.06);
+
+  --text-on-alt:       #111111;
+  --text-2-on-alt:     #6B6B6B;
+  --text-mute-on-alt:  #9A9A9A;
+  --text-faint-on-alt: rgba(0,0,0,0.06);
+
+  --rule:          rgba(30,43,250,0.20);  /* cobalt at 20% — border color */
+  --rule-on-alt:   rgba(0,0,0,0.10);
+
+  --accent:       #1E2BFA;    /* electric cobalt blue — single accent */
+  --accent-soft:  rgba(30,43,250,0.12);
+  --accent-glow:  rgba(30,43,250,0.20);
+
+  /* ─── Typography ─── */
+  --font-display-en: "Space Grotesk", "Noto Sans SC", sans-serif;
+  --font-display-cn: "Noto Serif SC", "Source Han Serif SC", serif;
+  --font-body:       "Inter", "Noto Sans SC", system-ui, sans-serif;
+  --font-mono:       "Space Grotesk", "Noto Sans Mono CJK SC", monospace;
+  --font-features:   "tnum", "ss01";
+
+  /* ─── Type scale ─── */
+  --t-display:  clamp(44.8px, 5vw, 67.2px);
+  --t-h1:       clamp(36px, 4.2vw, 56px);
+  --t-h2:       clamp(28.8px, 3vw, 41.6px);
+  --t-h3:       clamp(17.6px, 1.8vw, 24px);
+  --t-body:     clamp(13.6px, 1.1vw, 16.8px);
+  --t-caption:  12px;
+  --t-micro:    10px;
+
+  /* ─── Spacing scale ─── */
+  --space-unit: 8px;
+  --space-xs:   4px;
+  --space-sm:   8px;
+  --space-md:   16px;
+  --space-lg:   24px;
+  --space-xl:   48px;
+  --space-2xl:  96px;
+
+  /* ─── Radii — graduated: tighter on small chrome, rounded on pills ─── */
+  --r-card: 14px;
+  --r-pill: 100px;
+
+  /* ─── Stage ─── */
+  --stage-pad-x: 80px;
+  --stage-pad-y: 60px;
+  --shadow-stage: none;
+  --card-shadow: 0 8px 24px rgba(30,43,250,0.25);  /* CTA hover only */
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * MUST classes — the 12-class contract
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* .display — Hero headline — Space Grotesk 700 near-black */
+.display {
+  font-family: var(--font-display-en);
+  font-size: var(--t-display);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.surface-alt .display {
+  color: var(--text-on-alt);
+}
+
+/* .display-cn — Hero headline (Chinese) */
+.display-cn {
+  font-family: var(--font-display-cn);
+  font-size: var(--t-display);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: 0;
+  color: var(--text);
+}
+.surface-alt .display-cn {
+  color: var(--text-on-alt);
+}
+
+/* .body — Body text — Inter 400 muted gray */
+.body {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text-2);
+}
+.surface-alt .body {
+  color: var(--text-2-on-alt);
+}
+
+/* .body-sm — Caption / small body */
+.body-sm {
+  font-family: var(--font-body);
+  font-size: var(--t-caption);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-mute);
+}
+.surface-alt .body-sm {
+  color: var(--text-mute-on-alt);
+}
+
+/* .label — Uppercase eyebrow — Space Grotesk 600 cobalt */
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+.surface-alt .label {
+  color: var(--accent);
+}
+
+/* .stat-value — Large stat number — Space Grotesk 700 cobalt */
+.stat-value {
+  font-family: var(--font-display-en);
+  font-size: var(--t-h1);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--accent);
+}
+.surface-alt .stat-value {
+  color: var(--accent);
+}
+
+/* .stat-label — Stat description — Inter 600 */
+.stat-label {
+  font-family: var(--font-body);
+  font-size: var(--t-h3);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--text);
+}
+.surface-alt .stat-label {
+  color: var(--text-on-alt);
+}
+
+/* .card — Tinted card — cobalt 4% bg, cobalt 20% border, 14px radius */
+.card {
+  background: var(--surface-2);
+  border-radius: var(--r-card);
+  padding: var(--space-lg) calc(var(--space-lg) + var(--space-xs));
+  border: 1.5px solid var(--rule);
+}
+.surface-alt .card {
+  background: var(--surface-alt-2);
+  border-color: var(--rule-on-alt);
+}
+
+/* .divider — Horizontal rule */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: var(--rule);
+  border: 0;
+  margin: var(--space-md) 0;
+}
+.surface-alt .divider {
+  background: var(--rule-on-alt);
+}
+
+/* .quote — Pull quote — Space Grotesk 500 near-black */
+.quote {
+  font-family: var(--font-display-en);
+  font-size: clamp(25.6px, 2.8vw, 38.4px);
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--text);
+  border-left: 4px solid var(--accent);
+  padding-left: var(--space-lg);
+}
+.surface-alt .quote {
+  color: var(--text-on-alt);
+  border-left-color: var(--accent);
+}
+
+/* .tag — Badge / pill — cobalt tint with cobalt text, fully rounded */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.9rem;
+  border-radius: var(--r-pill);
+  font-family: var(--font-display-en);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--accent);
+  background: var(--accent-soft);
+  white-space: nowrap;
+}
+.surface-alt .tag {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* .meta — Metadata / footnote — light gray */
+.meta {
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  letter-spacing: 0.05em;
+  color: var(--text-mute);
+}
+.surface-alt .meta {
+  color: var(--text-mute-on-alt);
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * Blue Professional-specific extensions (MAY — not part of contract)
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* Eyebrow + tag pill pair — the slide header rhythm */
+.eyebrow-pair {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2.5vh;
+}
+
+/* CTA button — solid cobalt pill with cream text */
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.9rem 2.2rem;
+  border-radius: var(--r-pill);
+  font-family: var(--font-display-en);
+  font-size: 15.2px;
+  font-weight: 600;
+  color: var(--shell);
+  background: var(--accent);
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+.cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--card-shadow);
+}
+
+/* Accent line — short horizontal cobalt rule */
+.accent-line {
+  width: 60px;
+  height: 4px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+/* Accent dot — small inline cobalt circle */
+.accent-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Bar track + fill — chart bar pattern */
+.bar-track {
+  height: 28px;
+  background: var(--accent-soft);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 6px;
+  transition: width 0.8s ease;
+}
+
+/* Step circle — solid cobalt circle with cream numeral */
+.step-circle {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--shell);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display-en);
+  font-size: 20.8px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+/* Sequential steps fade into future */
+.step-circle.faded-1 { opacity: 0.85; }
+.step-circle.faded-2 { opacity: 0.7; }
+.step-circle.faded-3 { opacity: 0.55; }
+
+/* Progress bar — thin cobalt strip at bottom edge */
+.progress-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: var(--accent);
+  z-index: 100;
+  transition: width 0.4s ease;
+}
+
+/* Insight list — decimal-leading-zero counters in cobalt */
+.insight-list {
+  list-style: none;
+  counter-reset: insight;
+  padding: 0;
+}
+.insight-list li {
+  position: relative;
+  padding-left: 2.6rem;
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  line-height: 1.55;
+  color: var(--text);
+  counter-increment: insight;
+  margin-bottom: var(--space-md);
+}
+.insight-list li::before {
+  content: counter(insight, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+}
+
+/* Split highlight block — cobalt left rule, tinted fill */
+.split-highlight {
+  font-family: var(--font-display-en);
+  font-size: clamp(18.4px, 1.55vw, 24px);
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.4;
+  padding: 1.3rem 1.5rem;
+  background: var(--accent-soft);
+  border-radius: 12px;
+  border-left: 4px solid var(--accent);
+}
+.split-highlight cite {
+  display: block;
+  margin-top: 0.7rem;
+  font-style: normal;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-2);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Metric change chips — inline green/red for directional indicators */
+.metric-change {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+.metric-change.positive { color: #059669; }
+.metric-change.negative { color: #DC2626; }
+
+/* Slide counter — fixed bottom left */
+.slide-counter {
+  font-family: var(--font-mono);
+  font-size: 12.8px;
+  font-weight: 500;
+  color: var(--text-2);
+  letter-spacing: 0.05em;
+}
+
+/* Nav button — circular with cobalt border */
+.nav-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid var(--rule);
+  background: var(--surface);
+  color: var(--accent);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+.nav-btn:hover {
+  background: var(--accent);
+  color: var(--surface);
+  border-color: var(--accent);
+}
+.nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}

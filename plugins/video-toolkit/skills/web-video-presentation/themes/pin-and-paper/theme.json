@@ -1,0 +1,26 @@
+{
+  "id": "pin-and-paper",
+  "name": "Pin & Paper",
+  "nameZh": "图钉与纸",
+  "description": "Yellow legal-pad paper with deep cobalt ink. Caveat handwritten script, Space Grotesk heavy headlines, DM Mono archival labels. Safety-pin SVG illustrations and paper-grain texture. Warm, crafted, literary field-notebook feel.",
+  "descriptionZh": "黄色法考纸 + 深钴蓝墨水。Caveat 手写体、Space Grotesk 粗体标题、DM Mono 存档标签。回形针 SVG 插画 + 纸纹理。温暖、手作、田野笔记感。",
+  "mood": ["crafted", "handmade", "warm", "thoughtful", "literary", "intimate", "grounded"],
+  "bestFor": [
+    "定性研究发现",
+    "创始人反思 / 品牌叙事",
+    "工作坊总结",
+    "独立创作者 / 手作文档"
+  ],
+  "avoidFor": [
+    "需要数字原生光泽感的内容",
+    "严格数据驱动的场景"
+  ],
+  "formality": "medium",
+  "source": "beautiful-html-templates/pin-and-paper",
+  "preview": {
+    "shell": "#1A1A1A",
+    "surface": "#EFE56A",
+    "text": "#1F3A8A",
+    "accent": "#1F3A8A"
+  }
+}

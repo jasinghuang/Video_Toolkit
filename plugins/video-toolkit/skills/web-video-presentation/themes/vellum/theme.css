@@ -1,0 +1,369 @@
+/* ======================================================================
+ * Theme · vellum
+ *   Scholarly essay-pinned-to-a-wall system. Single monochromatic
+ *   periwinkle-navy field (#2A3870) with warm chartreuse-yellow type
+ *   (#E8D85C). Italic Cormorant Garamond at all headline sizes
+ *   (italic is structural, not decorative — roman via <em> is emphasis).
+ *   DM Sans body. Courier Prime annotation voice in bottom-left pin-note.
+ *   Dusty teal (#3A7878) as sole second accent for quote marks, kickers,
+ *   list counters, and accent rules. Zero motion. Still, quiet, archive.
+ *
+ *   Source: beautiful-html-templates/templates/vellum/
+ *
+ *   Character signatures:
+ *     • single-surface — no alternate background, no light theme
+ *     • italic Cormorant Garamond as structural default for all headlines
+ *     • roman <em> inside italic headline = emphasis (weight 600, brighter
+ *       emphasis-yellow) — the inverted italic-to-roman pattern
+ *     • pin-annotation (Courier Prime 500, teal) bottom-left every slide
+ *     • kicker in Courier Prime teal at label size
+ *     • numbered list counters in Courier Prime teal (no dots/dashes)
+ *     • 28px teal accent rule
+ *     • zero motion — all durations 0s
+ * ====================================================================== */
+:root {
+  /* ─── Palette ─── */
+  --shell:          #1A2550;    /* darker navy for stage letterbox depth */
+  --surface:        #2A3870;    /* deep periwinkle navy — single surface */
+  --surface-2:      #343F80;    /* slightly lifted navy for cards / panel dividers */
+  --surface-alt:    #2A3870;    /* same as surface — no alternate background */
+
+  --text:           #E8D85C;    /* warm chartreuse-yellow */
+  --text-2:         rgba(232,216,92,0.62); /* yellow at 62% */
+  --text-mute:      rgba(232,216,92,0.32); /* yellow at 32% */
+  --text-faint:     rgba(232,216,92,0.15); /* yellow at 15% */
+
+  --text-on-alt:        #E8D85C;            /* same — no inversion */
+  --text-2-on-alt:      rgba(232,216,92,0.62);
+  --text-mute-on-alt:   rgba(232,216,92,0.32);
+  --text-faint-on-alt:  rgba(232,216,92,0.15);
+
+  --emphasis-text:  #F5E168;    /* brighter yellow — for <em> inside headlines */
+
+  --accent:         #3A7878;    /* dusty teal — pin-notes, kickers, quote marks, counters */
+  --accent-soft:    rgba(58,120,120,0.15); /* teal at 15% */
+
+  --rule:           rgba(232,216,92,0.20); /* yellow at 20% — hairline borders */
+  --rule-on-alt:    rgba(232,216,92,0.20); /* same — no inversion */
+
+  /* ─── Typography ─── */
+  --font-display-en: "Cormorant Garamond", "Noto Serif SC", Georgia, serif;
+  --font-display-cn: "LXGW WenKai TC", "Noto Serif SC", serif;
+  --font-body:       "DM Sans", "Noto Sans SC", system-ui, sans-serif;
+  --font-mono:       "Courier Prime", "Courier New", monospace;
+  --font-features:   "tnum", "ss01";
+
+  /* ─── Type scale (viewwidth-based, fluid) ─── */
+  --t-display:  clamp(80px, 11vw, 220px);
+  --t-h1:       clamp(48px, 7vw, 140px);
+  --t-h2:       clamp(32px, 4vw, 80px);
+  --t-h3:       clamp(24px, 2.4vw, 48px);
+  --t-body:     clamp(14px, 1.05vw, 22px);
+  --t-caption:  clamp(11px, 0.85vw, 16px);
+  --t-micro:    clamp(9px, 0.72vw, 14px);
+
+  /* ─── Spacing scale ─── */
+  --space-unit: 8px;
+  --space-xs:   4px;
+  --space-sm:   8px;
+  --space-md:   16px;
+  --space-lg:   24px;
+  --space-xl:   48px;
+  --space-2xl:  96px;
+
+  /* ─── Radii — Vellum is strictly 0 everywhere ─── */
+  --r-card: 0;
+
+  /* ─── Stage ─── */
+  --stage-pad-x:   6vw;
+  --stage-pad-y:   6vh;
+  --shadow-stage:  none;   /* flat — no shadows */
+  --card-shadow:   none;   /* flat — no shadows */
+
+  /* ─── Motion: ZERO. The system is intentionally still. ─── */
+  --ease-slide:  cubic-bezier(0.19, 1, 0.22, 1);
+  --dur-slide:   0s;
+  --ease-enter:  cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-enter:   0s;
+  --dur-reveal:  0s;
+
+  /* ─── Decoration ─── */
+  /* No pattern, no vignette — Vellum is a pure colour field */
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * MUST classes — the 12-class contract
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* .display — Hero headline (Latin) — Cormorant Garamond italic 400 */
+.display {
+  font-family: var(--font-display-en);
+  font-size: var(--t-display);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+/* Vellum signature: italic is structural — <em> is roman emphasis in brighter yellow */
+.display em,
+.display i {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--emphasis-text);
+}
+
+/* .display-cn — Hero headline (Chinese) — LXGW WenKai (kaiti, no italic axis) */
+.display-cn {
+  font-family: var(--font-display-cn);
+  font-size: var(--t-display);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: 0;
+  color: var(--text);
+}
+
+/* .body — Body text — DM Sans 400 */
+.body {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--text-2);
+}
+
+/* .body-sm — Caption / small body */
+.body-sm {
+  font-family: var(--font-body);
+  font-size: var(--t-caption);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-mute);
+}
+
+/* .label — Uppercase mono label — Courier Prime */
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-mute);
+}
+
+/* .stat-value — Large stat number — Cormorant Garamond italic 400 */
+.stat-value {
+  font-family: var(--font-display-en);
+  font-size: var(--t-h1);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+/* .stat-label — Stat description — Courier Prime */
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  font-weight: 400;
+  color: var(--text-2);
+  letter-spacing: 0.06em;
+}
+
+/* .card — Card container — flat, no border, surface-2 background */
+.card {
+  background: var(--surface-2);
+  border-radius: var(--r-card);
+  padding: var(--space-lg);
+  box-shadow: none;
+}
+
+/* .divider — Horizontal rule — 1px hairline */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: var(--rule);
+  border: 0;
+  margin: var(--space-md) 0;
+}
+
+/* .quote — Pull quote — centered italic Cormorant Garamond */
+.quote {
+  font-family: var(--font-display-en);
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--t-h2);
+  line-height: 1.3;
+  color: var(--text);
+  text-align: center;
+}
+
+/* .tag — Badge / pill — Courier Prime teal, 1px bordered */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 12px;
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border: 1px solid var(--accent-soft);
+  color: var(--accent);
+  background: transparent;
+}
+
+/* .meta — Metadata / footnote — Courier Prime faint */
+.meta {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  color: var(--text-faint);
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * Vellum-specific extensions (MAY — not part of the contract)
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* Surface-alt is included for compatibility — Vellum has no alternate
+   surface. Applying .surface-alt is a no-op (same background colour). */
+.surface-alt {
+  background: var(--surface-alt);
+  color: var(--text-on-alt);
+}
+.surface-alt .body { color: var(--text-2-on-alt); }
+.surface-alt .body-sm { color: var(--text-mute-on-alt); }
+.surface-alt .label { color: var(--text-mute-on-alt); }
+.surface-alt .meta { color: var(--text-faint-on-alt); }
+.surface-alt .divider { background: var(--rule-on-alt); }
+.surface-alt .card {
+  background: var(--surface-2);
+}
+
+/* .kicker — Courier Prime teal label above headlines */
+.kicker {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+
+/* .pin-note — Typed annotation voice in teal (Courier Prime 500).
+   Used inside the absolute-positioned .pin-annotation container
+   (bottom-left of every slide). */
+.pin-note {
+  font-family: var(--font-mono);
+  font-size: clamp(12px, 1.15vw, 24px);
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  color: var(--accent);
+}
+
+/* .bullet-list — Numbered list with teal Courier Prime counters */
+.bullet-list {
+  list-style: none;
+  padding-left: 0;
+  counter-reset: vellum-counter;
+}
+.bullet-list li {
+  counter-increment: vellum-counter;
+  display: grid;
+  grid-template-columns: 2em 1fr;
+  gap: 0.5em;
+}
+.bullet-list li::before {
+  content: counter(vellum-counter);
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  font-weight: 400;
+  color: var(--accent);
+  padding-top: 0.3em;
+}
+
+/* .stat-card — Centered stat tile with hairline right-border.
+   Last child drops the border. */
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  border-right: 1px solid var(--rule);
+}
+.stat-card:last-child {
+  border-right: none;
+}
+.stat-card .stat-value {
+  font-size: clamp(44px, 5.5vw, 100px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+/* .chrome-top — Top chrome bar: hairline rule beneath */
+.chrome-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: var(--space-md);
+}
+
+/* .chrome-bottom — Bottom chrome bar: hairline rule above */
+.chrome-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--rule);
+  margin-top: var(--space-md);
+}
+
+/* .quote-mark — Large teal opening quote glyph in Cormorant italic */
+.quote-mark {
+  font-family: var(--font-display-en);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 7vw;
+  line-height: 0.6;
+  color: var(--accent);
+}
+
+/* .rule — 28px accent rule in teal */
+.rule {
+  width: 28px;
+  height: 1px;
+  background: var(--accent);
+  border: 0;
+}
+
+/* .panel — Chrome-bar bordered region (alternative to .card).
+   Flat, just border-top/bottom rules. */
+.panel {
+  padding: var(--space-lg);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+
+/* .display-accent — Italic headline <em> emphasis helper (upright roman,
+   weight 600, brighter yellow). For use outside <em> context. */
+.display em,
+.display i,
+.h1 em,
+.h2 em {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--emphasis-text);
+}
+.display-cn em,
+.h1-cn em,
+.h2-cn em {
+  font-weight: 600;
+  color: var(--emphasis-text);
+}

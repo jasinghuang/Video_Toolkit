@@ -1,0 +1,670 @@
+/* ======================================================================
+ * Theme · scatterbrain
+ *   Post-it inspired: pastel sticky notes on cork/paper/warm-gradient
+ *   backgrounds. Shrikhand chunky display serif + Zilla Slab warm slab
+ *   body + Caveat handwritten script. Soft drop shadows, red thumbtacks,
+ *   masking tape, small rotations (alternating directions across adjacent
+ *   notes). Creative-workshop whiteboard energy.
+ *
+ *   Source: beautiful-html-templates/templates/scatterbrain/
+ *
+ *   Character signatures:
+ *     • three textured bg variants: cork / paper / warm gradient
+ *     • post-it base: colored sticky-note gradient + soft drop shadow +
+ *       small rotation + thumbtack pin via ::before
+ *     • Shrikhand display (400 weight, chunky decorative serif)
+ *     • Zilla Slab body (friendly slab serif)
+ *     • Caveat script for personal notes / label-script eyebrows
+ *     • masking tape via ::after (translucent white, rotated)
+ *     • decorative SVG doodles at 0.15 ink opacity
+ *     • feature icons: 60px round ink-bordered circles with Shrikhand glyph
+ *     • post-it palette: yellow, blue, pink, green, orange, purple, white
+ *     • alternating small rotations (±1-15°) on adjacent notes
+ * ====================================================================== */
+:root {
+  /* ─── Palette ─── */
+  --shell:            #C9B8A0;   /* cork letterbox depth */
+  --surface:          #F7F5F0;   /* paper — primary surface */
+  --surface-2:        #FAF8F3;   /* cream — for cards / step backgrounds */
+  --surface-3:        #F5F2EC;   /* slightly deeper cream for nested surfaces */
+  --surface-alt:      #FFFFFF;   /* white — alternate surface (bordered white note) */
+
+  --text:             #2D2A26;   /* ink — primary text */
+  --text-2:           #5C5750;   /* ink-light — secondary text */
+  --text-mute:        #8A857A;   /* muted ink */
+  --text-faint:       #B0AAA0;   /* faint ink */
+  --text-on-alt:      #2D2A26;   /* ink on white surface */
+  --text-2-on-alt:    #5C5750;   /* ink-light on white */
+  --text-mute-on-alt: #8A857A;   /* muted on white */
+  --text-faint-on-alt:#B0AAA0;   /* faint on white */
+
+  --rule:             rgba(45,42,38,0.15);   /* ink at 15% — hairlines */
+  --rule-on-alt:      rgba(45,42,38,0.08);   /* ink at 8% on white */
+
+  --accent:           #FFE066;    /* post-it yellow as primary accent */
+  --accent-soft:      rgba(255,224,102,0.3);
+  --accent-glow:      transparent; /* uses soft shadow instead */
+
+  /* Post-it palette — full pastel sticky-note colors */
+  --yellow:           #FFE066;
+  --yellow-deep:      #FFD43B;
+  --blue:             #A5D8FF;
+  --blue-deep:        #74C0FC;
+  --pink:             #FFC9C9;
+  --pink-deep:        #FF9F9F;
+  --green:            #B2F2BB;
+  --green-deep:       #8CE99A;
+  --orange:           #FFCC80;
+  --purple:           #D0BFFF;
+
+  /* Accent color variants for post-it palette lookup */
+  --accent-blue:      var(--blue);
+  --accent-pink:      var(--pink);
+  --accent-green:     var(--green);
+  --accent-orange:    var(--orange);
+  --accent-purple:    var(--purple);
+
+  /* ─── Default post-it color (yellow) ─── */
+  --post-it-color:      var(--yellow);
+  --post-it-color-deep: var(--yellow-deep);
+
+  /* ─── Typography ─── */
+  --font-display-en: "Shrikhand", cursive;
+  --font-display-cn: "ZCOOL KuaiLe", "ZCOOL XiaoWei", cursive;
+  --font-body:       "Zilla Slab", "Yozai", "Noto Sans SC", serif;
+  --font-script:     "Caveat", cursive;
+  --font-mono:       "Zilla Slab", "Noto Sans SC", monospace;
+
+  /* ─── Type scale ─── */
+  --t-display:  clamp(40px, 5vw, 72px);
+  --t-h1:       clamp(32px, 3.5vw, 48px);
+  --t-h2:       clamp(28px, 2.5vw, 32px);
+  --t-h3:       22px;
+  --t-body:     18px;
+  --t-caption:  14px;
+  --t-micro:    12px;
+
+  /* ─── Spacing scale (8px base) ─── */
+  --space-unit: 8px;
+  --space-xs:   4px;
+  --space-sm:   8px;
+  --space-md:   16px;
+  --space-lg:   24px;
+  --space-xl:   48px;
+  --space-2xl:  96px;
+
+  /* ─── Radii ─── */
+  --r-card: 0;                /* post-its are sharp rectangles */
+
+  /* ─── Stage ─── */
+  --stage-pad-x: 80px;
+  --stage-pad-y: 60px;
+  --shadow-stage:
+    0 8px 32px rgba(45,42,38,0.10),
+    0 0 0 1px rgba(0,0,0,0.03);
+
+  /* ─── Shadow tokens for post-it depth ─── */
+  --shadow-soft: rgba(45,42,38,0.15);
+  --shadow-deep: rgba(45,42,38,0.25);
+
+  /* ─── Motion: playful, bouncy ─── */
+  --ease-bounce:   cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-soft:     cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-quick:     300ms;
+  --dur-base:      500ms;
+  --dur-slow:      800ms;
+  --dur-playful:   600ms;
+
+  /* ─── Decoration ─── */
+  /* SVG grain noise overlay pattern */
+  --grain-pattern:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  --grain-opacity: 0.04;
+
+  /* Custom thumbtack cursor data URI */
+  --cursor-tack:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='5' fill='%23ff6b6b'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%23fff'/%3E%3C/svg%3E") 12 12, auto;
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * MUST classes — the 12-class contract
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* .display — Hero headline (Latin) — Shrikhand chunky display serif */
+.display {
+  font-family: var(--font-display-en);
+  font-size: var(--t-display);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+
+/* .display-cn — Hero headline (Chinese) — ZCOOL KuaiLe */
+.display-cn {
+  font-family: var(--font-display-cn);
+  font-size: var(--t-display);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: var(--text);
+}
+
+/* .body — Body text — Zilla Slab 400 */
+.body {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--text-2);
+}
+
+/* .body-sm — Caption / small body */
+.body-sm {
+  font-family: var(--font-body);
+  font-size: var(--t-caption);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-mute);
+}
+
+/* .label — Uppercase script label — Caveat, uppercase, tracked */
+.label {
+  font-family: var(--font-script);
+  font-size: var(--t-caption);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-2);
+}
+
+/* .stat-value — Large stat number — Shrikhand display */
+.stat-value {
+  font-family: var(--font-display-en);
+  font-size: var(--t-h2);
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--text);
+}
+
+/* .stat-label — Stat description — Zilla Slab body */
+.stat-label {
+  font-family: var(--font-body);
+  font-size: var(--t-caption);
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--text-mute);
+}
+
+/* .card — Post-it note container */
+.card {
+  position: relative;
+  padding: var(--space-lg);
+  background: linear-gradient(135deg, var(--post-it-color) 0%, var(--post-it-color-deep) 100%);
+  box-shadow:
+    2px 3px 15px var(--shadow-soft),
+    0 1px 3px var(--shadow-deep);
+  transform: rotate(var(--card-rotation, -1deg));
+  border-radius: var(--r-card);
+  z-index: 1;
+}
+
+/* .card gets a red thumbtack pin via ::before by default */
+.card::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #ff6b6b, #c92a2a);
+  box-shadow: 0 2px 4px var(--shadow-deep), inset -2px -2px 4px rgba(0,0,0,0.2);
+  z-index: 10;
+}
+
+/* .card inner typography — Shrikhand headlines, Zilla Slab body */
+.card h1,
+.card h2,
+.card h3,
+.card .display,
+.card .display-cn {
+  font-family: var(--font-display-en);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+
+.card h1 { font-size: var(--t-h1); }
+.card h2 { font-size: var(--t-h2); }
+.card h3 { font-size: var(--t-h3); }
+
+.card p,
+.card li {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--text-2);
+}
+
+/* Scatterbrain signature: hands-script notes inside cards */
+.card .handwritten,
+.card .script {
+  font-family: var(--font-script);
+  font-size: clamp(18px, 2vw, 24px);
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--text-2);
+}
+
+.card .handwritten-lg {
+  font-family: var(--font-script);
+  font-size: clamp(22px, 2.5vw, 32px);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--text);
+}
+
+.card .handwritten-sm {
+  font-family: var(--font-script);
+  font-size: clamp(16px, 1.5vw, 20px);
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--text-mute);
+}
+
+/* .divider — Horizontal rule — 2px solid ink */
+.divider {
+  width: 100%;
+  height: 2px;
+  background: var(--text);
+  border: 0;
+  margin: var(--space-md) 0;
+}
+
+/* .quote — Pull quote — Shrikhand centered */
+.quote {
+  font-family: var(--font-display-en);
+  font-size: var(--t-h2);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  text-align: center;
+  color: var(--text);
+  padding: var(--space-lg);
+}
+
+/* .tag — Feature-icon style: 60px round ink-bordered with Shrikhand char */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border: 3px solid var(--text);
+  border-radius: 50%;
+  font-family: var(--font-display-en);
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--text);
+  background: transparent;
+  flex-shrink: 0;
+}
+
+/* .meta — Metadata / footnote — Zilla Slab muted */
+.meta {
+  font-family: var(--font-body);
+  font-size: var(--t-micro);
+  line-height: 1.4;
+  color: var(--text-faint);
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * Scatterbrain-specific extensions (MAY — not part of the contract)
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* ─── Post-it color helpers ─── */
+
+.post-it-yellow {
+  --post-it-color: var(--yellow);
+  --post-it-color-deep: var(--yellow-deep);
+}
+
+.post-it-blue {
+  --post-it-color: var(--blue);
+  --post-it-color-deep: var(--blue-deep);
+}
+
+.post-it-pink {
+  --post-it-color: var(--pink);
+  --post-it-color-deep: var(--pink-deep);
+}
+
+.post-it-green {
+  --post-it-color: var(--green);
+  --post-it-color-deep: var(--green-deep);
+}
+
+/* Orange — flat fill, no gradient */
+.post-it-orange {
+  --post-it-color: var(--orange);
+  --post-it-color-deep: var(--orange);
+  background: var(--orange);
+}
+
+/* Purple — flat fill, no gradient */
+.post-it-purple {
+  --post-it-color: var(--purple);
+  --post-it-color-deep: var(--purple);
+  background: var(--purple);
+}
+
+/* White bordered note */
+.post-it-white {
+  --post-it-color: #FFFFFF;
+  --post-it-color-deep: #FFFFFF;
+  background: #FFFFFF;
+  border: 2px solid var(--text);
+}
+
+/* ─── Pin helpers ─── */
+
+/* .pin adds a thumbtack ::before — already on .card by default,
+   but available for non-card elements that need a pin */
+.pin {
+  position: relative;
+}
+.pin::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #ff6b6b, #c92a2a);
+  box-shadow: 0 2px 4px var(--shadow-deep), inset -2px -2px 4px rgba(0,0,0,0.2);
+  z-index: 10;
+}
+
+.pin-blue::before {
+  background: radial-gradient(circle at 30% 30%, #4dabf7, #1864ab);
+}
+
+.pin-green::before {
+  background: radial-gradient(circle at 30% 30%, #69db7c, #2f9e44);
+}
+
+.pin-gold::before {
+  background: radial-gradient(circle at 30% 30%, #ffd43b, #f59f00);
+}
+
+/* Remove pin from card */
+.nopin.card::before,
+.nopin::before {
+  display: none;
+}
+
+/* ─── Tape ─── */
+
+/* .tape adds a masking-tape mark via ::after */
+.tape {
+  position: relative;
+}
+.tape::after {
+  content: '';
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  width: 80px;
+  height: 25px;
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* ─── Rotation helpers ─── */
+
+.rotate-1  { --card-rotation: -1deg; }
+.rotate-2  { --card-rotation: 2deg; }
+.rotate-3  { --card-rotation: -3deg; }
+.rotate-5  { --card-rotation: 5deg; }
+.rotate-8  { --card-rotation: -8deg; }
+.rotate-12 { --card-rotation: 12deg; }
+.rotate-15 { --card-rotation: -15deg; }
+
+/* ─── Feature icon (round ink-bordered Shrikhand glyph) ─── */
+
+.feature-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border: 3px solid var(--text);
+  border-radius: 50%;
+  font-family: var(--font-display-en);
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--text);
+  background: transparent;
+  flex-shrink: 0;
+}
+
+/* ─── Versus circle (ink circle between compare cards) ─── */
+
+.vs-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background: var(--text);
+  color: var(--surface);
+  border-radius: 50%;
+  font-family: var(--font-display-en);
+  font-size: 1.2rem;
+  font-weight: 400;
+  box-shadow: 0 2px 8px var(--shadow-deep);
+  flex-shrink: 0;
+}
+
+/* ─── Stat card (top-rule ink divider) ─── */
+
+.stat-card {
+  padding: var(--space-md) 0;
+  border-top: 2px solid var(--text);
+  margin-top: var(--space-md);
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-sm) 0;
+  border-bottom: 1px dashed var(--rule);
+}
+
+.stat-row:last-child {
+  border-bottom: none;
+}
+
+/* ─── Background texture variants (apply to step root) ─── */
+
+/* Cork board — warm tan/brown with plus-sign cork pattern */
+.bg-cork {
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(210,170,120,0.3) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(190,150,100,0.2) 0%, transparent 40%),
+    linear-gradient(135deg, #e8ddd0 0%, #d4c5b0 50%, #c9b8a0 100%);
+  position: relative;
+}
+.bg-cork::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23b8a088' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.5;
+}
+
+/* Paper desk — cream gradient with 40px grid */
+.bg-paper {
+  background: linear-gradient(180deg, #faf8f3 0%, #f5f2ec 100%);
+  position: relative;
+}
+.bg-paper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(200,190,175,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200,190,175,0.08) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Warm gradient — soft pastel glows on cream */
+.bg-warm {
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(255,224,102,0.4) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(165,216,255,0.3) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(255,201,201,0.15) 0%, transparent 60%),
+    linear-gradient(160deg, #fdf8f0 0%, #f7f0e6 100%);
+  position: relative;
+}
+
+/* ─── Grain overlay (fixed full-viewport) ─── */
+
+.grain-overlay {
+  position: relative;
+}
+.grain-overlay::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: var(--grain-opacity);
+  background-image: var(--grain-pattern);
+  background-repeat: repeat;
+  background-size: 200px 200px;
+}
+
+/* ─── Custom thumbtack cursor ─── */
+
+.tack-cursor {
+  cursor: var(--cursor-tack);
+}
+
+/* ─── Photo frame (polaroid-style) ─── */
+
+.photo-frame {
+  background: #FFFFFF;
+  padding: 1rem;
+  box-shadow: 2px 3px 15px var(--shadow-soft);
+  transform: rotate(var(--card-rotation, -2deg));
+  border-radius: 0;
+}
+
+.photo-frame .photo-inner {
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 50%, #ced4da 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ─── Surface-alt: white surface for step-level alternative background ─── */
+
+.surface-alt {
+  background: var(--surface-alt);
+  color: var(--text-on-alt);
+}
+.surface-alt .body { color: var(--text-2-on-alt); }
+.surface-alt .body-sm { color: var(--text-mute-on-alt); }
+.surface-alt .label { color: var(--text-mute-on-alt); }
+.surface-alt .meta { color: var(--text-faint-on-alt); }
+.surface-alt .divider { background: var(--rule-on-alt); }
+.surface-alt .card { border: 2px solid var(--text); }
+.surface-alt .card::before { display: none; } /* no pin on alt surface by default */
+
+/* ─── Doodle SVG helpers ─── */
+
+.doodle {
+  position: absolute;
+  z-index: 0;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.doodle-circle {
+  border: 3px solid var(--text);
+  border-radius: 50%;
+}
+
+.doodle-line {
+  height: 3px;
+  background: var(--text);
+  border-radius: 2px;
+}
+
+/* ─── Bullet list with check-mark markers ─── */
+
+.check-list {
+  list-style: none;
+  padding: 0;
+}
+
+.check-list li {
+  position: relative;
+  padding: var(--space-xs) 0 var(--space-xs) var(--space-lg);
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  line-height: 1.6;
+  color: var(--text-2);
+}
+
+.check-list li::before {
+  content: '\2713';
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: var(--text);
+}
+
+/* ─── Timeline connector SVG ─── */
+
+.timeline-connector svg {
+  width: 100%;
+  height: 60px;
+}
+
+.timeline-connector path {
+  stroke: var(--text);
+  stroke-width: 3;
+  fill: none;
+  opacity: 0.3;
+  stroke-dasharray: 8 4;
+}
+
+.timeline-connector polygon {
+  fill: var(--text);
+  opacity: 0.3;
+}

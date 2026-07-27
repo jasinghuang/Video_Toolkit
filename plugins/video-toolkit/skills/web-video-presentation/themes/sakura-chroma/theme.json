@@ -1,0 +1,27 @@
+{
+  "id": "sakura-chroma",
+  "name": "Sakura Chroma",
+  "nameZh": "樱花色彩",
+  "description": "Vintage Japanese cassette-package: warm cream paper with six-color primary palette + warm-brown ink. Big Shoulders Display 900 condensed industrial display. Albert Sans body. Petal-cluster blobs, diagonal ribbon bands, starburst seals, red stamps. Halftone-dot paper texture. Catalogue-grid product cards with colored topstrips.",
+  "descriptionZh": "复古日本磁带包装：暖奶油纸本 + 六色主色调 + 暖棕墨水。Big Shoulders Display 900 压缩工业展示字体。Albert Sans 正文。花瓣簇斑块、斜向彩带条、星爆印章、红色盖章。半色调点纸张纹理。目录网格产品卡带彩色顶条。",
+  "mood": ["retro", "playful", "warm", "tactile", "vibrant"],
+  "bestFor": [
+    "产品发布 / 目录",
+    "独立硬件 / 模拟工作室品牌",
+    "音乐厂牌 / 发行日程",
+    "创意工作室年度报告",
+    "杂志 / 小册提案"
+  ],
+  "avoidFor": [
+    "需要克制 / 安静排版的场合",
+    "企业品牌传播"
+  ],
+  "formality": "low",
+  "source": "beautiful-html-templates/sakura-chroma",
+  "preview": {
+    "shell": "#0E0E0E",
+    "surface": "#F1E6CB",
+    "text": "#3A2516",
+    "accent": "#E5392A"
+  }
+}

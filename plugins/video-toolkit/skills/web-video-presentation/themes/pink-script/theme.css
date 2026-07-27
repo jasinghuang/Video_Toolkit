@@ -1,0 +1,546 @@
+/* ======================================================================
+ * Theme · pink-script
+ *   Nocturnal couture editorial system.
+ *   Near-black canvas (#060507) with hot fuchsia accent (#ED3D8C)
+ *   and pearl-cream paper (#F5EDF1).
+ *   DM Serif Display editorial script at up to 540px. Inter 300 body.
+ *   Film grain + radial studio light + hairline interior frame.
+ *   Zero box-shadows. Zero border-radius. Late-night magazine atmosphere.
+ *
+ *   Source: beautiful-html-templates/templates/pink-script/
+ *
+ *   Character signatures:
+ *     • dark surface with radial-gradient upper-left studio light
+ *     • film-grain overlay (8% screen) on every slide
+ *     • 1px pearl-cream hairline interior frame inset 36px
+ *     • hot pink accent is the single chromatic color
+ *     • DM Serif Display editorial script in pink with halo glow
+ *     • Inter 300 ultra-light body — the calm prose voice
+ *     • JetBrains Mono uppercase tracked labels and chrome
+ *     • surface-alt: pearl-cream paper with deep-ink text (inverted)
+ *     • no box-shadows, no border-radius on any element
+ * ====================================================================== */
+:root {
+  /* ─── Palette ─── */
+  --shell:        #050306;    /* deeper than surface for letterbox depth */
+  --surface:      #060507;    /* near-black — primary dark canvas */
+  --surface-2:    #0F0D11;    /* barely lifted dark violet for cards */
+  --surface-3:    #0A0709;    /* deeper warm dark for nested surfaces */
+  --surface-alt:  #F5EDF1;    /* pearl-cream paper — alternate surface */
+
+  --text:         #F5EDF1;    /* pearl-cream paper-blush on dark */
+  --text-2:       rgba(245,237,241,0.55);  /* muted paper-blush 55% */
+  --text-mute:    rgba(245,237,241,0.32);  /* faint paper 32% */
+  --text-faint:   rgba(245,237,241,0.14);  /* whisper paper 14% */
+
+  --text-on-alt:       #060507;            /* deep-ink on pearl-cream */
+  --text-2-on-alt:     rgba(6,5,7,0.62);   /* ink at 62% */
+  --text-mute-on-alt:  rgba(6,5,7,0.35);   /* ink at 35% */
+  --text-faint-on-alt: rgba(6,5,7,0.12);   /* ink at 12% */
+
+  --rule:         rgba(237,61,140,0.32);   /* pink at 32% — line-pink */
+  --rule-on-alt:  rgba(6,5,7,0.14);        /* ink hairline on paper */
+
+  --accent:       #ED3D8C;    /* hot pink fuchsia — single chromatic accent */
+  --accent-soft:  rgba(237,61,140,0.12);   /* pink at 12% for washes */
+  --accent-glow:  rgba(237,61,140,0.18);   /* pink at 18% for halo glow */
+
+  /* ─── Typography ─── */
+  --font-display-en: "DM Serif Display", "Playfair Display", Georgia, serif;
+  --font-display-cn: "Noto Serif SC", "Source Han Serif SC", serif;
+  --font-body:       "Inter", "Noto Sans SC", -apple-system, system-ui, sans-serif;
+  --font-mono:       "JetBrains Mono", "SF Mono", ui-monospace, monospace;
+  --font-features:   "tnum", "ss01", "zero";
+
+  /* ─── Type scale ─── */
+  --t-script-huge: clamp(280px, 28vw, 540px);  /* hero editorial script */
+  --t-display:     clamp(160px, 14.5vw, 280px); /* cover / primary display */
+  --t-h1:          clamp(120px, 11.5vw, 220px); /* TOC / section headline */
+  --t-h2:          clamp(72px, 6.9vw, 132px);   /* content headline */
+  --t-h3:          clamp(48px, 4.6vw, 88px);    /* supporting headline */
+  --t-stat:        clamp(64px, 6vw, 116px);     /* stat figure */
+  --t-body:        24px;
+  --t-caption:     22px;
+  --t-micro:       11px;
+
+  /* ─── Spacing scale ─── */
+  --space-unit: 8px;
+  --space-xs:   4px;
+  --space-sm:   8px;
+  --space-md:   16px;
+  --space-lg:   24px;
+  --space-xl:   48px;
+  --space-2xl:  96px;
+
+  /* ─── Radii — strictly 0 everywhere ─── */
+  --r-card: 0;
+
+  /* ─── Stage ─── */
+  --stage-pad-x: 60px;
+  --stage-pad-y: 60px;
+  --shadow-stage: none;           /* flat — no shadows, atmospheric depth only */
+  --card-shadow:  none;           /* flat — no shadows */
+
+  /* ─── Motion: slow editorial, cinematic pacing ─── */
+  --ease-quart:    cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-expo:     cubic-bezier(0.86, 0, 0.07, 1);
+  --dur-quick:     300ms;
+  --dur-base:      800ms;
+  --dur-slow:      1200ms;
+  --dur-cinematic: 1500ms;
+
+  /* ─── Decoration ─── */
+  /* Film grain noise overlay pattern (8% opacity, screen blend — applied via ::before) */
+  --film-grain:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  /* Hairline interior frame style (1px pearl-cream at 14%) */
+  --hairline-frame: 1px solid rgba(245,237,241,0.14);
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * MUST classes — the 12-class contract
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* .display — Hero headline (Latin) — DM Serif Display in hot pink */
+.display {
+  font-family: var(--font-display-en);
+  font-size: var(--t-display);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  color: var(--accent);           /* Pink Script signature: pink display */
+  padding-bottom: .1em;           /* descender compensation for serif */
+}
+/* Pink Script signature: mid-sentence emphasis stays pink (already accent) */
+.display em,
+.display i {
+  color: var(--accent);
+  font-style: normal;             /* em re-purposed as color switch, not italic */
+}
+.surface-alt .display {
+  color: var(--accent);           /* pink stays pink even on pearl-cream */
+}
+
+/* .display-cn — Hero headline (Chinese) — Noto Serif SC */
+.display-cn {
+  font-family: var(--font-display-cn);
+  font-size: var(--t-display);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0;
+  color: var(--text);
+}
+.surface-alt .display-cn {
+  color: var(--text-on-alt);
+}
+
+/* .body — Body text — Inter 300 (ultra-light — key signature) */
+.body {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--text);
+}
+.surface-alt .body {
+  color: var(--text-on-alt);
+}
+
+/* .body-sm — Smaller body / caption — Inter 300 */
+.body-sm {
+  font-family: var(--font-body);
+  font-size: var(--t-caption);
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--text-2);
+}
+.surface-alt .body-sm {
+  color: var(--text-2-on-alt);
+}
+
+/* .label — Uppercase mono label — JetBrains Mono */
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-2);
+}
+.surface-alt .label {
+  color: var(--text-2-on-alt);
+}
+
+/* .stat-value — Large stat number — DM Serif Display in hot pink */
+.stat-value {
+  font-family: var(--font-display-en);
+  font-size: var(--t-stat);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);           /* Pink Script: pink stats */
+}
+.surface-alt .stat-value {
+  color: var(--accent);           /* pink stays pink on paper */
+}
+
+/* .stat-label — Stat description — Inter 300 */
+.stat-label {
+  font-family: var(--font-body);
+  font-size: var(--t-caption);
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-2);
+}
+.surface-alt .stat-label {
+  color: var(--text-2-on-alt);
+}
+
+/* .card — Card container — flat, zero-radius, zero-shadow */
+.card {
+  background: var(--surface-2);
+  border-radius: var(--r-card);
+  padding: var(--space-lg);
+  box-shadow: none;
+  border: 0;
+}
+.surface-alt .card {
+  background: rgba(245,237,241,0.06);
+  box-shadow: none;
+  border: 0;
+}
+
+/* .divider — Horizontal rule — 1px pink hairline */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: var(--rule);
+  border: 0;
+  margin: var(--space-md) 0;
+}
+.surface-alt .divider {
+  background: var(--rule-on-alt);
+}
+
+/* .quote — Pull quote — DM Serif Display editorial */
+.quote {
+  border-left: 3px solid var(--accent);
+  padding: var(--space-sm) 0 var(--space-sm) var(--space-lg);
+  font-family: var(--font-display-en);
+  font-weight: 400;
+  font-size: var(--t-h3);
+  line-height: 1.4;
+  color: var(--text);
+}
+.quote em,
+.quote i {
+  color: var(--accent);
+  font-style: normal;             /* em as color switch */
+}
+.surface-alt .quote {
+  color: var(--text-on-alt);
+  border-left-color: var(--accent); /* pink border stays on paper */
+}
+.surface-alt .quote em,
+.surface-alt .quote i {
+  color: var(--accent);
+}
+
+/* .tag — Badge / pill — JetBrains Mono, 0-radius rectangle */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 12px;
+  border-radius: 0;               /* strict rectangle — no rounded pills */
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  background: transparent;
+}
+.surface-alt .tag {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* .meta — Metadata / footnote — JetBrains Mono micro */
+.meta {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  color: var(--text-faint);
+}
+.surface-alt .meta {
+  color: var(--text-faint-on-alt);
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * Pink Script-specific extensions (MAY — not part of the contract)
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* ─── Dual-surface helper: pearl-cream paper variant ─── */
+.surface-alt {
+  background: var(--surface-alt);
+  color: var(--text-on-alt);
+}
+.surface-alt .body-sm { color: var(--text-2-on-alt); }
+.surface-alt .label { color: var(--text-2-on-alt); }
+.surface-alt .meta { color: var(--text-faint-on-alt); }
+.surface-alt .divider { background: var(--rule-on-alt); }
+.surface-alt .card {
+  background: var(--surface-alt);
+  box-shadow: none;
+}
+
+/* ─── Film grain overlay — every slide ─── */
+.slide::before,
+.step::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.08;
+  mix-blend-mode: screen;
+  background-image: var(--film-grain);
+  background-size: 180px 180px;
+  z-index: 1;
+}
+
+/* ─── Hairline interior frame — every slide ─── */
+.slide::after,
+.step::after {
+  content: "";
+  position: absolute;
+  inset: 36px;
+  pointer-events: none;
+  border: var(--hairline-frame);
+  z-index: 0;
+}
+
+/* ─── Radial gradient surface — studio light from upper-left ─── */
+.stage {
+  background:
+    radial-gradient(ellipse 90% 70% at 30% 30%, #1A1218 0%, #0A0709 55%, var(--surface) 100%);
+}
+
+/* ─── Hero script at maximum scale (540px) ─── */
+.script-huge {
+  font-family: var(--font-display-en);
+  font-size: var(--t-script-huge);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--accent);
+  padding-bottom: .12em;
+  /* Pink halo glow on hero scripts */
+  text-shadow: 0 0 80px rgba(237,61,140,0.18);
+}
+
+/* ─── Mega script for section-divider numerals (600px feel) ─── */
+.script-mega {
+  font-family: var(--font-display-en);
+  font-size: clamp(320px, 31vw, 600px);
+  font-weight: 400;
+  line-height: 0.82;
+  letter-spacing: -0.02em;
+  color: var(--accent);
+  padding-bottom: .12em;
+  /* Stronger pink halo for mega numerals */
+  text-shadow: 0 0 120px rgba(237,61,140,0.22);
+}
+
+/* ─── Pink glow text-shadow utility ─── */
+.pink-glow {
+  text-shadow: 0 0 80px rgba(237,61,140,0.18);
+}
+.pink-glow-strong {
+  text-shadow: 0 0 120px rgba(237,61,140,0.22);
+}
+
+/* ─── Pink kicker — JetBrains Mono uppercase, always pink ─── */
+.kicker {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* ─── Runner chrome — top metadata bar ─── */
+.chrome-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 24px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  white-space: nowrap;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+.chrome-top .brand {
+  color: var(--accent);           /* brand is always pink */
+}
+.surface-alt .chrome-top {
+  border-color: var(--rule-on-alt);
+  color: var(--text-2-on-alt);
+}
+.surface-alt .chrome-top .brand {
+  color: var(--accent);
+}
+
+/* ─── Footer chrome — bottom metadata bar ─── */
+.chrome-bottom {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 24px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  white-space: nowrap;
+  border-top: 1px solid var(--rule);
+  padding-top: var(--space-sm);
+  margin-top: var(--space-md);
+}
+.chrome-bottom .pageno {
+  color: var(--text);
+}
+.chrome-bottom .pageno .current {
+  color: var(--accent);           /* current page number is pink */
+}
+.surface-alt .chrome-bottom {
+  border-color: var(--rule-on-alt);
+  color: var(--text-2-on-alt);
+}
+.surface-alt .chrome-bottom .pageno {
+  color: var(--text-on-alt);
+}
+.surface-alt .chrome-bottom .pageno .current {
+  color: var(--accent);
+}
+
+/* ─── Callout rail — pink left border, right-aligned ─── */
+.callout-rail {
+  border-left: 1px solid var(--accent);
+  padding-left: 24px;
+}
+
+/* ─── Stat row pattern ─── */
+.stat-row {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 28px;
+  align-items: center;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--text-faint);
+}
+.stat-row:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+/* ─── Pink accent divider (short) ─── */
+.divider-accent {
+  width: 36px;
+  height: 1px;
+  background: var(--accent);
+  border: 0;
+  margin: var(--space-md) 0;
+}
+
+/* ─── Process step ─── */
+.process-step {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 26px 0;
+  border-top: 1px solid var(--accent);
+}
+.process-step .step-num {
+  font-family: var(--font-display-en);
+  font-size: clamp(48px, 5vw, 96px);
+  font-weight: 400;
+  line-height: 0.8;
+  color: var(--accent);
+}
+.process-step .step-heading {
+  font-family: var(--font-display-en);
+  font-size: clamp(22px, 2vw, 38px);
+  font-weight: 400;
+  line-height: 1.05;
+  color: var(--text);
+}
+.process-step .step-desc {
+  font-family: var(--font-body);
+  font-size: var(--t-caption);
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--text-2);
+}
+
+/* ─── Pink chart line utilities ─── */
+.chart-line-primary {
+  stroke: var(--accent);
+  stroke-width: 3;
+  fill: none;
+}
+.chart-line-secondary {
+  stroke: var(--text-2);
+  stroke-width: 2;
+  stroke-dasharray: 6 6;
+  fill: none;
+}
+
+/* ─── Pill states (all 0-radius rectangles) ─── */
+.pill-outline {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border: 1px solid var(--accent);
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: transparent;
+}
+.pill-solid {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border: 1px solid var(--accent);
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #060507;
+  background: var(--accent);
+}
+.pill-dim {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border: 1px solid var(--text-faint);
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  background: transparent;
+}

@@ -1,0 +1,399 @@
+/* ======================================================================
+ * Theme · playful
+ *   Sun-warm peach clay canvas with charcoal ink. Syne display
+ *   (weight 800, tight negative tracking) + Space Grotesk body.
+ *   Single-color discipline — no second brand color.
+ *   Double-stroke offset borders, small rotations, organic blob
+ *   shapes, SVG doodles. Hand-crafted indie studio warmth.
+ *
+ *   Source: beautiful-html-templates/templates/playful/
+ *
+ *   Character signatures:
+ *     • monochrome peach+charcoal — no second color anywhere
+ *     • double-stroke offset border (.double-border, .card ::before)
+ *     • small rotations (±0.5–3deg) for hand-placed feel
+ *     • organic blob shapes with asymmetric border-radius
+ *     • SVG scribble doodles in slide corners
+ *     • Syne display 800 with tight negative tracking
+ *     • no web shadows — depth from borders + rotation only
+ * ====================================================================== */
+:root {
+  /* ─── Palette ─── */
+  --shell:        #C8A080;    /* darker peach for letterbox depth */
+  --surface:      #F0C8A0;    /* peach clay — primary surface */
+  --surface-2:    #E8B88E;    /* slightly deeper peach for cards */
+  --surface-3:    #E0B898;    /* deepest peach for nested surfaces */
+  --surface-alt:  #F7DEC6;    /* lighter peach — alternate surface */
+
+  --text:              #1A1A1A;  /* charcoal ink */
+  --text-2:            #3A3A3A;  /* lighter charcoal */
+  --text-mute:         #6A6A6A;  /* muted charcoal */
+  --text-faint:        #A0A0A0;  /* faint charcoal */
+
+  --text-on-alt:       #1A1A1A;  /* monochrome — same ink on lighter surface */
+  --text-2-on-alt:     #3A3A3A;
+  --text-mute-on-alt:  #6A6A6A;
+  --text-faint-on-alt: #A0A0A0;
+
+  --rule:         rgba(26,26,26,0.20);
+  --rule-on-alt:  rgba(26,26,26,0.20);
+
+  --accent:       #1A1A1A;            /* charcoal is the only accent */
+  --accent-soft:  rgba(26,26,26,0.08);
+  /* --accent-glow: n/a — no glow effects in this system */
+
+  /* ─── Typography ─── */
+  --font-display-en: "Syne", "Space Grotesk", sans-serif;
+  --font-display-cn: "ZCOOL KuaiLe", sans-serif;
+  --font-body:       "Space Grotesk", "Noto Sans SC", system-ui, sans-serif;
+  --font-mono:       "Space Grotesk", monospace;
+  --font-features:   "tnum";
+
+  /* ─── Type scale ─── */
+  --t-display:  clamp(48px, 10vw, 144px);
+  --t-h1:       clamp(40px, 6vw, 80px);
+  --t-h2:       clamp(32px, 4vw, 56px);
+  --t-h3:       clamp(24px, 3vw, 48px);
+  --t-body:     18px;
+  --t-caption:  14px;
+  --t-micro:    12px;
+
+  /* ─── Spacing scale ─── */
+  --space-unit: 8px;
+  --space-xs:   4px;
+  --space-sm:   8px;
+  --space-md:   16px;
+  --space-lg:   24px;
+  --space-xl:   48px;
+  --space-2xl:  96px;
+
+  /* ─── Radii — 0 or organic blob shapes only ─── */
+  --r-card: 0;              /* sharp corners by default */
+
+  /* ─── Stage — spacious ─── */
+  --stage-pad-x: 120px;
+  --stage-pad-y: 80px;
+  --shadow-stage: none;     /* no web shadows — hand-crafted feel */
+  --card-shadow: none;
+
+  /* ─── Motion: playful bouncy ─── */
+  --ease-bounce:   cubic-bezier(0.34, 1.56, 0.64, 1);  /* overshoot spring */
+  --ease-enter:    cubic-bezier(0.16, 1, 0.3, 1);       /* smooth enter */
+  --dur-quick:     300ms;
+  --dur-base:      500ms;
+  --dur-slow:      800ms;
+
+  /* ─── Decoration ─── */
+  /* subtle notebook grid — faint charcoal lines like sketchbook paper */
+  --surface-pattern:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><rect width='20' height='20' fill='none' stroke='%231A1A1A' stroke-width='0.3' stroke-opacity='0.04'/></svg>");
+  --surface-pattern-size: 20px 20px;
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * MUST classes — the 12-class contract
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* .display — Hero headline (Latin) — Syne 800, uppercase, tight tracking */
+.display {
+  font-family: var(--font-display-en);
+  font-size: var(--t-display);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+/* Playful signature: monochrome — display text is always charcoal */
+.display em,
+.display i {
+  color: var(--text);
+  font-style: normal;  /* no italic in this system */
+}
+
+/* .display-cn — Hero headline (Chinese) — ZCOOL KuaiLe 400 */
+.display-cn {
+  font-family: var(--font-display-cn);
+  font-size: var(--t-display);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: 0;       /* CJK: no negative tracking */
+  color: var(--text);
+}
+
+/* .body — Body text — Space Grotesk 400 */
+.body {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--text-2);
+}
+
+/* .body-sm — Caption / small body — Space Grotesk 500 */
+.body-sm {
+  font-family: var(--font-body);
+  font-size: var(--t-caption);
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--text-mute);
+}
+
+/* .label — Uppercase tracked label — Space Grotesk 600 */
+.label {
+  font-family: var(--font-body);
+  font-size: var(--t-caption);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-mute);
+}
+
+/* .stat-value — Large stat number — Syne 800 */
+.stat-value {
+  font-family: var(--font-display-en);
+  font-size: var(--t-h1);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+/* .stat-label — Stat description — Space Grotesk 500 */
+.stat-label {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--text-mute);
+}
+
+/* .card — Card container — rough-box style with double-stroke offset */
+.card {
+  position: relative;
+  background: var(--surface);
+  border: 3px solid var(--accent);
+  border-radius: var(--r-card);
+  padding: var(--space-lg);
+  transform: rotate(-0.3deg);
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  right: -6px;
+  bottom: -6px;
+  border: 2px solid var(--accent);
+  border-radius: var(--r-card);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* .divider — Horizontal rule — 3px thick charcoal */
+.divider {
+  width: 100%;
+  height: 3px;
+  background: var(--text);
+  border: 0;
+  margin: var(--space-md) 0;
+}
+
+/* .quote — Pull quote — Syne 700, monochrome charcoal */
+.quote {
+  font-family: var(--font-display-en);
+  font-size: var(--t-h2);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  border-left: 3px solid var(--accent);
+  padding-left: var(--space-lg);
+}
+
+/* .tag — Badge / pill — charcoal fill, peach text */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 0;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--accent);
+  color: var(--surface);
+}
+
+/* .meta — Metadata / footnote — Space Grotesk 400, caption */
+.meta {
+  font-family: var(--font-body);
+  font-size: var(--t-caption);
+  color: var(--text-faint);
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * Playful-specific extensions (MAY — not part of the contract)
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* ─── Single-surface variant ─── */
+/* Playful is a single-surface system. .surface-alt shifts to a lighter
+   peach variant for tonal variation — never a different hue. */
+.surface-alt {
+  background: var(--surface-alt);
+}
+.surface-alt .body { color: var(--text-2-on-alt); }
+.surface-alt .body-sm { color: var(--text-mute-on-alt); }
+.surface-alt .label { color: var(--text-mute-on-alt); }
+.surface-alt .meta { color: var(--text-faint-on-alt); }
+.surface-alt .divider { background: var(--rule-on-alt); }
+
+/* ─── Signature: Double-stroke offset border ─── */
+.double-border {
+  position: relative;
+  border: 3px solid var(--accent);
+  background: var(--surface);
+}
+.double-border::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  right: -6px;
+  bottom: -6px;
+  border: 2px solid var(--accent);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ─── Signature: Rough-box (wobbly corner card) ─── */
+.rough-box {
+  position: relative;
+  border: 3px solid var(--accent);
+  border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  padding: var(--space-lg);
+  background: var(--surface);
+}
+.rough-box::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  right: -6px;
+  bottom: -6px;
+  border: 2px solid var(--accent);
+  border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ─── Signature: Blob frame (organic shape) ─── */
+.blob-frame {
+  border: 3px solid var(--accent);
+  border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+  background: transparent;
+}
+
+/* ─── Signature: Blob fill (solid organic shape) ─── */
+.blob-fill {
+  background: var(--accent);
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+}
+
+/* ─── Signature: Ghost-blob (atmospheric wallpaper) ─── */
+.ghost-blob {
+  background: var(--accent);
+  border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+  opacity: 0.08;
+}
+
+/* ─── Signature: Rotation helper ─── */
+.rotated {
+  transform: rotate(var(--rot, 0.5deg));
+}
+.rotated-neg {
+  transform: rotate(calc(var(--rot, 0.5deg) * -1));
+}
+
+/* ─── Signature: SVG scribble stroke ─── */
+.scribble-line {
+  stroke: var(--accent);
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+}
+
+/* ─── Doodle placeholder classes ─── */
+.doodle-scribble {
+  position: absolute;
+  pointer-events: none;
+}
+
+/* ─── Inverted block (charcoal fill, peach text) ─── */
+.filled-block {
+  background: var(--accent);
+  color: var(--surface);
+  padding: var(--space-lg);
+}
+
+/* ─── Stat grid layout helpers ─── */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-xl);
+}
+.stat-item {
+  position: relative;
+}
+.stat-item .stat-value {
+  margin-bottom: var(--space-sm);
+}
+.stat-item:nth-child(1) .stat-value { transform: rotate(-0.5deg); }
+.stat-item:nth-child(2) .stat-value { transform: rotate(0.5deg); }
+.stat-item:nth-child(3) .stat-value { transform: rotate(-0.3deg); }
+
+/* ─── Step node (timeline marker) ─── */
+.step-node {
+  width: 64px;
+  height: 64px;
+  border: 3px solid var(--accent);
+  border-radius: 50%;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display-en);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text);
+}
+.step-node.filled {
+  background: var(--accent);
+  color: var(--surface);
+}
+
+/* ─── Avatar placeholder ─── */
+.avatar-placeholder {
+  width: 60px;
+  height: 60px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+/* ─── Chart bar helpers ─── */
+.bar-fill {
+  background: var(--accent);
+}
+.bar-outline {
+  background: transparent;
+  border: 3px solid var(--accent);
+}
+
+/* ─── Vertical spine label ─── */
+.vertical-text {
+  font-family: var(--font-display-en);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  transform: rotate(90deg);
+  color: var(--text);
+}

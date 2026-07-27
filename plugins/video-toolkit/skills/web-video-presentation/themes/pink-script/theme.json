@@ -1,0 +1,18 @@
+{
+  "id": "pink-script",
+  "name": "Pink Script",
+  "nameZh": "桃色手稿",
+  "description": "Nocturnal couture editorial: near-black canvas, hot fuchsia accent (#ED3D8C), pearl-cream paper (#F5EDF1). DM Serif Display italic script at up to 540px. Inter 300 body. Film grain + radial studio light + hairline interior frame. Zero box-shadows. Zero border-radius. Late-night magazine atmosphere.",
+  "descriptionZh": "夜间时装编辑系统：近黑画布，亮粉红强调色，珍珠奶油纸。DM Serif Display 斜体手稿达 540px。Inter 300 正文。胶片颗粒 + 径向工作室灯光 + 发丝内框。无阴影，无圆角。深夜杂志氛围。",
+  "mood": ["nocturnal", "moody", "luxe", "expressive", "editorial", "intentional"],
+  "bestFor": ["时装品牌演讲", "创作者个人品牌", "夜间 / 夜生活 / 烈酒类产品发布", "豪华产品展示", "编辑特辑"],
+  "avoidFor": ["日间企业专业场合", "传统 B2B 环境"],
+  "formality": "medium-high",
+  "source": "beautiful-html-templates/pink-script",
+  "preview": {
+    "shell": "#050306",
+    "surface": "#060507",
+    "text": "#ED3D8C",
+    "accent": "#ED3D8C"
+  }
+}

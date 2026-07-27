@@ -1,0 +1,405 @@
+/* ======================================================================
+ * Theme · raw-grid
+ *   Neobrutalist presentation. 3px solid black borders ARE the layout.
+ *   System sans-serif at weight 900 uppercase for display — no web fonts.
+ *   White canvas + black structure + blush pink / sage green pastel fills.
+ *   Hard offset shadows (6px/4px, solid black, zero blur).
+ *   Decorative oversized numerals at 0.15–0.35 opacity as wallpaper.
+ *   Black label pills as universal section tag.
+ *
+ *   Source: beautiful-html-templates/templates/raw-grid/
+ *
+ *   Character signatures:
+ *     • 3px solid black borders on every structural division
+ *     • system sans-serif, no web fonts loaded
+ *     • weight 900 uppercase + negative tracking for display
+ *     • weight 500 sentence-case for body
+ *     • hard offset shadows — 6px 6px 0 black or 4px 4px 0 black
+ *     • blush pink (#F2D4CF) + sage green (#E5EDD6) accent fills
+ *     • zero rounded corners, zero gradients
+ *     • arrow-prefix (→ ) on CTAs and interactive rows
+ *     • black label pills: white uppercase text on black
+ * ====================================================================== */
+:root {
+  /* ─── Palette ─── */
+  --shell:        #FFFFFF;    /* white letterbox */
+  --surface:      #FFFFFF;    /* white — primary canvas */
+  --surface-2:    #F5F5F5;   /* light gray — neutral fill */
+  --surface-3:    #F2D4CF;   /* blush pink — warm accent */
+  --surface-4:    #E5EDD6;   /* sage green — cool accent */
+  --surface-alt:  #0A0A0A;   /* black — alternate dark surface */
+
+  --text:         #0A0A0A;   /* near-black */
+  --text-2:       #333333;   /* dark gray */
+  --text-mute:    #666666;
+  --text-faint:   rgba(10,10,10,0.2);
+
+  --text-on-alt:       #FFFFFF;    /* white on black */
+  --text-2-on-alt:     rgba(255,255,255,0.75);
+  --text-mute-on-alt:  rgba(255,255,255,0.55);
+  --text-faint-on-alt: rgba(255,255,255,0.25);
+
+  --rule:          #0A0A0A;    /* black — all borders */
+  --rule-on-alt:   rgba(255,255,255,0.20);
+
+  --accent:       #F2D4CF;    /* blush pink — signature warm accent */
+  --accent-2:     #E5EDD6;    /* sage green — cool accent */
+  --accent-soft:  rgba(242,212,207,0.2);
+  --accent-glow:  rgba(242,212,207,0.3);
+
+  /* ─── Typography — system sans-serif, no web fonts ─── */
+  --font-display-en: "Segoe UI", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+  --font-display-cn: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-body:       "Segoe UI", system-ui, -apple-system, "Noto Sans SC", Helvetica, Arial, sans-serif;
+  --font-mono:       "Segoe UI", system-ui, "Noto Sans Mono CJK SC", monospace;
+  --font-features:   "tnum";
+
+  /* ─── Type scale ─── */
+  --t-display:  clamp(48px, 7vw, 96px);     /* weight 900, uppercase */
+  --t-h1:       clamp(32px, 4.5vw, 64px);   /* weight 900, uppercase */
+  --t-h2:       clamp(24px, 2.5vw, 36px);   /* weight 800, uppercase */
+  --t-h3:       clamp(16px, 1.4vw, 22px);   /* weight 700, uppercase */
+  --t-body:     clamp(16px, 1.3vw, 20px);   /* weight 500, sentence-case */
+  --t-caption:  clamp(11px, 1vw, 13px);     /* weight 700, uppercase */
+  --t-micro:    11px;                        /* label text inside pills */
+  --t-number:   clamp(64px, 8vw, 120px);    /* weight 900, -0.04em tracking */
+
+  /* ─── Spacing scale ─── */
+  --space-unit: 8px;
+  --space-xs:   4px;
+  --space-sm:   8px;
+  --space-md:   16px;
+  --space-lg:   24px;
+  --space-xl:   48px;
+  --space-2xl:  96px;
+
+  /* ─── Radii — strictly 0 except circles ─── */
+  --r-card: 0;
+  --r-pill: 0;
+  --shadow-offset: 6px 6px 0 var(--rule);
+  --shadow-offset-sm: 4px 4px 0 var(--rule);
+
+  /* ─── Stage ─── */
+  --stage-pad-x: clamp(32px, 4vw, 64px);
+  --stage-pad-y: clamp(32px, 4vw, 64px);
+  --shadow-stage: none;
+  --card-shadow: var(--shadow-offset);
+
+  /* ─── Motion ─── */
+  --ease-slide:  cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-slide:   0.6s;
+  --ease-enter:  cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-enter:   0.5s;
+  --dur-reveal:  0.5s;
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * MUST classes — the 12-class contract
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* .display — Hero headline — weight 900 uppercase, negative tracking */
+.display {
+  font-family: var(--font-display-en);
+  font-size: var(--t-display);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;    /* Non-negotiable: uppercase */
+  color: var(--text);
+}
+.surface-alt .display {
+  color: var(--text-on-alt);
+}
+
+/* .display-cn — Hero headline (Chinese) */
+.display-cn {
+  font-family: var(--font-display-cn);
+  font-size: var(--t-display);
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: 0;           /* no negative tracking on CJK */
+  color: var(--text);
+}
+.surface-alt .display-cn {
+  color: var(--text-on-alt);
+}
+
+/* .body — Body text — weight 500 sentence-case */
+.body {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: 500;
+  line-height: 1.6;
+  color: var(--text);
+}
+.surface-alt .body {
+  color: var(--text-2-on-alt);
+}
+
+/* .body-sm — Caption / small body */
+.body-sm {
+  font-family: var(--font-body);
+  font-size: var(--t-caption);
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+}
+.surface-alt .body-sm {
+  color: var(--text-mute-on-alt);
+}
+
+/* .label — Pill label */
+.label {
+  display: inline-block;
+  background: var(--surface-alt);
+  color: var(--text-on-alt);
+  padding: 6px 14px;
+  font-family: var(--font-body);
+  font-size: var(--t-micro);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* .stat-value — Large stat number */
+.stat-value {
+  font-family: var(--font-display-en);
+  font-size: var(--t-number);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--text);
+}
+.surface-alt .stat-value {
+  color: var(--text-on-alt);
+}
+
+/* .stat-label — Stat description */
+.stat-label {
+  font-family: var(--font-body);
+  font-size: var(--t-caption);
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text);
+}
+.surface-alt .stat-label {
+  color: var(--text-on-alt);
+}
+
+/* .card — Card container — 3px black border, strict rectangle */
+.card {
+  border: 3px solid var(--rule);
+  border-radius: var(--r-card);
+  padding: var(--space-lg);
+  background: var(--surface);
+}
+.card.accent-warm {
+  background: var(--surface-3);
+}
+.card.accent-cool {
+  background: var(--surface-4);
+}
+.card.accent-gray {
+  background: var(--surface-2);
+}
+.card.accent-dark {
+  background: var(--surface-alt);
+  color: var(--text-on-alt);
+}
+.surface-alt .card {
+  background: var(--surface-alt);
+  border-color: var(--rule-on-alt);
+  color: var(--text-on-alt);
+}
+
+/* .divider — Horizontal rule */
+.divider {
+  width: 100%;
+  height: 4px;
+  background: var(--rule);
+  border: 0;
+  margin: var(--space-md) 0;
+}
+.surface-alt .divider {
+  background: var(--rule-on-alt);
+}
+
+/* .quote — Pull quote */
+.quote {
+  font-family: var(--font-display-en);
+  font-size: var(--t-h1);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--text);
+  padding-left: var(--space-lg);
+  border-left: 3px solid var(--rule);
+  position: relative;
+}
+.surface-alt .quote {
+  color: var(--text-on-alt);
+  border-left-color: var(--text-on-alt);
+}
+
+/* .tag — Badge / pill — black bg, strict rectangle */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 0;
+  font-family: var(--font-body);
+  font-size: var(--t-micro);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: var(--surface-alt);
+  color: var(--text-on-alt);
+  border: none;
+}
+
+/* .meta — Metadata / footnote */
+.meta {
+  font-family: var(--font-body);
+  font-size: var(--t-caption);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+}
+.surface-alt .meta {
+  color: var(--text-mute-on-alt);
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * Raw Grid-specific extensions
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* Surface-alt helper: black background */
+.surface-alt {
+  background: var(--surface-alt);
+  color: var(--text-on-alt);
+}
+.surface-alt .body { color: var(--text-2-on-alt); }
+.surface-alt .body-sm { color: var(--text-mute-on-alt); }
+.surface-alt .label { color: var(--text-on-alt); }
+.surface-alt .meta { color: var(--text-faint-on-alt); }
+.surface-alt .divider { background: var(--rule-on-alt); }
+
+/* .subtitle — Region subtitle */
+.subtitle {
+  font-family: var(--font-display-en);
+  font-size: var(--t-h3);
+  font-weight: 700;
+  line-height: 1.3;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text);
+}
+
+/* .arrow — Arrow-prefixed CTA text */
+.arrow::before {
+  content: "→\00a0";
+}
+
+/* .line-h — Horizontal rule stub */
+.line-h {
+  width: 60px;
+  height: 4px;
+  background: var(--rule);
+  border: 0;
+}
+.surface-alt .line-h {
+  background: var(--rule-on-alt);
+}
+
+/* .line-v — Vertical rule stub */
+.line-v {
+  width: 4px;
+  height: 60px;
+  background: var(--rule);
+}
+
+/* .icon-box — 48px square with 3px border */
+.icon-box {
+  width: 48px;
+  height: 48px;
+  border: 3px solid var(--rule);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+/* .decorative-num — Oversized low-opacity wallpaper numeral */
+.decorative-num {
+  font-weight: 900;
+  font-size: clamp(40px, 5vw, 72px);
+  line-height: 1;
+  opacity: 0.35;
+}
+
+/* .decorative-quote-mark — Oversized quote mark wallpaper */
+.decorative-quote-mark {
+  font-weight: 900;
+  font-size: clamp(80px, 12vw, 160px);
+  opacity: 0.15;
+  line-height: 1;
+}
+
+/* .bar-track — Bar chart track */
+.bar-track {
+  width: 100%;
+  height: 32px;
+  border: 3px solid var(--rule);
+  background: var(--surface);
+}
+
+/* .bar-fill — Bar chart fill */
+.bar-fill {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  font-size: 12px;
+  font-weight: 800;
+}
+.bar-fill.pink { background: var(--surface-3); }
+.bar-fill.green { background: var(--surface-4); }
+.bar-fill.black { background: var(--surface-alt); color: var(--text-on-alt); }
+
+/* .stat-box — Bordered stat tile */
+.stat-box {
+  border: 3px solid var(--rule);
+  padding: clamp(16px, 2vw, 28px);
+  background: var(--surface);
+}
+
+/* .connector-node — Square connector arrow */
+.connector-node {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--rule);
+  background: var(--surface-alt);
+  color: var(--text-on-alt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+/* .grid-3col — 3-column grid with borders as separators */
+.grid-3col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+.grid-3col > * + * {
+  border-left: 3px solid var(--rule);
+}

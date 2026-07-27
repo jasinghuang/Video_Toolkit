@@ -1,0 +1,26 @@
+{
+  "id": "editorial-forest",
+  "name": "Editorial Forest",
+  "nameZh": "森林编辑",
+  "description": "Serif-led editorial system in the register of a literary quarterly or art-book monograph. A single confident typographic voice — Source Serif 4 at weight 500 with optical-size axis engaged, scaling up to 220px for cover and stat moments. JetBrains Mono in uppercase at wide tracking carries every label, caption, axis tick, and footline. Deep forest green, dusty rose pink, and oat cream paper form the editorial palette. No shadows — elevation comes from color-block contrast, 2px hairline rules, and filled-vs-bordered tiles. Every slide carries a mono topbar and most carry a footline.",
+  "descriptionZh": "文学季刊或艺术书专刊风格的衬线编辑系统。单一自信字体声音——Source Serif 4 重量 500 配合光学尺寸轴，展示尺寸达 220px。JetBrains Mono 大写宽字距用于所有标签和标注。深森林绿、灰玫瑰粉、燕麦奶油纸构成编辑调色板。无阴影——层次来自色块对比和 2px 细线。",
+  "mood": ["editorial", "quiet", "considered", "warm", "intentional"],
+  "bestFor": [
+    "季度回顾",
+    "内部汇报",
+    "工作室更新",
+    "创意机构演示",
+    "研究总结"
+  ],
+  "avoidFor": [
+    "需要紧迫、冲击或销售驱动的场景"
+  ],
+  "formality": "medium",
+  "source": "beautiful-html-templates/editorial-forest",
+  "preview": {
+    "shell": "#243A21",
+    "surface": "#EFE7D4",
+    "text": "#1A1A17",
+    "accent": "#2E4A2A"
+  }
+}

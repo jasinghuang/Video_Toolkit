@@ -1,0 +1,26 @@
+{
+  "id": "coral",
+  "name": "Coral",
+  "nameZh": "珊瑚",
+  "description": "Bold magazine-poster system on three surface registers: coral fire, ink black, and warm cream. Bebas Neue uppercase condensed display with heavy letter-spacing paired with Inter body. 45° diagonal hatch pattern on coral regions. Flat hard color edges, no shadows, no rounded corners.",
+  "descriptionZh": "三面体系大胆杂志海报系统：珊瑚红、墨水黑、暖奶油色。Bebas Neue 大写浓缩展示字体配大间距 + Inter 正文字体。珊瑚区域 45° 对角线纹理。纯平硬色边，无阴影，无圆角。",
+  "mood": ["bold", "warm", "modern", "confident", "graphic", "magazine"],
+  "bestFor": [
+    "时尚 / 美容提案",
+    "健身品牌 / 生活方式发布",
+    "餐饮品牌手册",
+    "创意机构 / 创作者作品集"
+  ],
+  "avoidFor": [
+    "需要安静 / 学院气息的场景",
+    "极低视觉冲击力的内容"
+  ],
+  "formality": "medium",
+  "source": "beautiful-html-templates/coral",
+  "preview": {
+    "shell": "#F5F0E8",
+    "surface": "#F5F0E8",
+    "text": "#1A1A1A",
+    "accent": "#E85D5D"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "id": "creative-mode",
+  "name": "Creative Mode",
+  "nameZh": "创意模式",
+  "description": "Neo-brutalist editorial slide system on warm cream canvas with 4px ink borders, hard offset drop-shadows, and a bold four-color accent palette (forest green, hot pink, burnt orange, sunshine yellow). Archivo Black uppercase display at 0.92 line-height — aggressive, loud, zero letter-spacing softness. JetBrains Mono carries all metadata and labels. Space Grotesk handles body paragraphs. Every slide uses flat color-blocking with no gradients, no rounded cards (except the topbar pill), and no subtlety. Green fills the entire closing slide as a full-bleed impact move.",
+  "descriptionZh": "暖奶油色画布上的新野蛮主义编辑幻灯片系统。4px 墨水边框、硬偏移投影、大胆四色强调色板（森林绿、热粉、焦橙、阳光黄）。Archivo Black 大写展示字体，行高 0.92。JetBrains Mono 处理元数据和标签。Space Grotesk 处理正文。平面色块，无渐变、无圆角卡片（顶栏药丸除外）。绿色全出血用于结束页。",
+  "mood": ["creative", "confident", "playful", "design-led", "graphic"],
+  "bestFor": [
+    "创意机构提案",
+    "设计工作室演示",
+    "广告公司资质展示",
+    "品牌创意评审",
+    "概念展示"
+  ],
+  "avoidFor": [
+    "需要制度克制和安静权威的场景"
+  ],
+  "formality": "medium",
+  "source": "beautiful-html-templates/creative-mode",
+  "preview": {
+    "shell": "#EFE9D9",
+    "surface": "#EFE9D9",
+    "text": "#0F0F0F",
+    "accent": "#1F8A4C"
+  }
+}

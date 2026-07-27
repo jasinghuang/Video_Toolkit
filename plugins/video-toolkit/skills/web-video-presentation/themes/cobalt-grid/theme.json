@@ -1,0 +1,26 @@
+{
+  "id": "cobalt-grid",
+  "name": "Cobalt Grid",
+  "nameZh": "钴蓝网格",
+  "description": "Two-color trend-report editorial system on warm cream paper with electric cobalt ink and a permanent graph-paper grid behind every slide. Newsreader serif at weight 400 for all display, Hanken Grotesk for all body and labels, DM Mono for all chrome. The pixel-glitch vertical scanline column and QR-style 8x8 mosaics are the signature decorative patches. Pixel-stack bar charts render data as grid-unit cells. Top and bottom 1.5px cobalt hairlines frame every slide. Strictly two-color: cream + cobalt only.",
+  "descriptionZh": "暖奶油色纸 + 电光钴蓝墨水的双色趋势报告编辑系统。每页幻灯片后均有永久性方格纸网格。Newsreader 衬线字重 400 用于展示，Hanken Grotesk 用于正文和标签，DM Mono 用于所有铬元素。像素故障垂直扫描线柱和 QR 风格 8×8 马赛克为标志性装饰。像素堆叠条形图以网格单元渲染数据。",
+  "mood": ["editorial", "design-research", "studious", "modernist", "tech-print", "monochrome"],
+  "bestFor": [
+    "设计趋势 / 研究报告",
+    "工作室年度 / 季节公告",
+    "创意机构能力展示",
+    "艺术 / 建筑出版物",
+    "学术 / 策展出版物"
+  ],
+  "avoidFor": [
+    "需要温暖、多色能量或随性 / 俏皮风格的演示"
+  ],
+  "formality": "high",
+  "source": "beautiful-html-templates/cobalt-grid",
+  "preview": {
+    "shell": "#F0EBDE",
+    "surface": "#F0EBDE",
+    "text": "#1F2BE0",
+    "accent": "#1F2BE0"
+  }
+}

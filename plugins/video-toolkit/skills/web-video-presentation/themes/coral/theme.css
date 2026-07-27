@@ -1,0 +1,451 @@
+/* ======================================================================
+ * Theme · coral
+ *   Bold magazine-poster on three surface registers: coral fire, ink
+ *   black, warm cream. Bebas Neue uppercase condensed display with
+ *   heavy letter-spacing, Inter body. 45° diagonal hatch on coral
+ *   regions. Hard color edges, no shadows, no rounded corners.
+ *
+ *   Source: beautiful-html-templates/templates/coral/
+ *
+ *   Character signatures:
+ *     • three-surface system: coral / ink / cream meeting at hard edges
+ *     • Bebas Neue uppercase, always tracked (1-12px spacing)
+ *     • Inter 700 uppercase labels (3-4px tracking)
+ *     • 45° diagonal hatch at 6% opacity on coral regions
+ *     • decorative oversized numerals at 12% opacity
+ *     • 5px coral top border (cards), 4px coral left border (sidebar)
+ *     • flat — zero box-shadow, zero border-radius on rectangles
+ * ====================================================================== */
+:root {
+  /* ─── Palette ─── */
+  --shell:        #1A1A1A;    /* near-black stage letterbox */
+  --surface:      #F5F0E8;    /* warm cream — default canvas */
+  --surface-2:    #FFFFFF;    /* white — card fill */
+  --surface-3:    #FFFFFF;
+  --surface-alt:  #E85D5D;    /* coral fire — full-region surface */
+  --surface-alt-2:#1A1A1A;    /* near-black — ink region */
+
+  --text:         #1A1A1A;    /* near-black ink */
+  --text-2:       #6B6B6B;    /* mid gray — body */
+  --text-mute:    #B0B0B0;    /* light gray */
+  --text-faint:   rgba(26,26,26,0.10);
+
+  --text-on-alt:        #1A1A1A;            /* ink-on-fire — headlines on coral */
+  --text-2-on-alt:      rgba(26,26,26,0.7);
+  --text-mute-on-alt:   rgba(26,26,26,0.45);
+  --text-faint-on-alt:  rgba(26,26,26,0.12);
+
+  --text-on-alt-2:       #F5F0E8;            /* cream on black */
+  --text-2-on-alt-2:     rgba(245,240,232,0.7);
+
+  --rule:          rgba(26,26,26,0.20);
+
+  --accent:       #E85D5D;    /* coral — single accent */
+  --accent-soft:  rgba(232,93,93,0.08);
+  --accent-glow:  rgba(232,93,93,0.15);
+
+  /* ─── Typography ─── */
+  --font-display-en: "Bebas Neue", "ZCOOL XiaoWei", sans-serif;
+  --font-display-cn: "ZCOOL XiaoWei", "Noto Serif SC", serif;
+  --font-body:       "Inter", "Noto Sans SC", system-ui, sans-serif;
+  --font-mono:       "Bebas Neue", "ZCOOL XiaoWei", sans-serif;
+  --font-features:   "tnum";
+
+  /* ─── Type scale ─── */
+  --t-display:  min(120px, 9vw, 13vh);
+  --t-h1:       clamp(42px, 7vw, 100px);
+  --t-h2:       clamp(40px, 6vw, 80px);
+  --t-h3:       clamp(36px, 5vw, 72px);
+  --t-body:     clamp(15px, 1.4vw, 20px);
+  --t-caption:  12px;
+  --t-micro:    11px;
+
+  /* ─── Spacing scale ─── */
+  --space-unit: 8px;
+  --space-xs:   4px;
+  --space-sm:   8px;
+  --space-md:   16px;
+  --space-lg:   24px;
+  --space-xl:   48px;
+  --space-2xl:  96px;
+
+  /* ─── Radii — 0 everywhere except circles ─── */
+  --r-card: 0;
+  --r-pill: 0;
+
+  /* ─── Stage ─── */
+  --stage-pad-x: clamp(40px, 8vw, 100px);
+  --stage-pad-y: clamp(40px, 6vh, 80px);
+  --shadow-stage: none;
+  --card-shadow: none;
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * MUST classes — the 12-class contract
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* .display — Hero headline — Bebas Neue uppercase tracked */
+.display {
+  font-family: var(--font-display-en);
+  font-size: var(--t-display);
+  font-weight: 400;  /* Bebas Neue only has weight 400 */
+  line-height: 0.9;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--text);
+}
+.surface-alt .display {
+  color: var(--text-on-alt);
+}
+.surface-alt-2 .display {
+  color: var(--text-on-alt-2);
+}
+
+/* .display-cn — Hero headline (Chinese) */
+.display-cn {
+  font-family: var(--font-display-cn);
+  font-size: var(--t-display);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0;
+  color: var(--text);
+}
+.surface-alt .display-cn {
+  color: var(--text-on-alt);
+}
+.surface-alt-2 .display-cn {
+  color: var(--text-on-alt-2);
+}
+
+/* .body — Body text — Inter 400 */
+.body {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--text-2);
+}
+.surface-alt .body {
+  color: var(--text-on-alt);
+}
+.surface-alt-2 .body {
+  color: var(--text-on-alt-2);
+}
+
+/* .body-sm — Caption / small body */
+.body-sm {
+  font-family: var(--font-body);
+  font-size: var(--t-caption);
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text-2);
+}
+.surface-alt .body-sm {
+  color: rgba(26,26,26,0.7);
+}
+.surface-alt-2 .body-sm {
+  color: rgba(245,240,232,0.7);
+}
+
+/* .label — Uppercase section eyebrow — Inter 700 coral */
+.label {
+  font-family: var(--font-body);
+  font-size: var(--t-micro);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: var(--accent);
+}
+.surface-alt .label {
+  color: var(--text);
+}
+.surface-alt-2 .label {
+  color: var(--accent);
+}
+
+/* .stat-value — Large stat number — Bebas Neue uppercase coral */
+.stat-value {
+  font-family: var(--font-display-en);
+  font-size: clamp(48px, 7vw, 96px);
+  font-weight: 400;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.surface-alt .stat-value {
+  color: var(--accent);
+}
+.surface-alt-2 .stat-value {
+  color: var(--accent);
+}
+
+/* .stat-label — Stat description — Inter 600 uppercase */
+.stat-label {
+  font-family: var(--font-body);
+  font-size: var(--t-caption);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-2);
+}
+.surface-alt .stat-label {
+  color: rgba(26,26,26,0.7);
+}
+
+/* .card — Column card — white, 5px coral top border, no radius */
+.card {
+  background: var(--surface-2);
+  border-radius: var(--r-card);
+  padding: clamp(24px, 3vh, 40px);
+  border-top: 5px solid var(--accent);
+  display: flex;
+  flex-direction: column;
+}
+.surface-alt .card {
+  background: var(--surface-2);
+  border-top-color: var(--accent);
+}
+.surface-alt-2 .card {
+  background: rgba(245,240,232,0.05);
+  border-top-color: var(--accent);
+}
+
+/* .divider — Horizontal rule */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: var(--rule);
+  border: 0;
+  margin: var(--space-md) 0;
+  opacity: 0.3;
+}
+.surface-alt .divider {
+  background: rgba(26,26,26,0.15);
+}
+.surface-alt-2 .divider {
+  background: rgba(245,240,232,0.12);
+}
+
+/* .quote — Pull quote — Inter 300 light on ink background */
+.quote {
+  font-family: var(--font-body);
+  font-size: clamp(20px, 2.5vw, 36px);
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--text);
+  border-left: none;
+  padding-left: 0;
+}
+.surface-alt .quote {
+  color: var(--text-on-alt);
+}
+.surface-alt-2 .quote {
+  color: var(--text-on-alt-2);
+}
+
+/* .tag — Badge / pill — outlined, sharp corners */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.9rem;
+  border-radius: 0;
+  font-family: var(--font-body);
+  font-size: var(--t-micro);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--accent);
+  background: transparent;
+  border: none;
+}
+.surface-alt .tag {
+  color: var(--text);
+}
+
+/* .meta — Metadata */
+.meta {
+  font-family: var(--font-display-en);
+  font-size: min(38px, 3vw, 4.8vh);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text);
+}
+.surface-alt .meta {
+  color: var(--text-on-alt);
+}
+.surface-alt-2 .meta {
+  color: var(--text-on-alt-2);
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * Coral-specific extensions (MAY — not part of contract)
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* Surface helper classes */
+.surface-alt {
+  background: var(--surface-alt);
+  color: var(--text-on-alt);
+}
+.surface-alt-2 {
+  background: var(--surface-alt-2);
+  color: var(--text-on-alt-2);
+}
+
+/* 45° diagonal hatch — signature coral region texture */
+.coral-hatch {
+  position: relative;
+}
+.coral-hatch::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -30%;
+  width: 80%;
+  height: 200%;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 20px,
+    rgba(0,0,0,0.06) 20px,
+    rgba(0,0,0,0.06) 40px
+  );
+  pointer-events: none;
+}
+
+/* Icon square — 48px solid coral rectangle */
+.icon-square {
+  width: 48px;
+  height: 48px;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display-en);
+  font-size: 24px;
+  color: #fff;
+}
+
+/* Sidebar item — white fill, 4px coral left border */
+.sidebar-item {
+  background: #fff;
+  padding: 20px 24px;
+  border-left: 4px solid var(--accent);
+}
+
+/* Accent line — coral rectangle */
+.accent-line {
+  width: 80px;
+  height: 4px;
+  background: var(--accent);
+}
+
+/* Info bar — cream band holding Bebas title + Inter meta */
+.info-bar {
+  background: var(--surface);
+  padding: clamp(24px, 4vh, 40px) clamp(40px, 8vw, 100px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.info-bar-title {
+  font-family: var(--font-display-en);
+  font-size: clamp(28px, 4vw, 56px);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text);
+}
+.info-bar-meta {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--text-2);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-align: right;
+}
+
+/* Timeline — 4px ink line with coral dots */
+.timeline-line {
+  height: 4px;
+  background: var(--text);
+  position: relative;
+}
+.timeline-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 4px solid var(--surface);
+}
+
+/* Nav navigation */
+.nav-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  border: 2px solid rgba(255,255,255,0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.nav-dot.active {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.nav-dot.dark {
+  background: rgba(26,26,26,0.2);
+  border-color: rgba(26,26,26,0.4);
+}
+.nav-dot.dark.active {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.nav-arrow {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  border: 2px solid rgba(255,255,255,0.3);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.nav-arrow:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.nav-arrow.dark {
+  background: rgba(26,26,26,0.05);
+  border-color: rgba(26,26,26,0.2);
+  color: var(--text);
+}
+.nav-arrow.dark:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* Decorative background numeral — Bebas at 12% opacity */
+.bg-numeral {
+  font-family: var(--font-display-en);
+  font-size: clamp(100px, 15vw, 200px);
+  font-weight: 400;
+  line-height: 1;
+  color: rgba(0,0,0,0.12);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Giant mark — oversized decorative character at 35% opacity */
+.giant-mark {
+  font-family: var(--font-display-en);
+  font-size: clamp(140px, 20vw, 280px);
+  font-weight: 400;
+  line-height: 1;
+  color: rgba(0,0,0,0.35);
+}

@@ -1,0 +1,27 @@
+{
+  "id": "stencil-tablet",
+  "name": "Stencil & Tablet",
+  "nameZh": "模板与卡片",
+  "description": "Poster-loud stencil system: bone canvas + black field + seven saturated accents. Stardos Stencil UPPERCASE at massive sizes (540px numerals). Barlow Condensed chrome. Inter body. Rounded tablet cards (22-26px) in color blocks. No shadows. No gradients. Type IS the layout.",
+  "descriptionZh": "海报级模板系统：骨色画布 + 黑色背景 + 七种饱和强调色。Stardos Stencil 大写字母大到极致（540px 数字）。Barlow Condensed 镀铬装饰。Inter 正文。圆角标签卡片（22-26px）色块排版。无阴影。无渐变。文字即布局。",
+  "mood": ["archival", "earthy", "tactile", "considered", "graphic", "bold"],
+  "bestFor": [
+    "博物馆 / 文化机构",
+    "艺术 / 建筑品牌",
+    "长篇研究",
+    "遗产 / 手工艺品牌",
+    "宣言"
+  ],
+  "avoidFor": [
+    "需要数字原生质感的内容",
+    "俏皮 / 轻松场合"
+  ],
+  "formality": "medium-high",
+  "source": "beautiful-html-templates/stencil-tablet",
+  "preview": {
+    "shell": "#1A1A1A",
+    "surface": "#E2DCC9",
+    "text": "#C73B7A",
+    "accent": "#EE7A2E"
+  }
+}

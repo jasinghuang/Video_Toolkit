@@ -1,0 +1,490 @@
+/* ======================================================================
+ * Theme · mat
+ *   Material-tactile presentation: dark forest green canvas with warm
+ *   wood-brown atmospheric glow from bottom-right. Cream type floats
+ *   on the field; burnt-orange single accent. Bricolage Grotesque
+ *   display (mixed case, never uppercase), DM Sans body, DM Mono labels.
+ *   Cream info-card inset is the signature material-contrast move.
+ *
+ *   Source: beautiful-html-templates/templates/mat/
+ *
+ *   Character signatures:
+ *     • dark forest green (--surface) with wood-brown radial glow via ::before
+ *     • cream type floats directly — no cards, no panels, no frames
+ *     • Bricolage Grotesque 700-800 — always mixed case, never uppercase
+ *     • DM Sans 400 body, DM Mono 400 labels (uppercase with tracking)
+ *     • burnt-orange kicker, bullet em-dash, inline <em> emphasis
+ *     • cream info-card inset — signature material-contrast component
+ *     • 1px hairline rules — never thicker
+ *     • em-dash bullet in DM Mono orange
+ * ====================================================================== */
+:root {
+  /* ─── Palette ─── */
+  --shell:        #232E26;    /* dark forest green stage letterbox */
+  --surface:      #232E26;    /* dark forest green — dominant environment */
+  --surface-2:    #2E3D30;    /* slightly lighter green */
+  --surface-3:    #2E3D30;
+  --surface-alt:  #EDE6D0;    /* warm cream — light slide / info-card */
+  --surface-alt-2:#E4DAC4;    /* deeper cream */
+
+  --text:         #F0E8D2;    /* warm cream — primary text on dark */
+  --text-2:       rgba(240,232,210,0.58);   /* secondary cream */
+  --text-mute:    rgba(240,232,210,0.30);   /* tertiary cream */
+  --text-faint:   rgba(240,232,210,0.08);
+
+  --text-on-alt:        #1E2820;            /* dark green — text on cream */
+  --text-2-on-alt:      rgba(30,40,32,0.60);
+  --text-mute-on-alt:   rgba(30,40,32,0.30);
+  --text-faint-on-alt:  rgba(30,40,32,0.08);
+
+  --rule:          rgba(240,232,210,0.12);  /* border on dark */
+  --rule-on-alt:   rgba(30,40,32,0.14);     /* border on cream */
+
+  --accent:       #C07030;    /* burnt-orange — single accent */
+  --accent-soft:  rgba(192,112,48,0.12);
+  --accent-glow:  rgba(192,112,48,0.20);
+
+  /* Wood glow color — for atmospheric radial gradient */
+  --wood:         #7A4E24;
+
+  /* ─── Typography ─── */
+  --font-display-en: "Bricolage Grotesque", "Noto Serif SC", sans-serif;
+  --font-display-cn: "Noto Serif SC", serif;
+  --font-body:       "DM Sans", "Noto Sans SC", system-ui, sans-serif;
+  --font-mono:       "DM Mono", "Noto Sans SC", monospace;
+  --font-features:   "tnum";
+
+  /* ─── Type scale ─── */
+  --t-display:  12vw;
+  --t-h1:       7vw;
+  --t-h2:       4vw;
+  --t-h3:       2.4vw;
+  --t-body:     1.05vw;
+  --t-caption:  0.82vw;
+  --t-micro:    0.7vw;
+
+  /* ─── Spacing scale ─── */
+  --space-unit: 8px;
+  --space-xs:   4px;
+  --space-sm:   8px;
+  --space-md:   16px;
+  --space-lg:   24px;
+  --space-xl:   48px;
+  --space-2xl:  96px;
+
+  /* ─── Radii — 0 everywhere except 5px nav-dots ─── */
+  --r-card: 0;
+  --r-pill: 0;
+
+  /* ─── Stage ─── */
+  --stage-pad-x: 5.5vw;
+  --stage-pad-y: 5.5vh;
+  --shadow-stage: none;
+  --card-shadow: none;
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * MUST classes — the 12-class contract
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* .display — Hero headline — Bricolage 800, MIXED CASE (never uppercase) */
+.display {
+  font-family: var(--font-display-en);
+  font-size: var(--t-display);
+  font-weight: 800;
+  line-height: 0.88;
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+.surface-alt .display {
+  color: var(--text-on-alt);
+}
+
+/* .display-cn — Hero headline (Chinese) */
+.display-cn {
+  font-family: var(--font-display-cn);
+  font-size: var(--t-display);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0;
+  color: var(--text);
+}
+.surface-alt .display-cn {
+  color: var(--text-on-alt);
+}
+
+/* .body — Body text — DM Sans 400 */
+.body {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--text-2);
+}
+.surface-alt .body {
+  color: var(--text-2-on-alt);
+}
+
+/* .body-sm — Caption / small body */
+.body-sm {
+  font-family: var(--font-body);
+  font-size: var(--t-caption);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-mute);
+}
+.surface-alt .body-sm {
+  color: var(--text-mute-on-alt);
+}
+
+/* .label — Label — DM Mono 400 uppercase tracked */
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+.surface-alt .label {
+  color: var(--text-2-on-alt);
+}
+
+/* .stat-value — Large stat number — Bricolage 800 */
+.stat-value {
+  font-family: var(--font-display-en);
+  font-size: 5.5vw;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  color: var(--text);
+}
+.stat-value em {
+  font-style: normal;
+  color: var(--accent);
+}
+.surface-alt .stat-value {
+  color: var(--text-on-alt);
+}
+.surface-alt .stat-value em {
+  color: var(--accent);
+}
+
+/* .stat-label — Stat description — DM Sans 400 muted */
+.stat-label {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-2);
+}
+.surface-alt .stat-label {
+  color: var(--text-2-on-alt);
+}
+
+/* .card — Card container — info-card: cream inset on dark field */
+.card {
+  background: var(--surface-alt);
+  color: var(--text-on-alt);
+  border-radius: var(--r-card);
+  padding: var(--space-md) calc(var(--stage-pad-x) * 0.8);
+  max-width: 28vw;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  border: none;             /* tonal jump defines the edge, not border */
+}
+.surface-alt .card {
+  background: var(--surface-alt);
+}
+
+/* .divider — Horizontal rule — 1px hairline */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: var(--rule);
+  border: 0;
+  margin: var(--space-md) 0;
+}
+.surface-alt .divider {
+  background: var(--rule-on-alt);
+}
+
+/* .quote — Pull quote — Bricolage 600 mixed case */
+.quote {
+  font-family: var(--font-display-en);
+  font-size: 3.4vw;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  border-left: none;
+  padding-left: 0;
+}
+.surface-alt .quote {
+  color: var(--text-on-alt);
+}
+
+/* .tag — Badge / pill — mono uppercase */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: transparent;
+  border: none;
+}
+.surface-alt .tag {
+  color: var(--accent);
+}
+
+/* .meta — Metadata / footnote */
+.meta {
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+}
+.surface-alt .meta {
+  color: var(--text-mute-on-alt);
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * Mat-specific extensions (MAY — not part of contract)
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* Surface helpers */
+.surface-alt {
+  background: var(--surface-alt);
+  color: var(--text-on-alt);
+}
+
+/* Atmospheric wood-brown glow — on every dark slide via ::before */
+.dark-glow {
+  position: relative;
+}
+.dark-glow::before {
+  content: "";
+  position: absolute;
+  bottom: -10%;
+  right: -5%;
+  width: 55%;
+  height: 70%;
+  background: radial-gradient(
+    ellipse at 70% 80%,
+    rgba(122, 78, 36, 0.28) 0%,
+    rgba(80, 50, 20, 0.14) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+.dark-glow > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Kicker — DM Mono uppercase in warm orange */
+.kicker {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* Rule — short warm orange accent line */
+.rule {
+  width: 32px;
+  height: 1px;
+  background: var(--accent);
+}
+
+/* Bullet list — em-dash in DM Mono orange */
+.bullet-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding: 0;
+}
+.bullet-list li {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: 400;
+  line-height: 1.5;
+  display: grid;
+  grid-template-columns: 1.4em 1fr;
+  gap: 0.5em;
+  color: var(--text-2);
+}
+.bullet-list li::before {
+  content: "\2014";
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+.surface-alt .bullet-list li {
+  color: var(--text-2-on-alt);
+}
+
+/* Info-card — cream inset on dark green field */
+.info-card {
+  background: var(--surface-alt);
+  color: var(--text-on-alt);
+  padding: var(--space-md) calc(var(--stage-pad-x) * 0.8);
+  max-width: 28vw;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+.info-card-heading {
+  font-family: var(--font-display-en);
+  font-size: var(--t-h3);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--text-on-alt);
+}
+.info-card-body {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text-2-on-alt);
+}
+
+/* Stat cell — vertically-divided, right border on all but last */
+.mat-stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--stage-pad-x) var(--space-md) 0;
+  border-right: 1px solid var(--rule);
+}
+.mat-stat:last-child {
+  border-right: none;
+  padding-right: 0;
+  padding-left: var(--stage-pad-x);
+}
+.mat-stat:nth-child(2) {
+  padding: var(--space-md) var(--stage-pad-x);
+}
+
+/* Chrome bands — 1px hairline top/bottom */
+.slide-chrome {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: var(--space-md);
+}
+.slide-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--rule);
+  margin-top: var(--space-md);
+}
+.surface-alt .slide-chrome,
+.surface-alt .slide-foot {
+  border-color: var(--rule-on-alt);
+}
+
+/* Quote mark — oversized Bricolage opening glyph in orange */
+.quote-mark {
+  font-family: var(--font-display-en);
+  font-size: 8vw;
+  line-height: 0.6;
+  color: var(--accent);
+  margin-bottom: var(--space-md);
+  font-weight: 800;
+}
+
+/* Compare panels */
+.compare-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+.compare-label {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: var(--space-sm);
+}
+.compare-label.after {
+  color: var(--accent);
+}
+.compare-divider-line {
+  background: var(--rule);
+  height: 100%;
+  width: 1px;
+}
+
+/* Image placeholder */
+.img-placeholder {
+  background: rgba(240,232,210,0.06);
+  border: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  letter-spacing: 0.1em;
+  color: var(--text-mute);
+  min-height: 30vh;
+}
+
+/* Bar chart */
+.bar-track {
+  height: 30vh;
+  display: flex;
+  align-items: flex-end;
+  gap: 3vw;
+  border-left: 1px solid var(--rule);
+  padding-left: 0.5vw;
+}
+.bar-fill {
+  width: 100%;
+  background: var(--text-mute);
+}
+.bar-fill.accent {
+  background: var(--accent);
+}
+.bar-x-label {
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  letter-spacing: 0.1em;
+  color: var(--text-mute);
+  white-space: nowrap;
+}
+.bar-val {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: 500;
+  color: var(--text-2);
+}
+.bar-val.hi {
+  color: var(--accent);
+  font-weight: 600;
+}
+.chart-baseline {
+  height: 1px;
+  background: var(--rule);
+}
+
+/* Muted text helper */
+.muted { color: var(--text-2); }
+.accent-color { color: var(--accent); }
+.surface-alt .muted { color: var(--text-2-on-alt); }

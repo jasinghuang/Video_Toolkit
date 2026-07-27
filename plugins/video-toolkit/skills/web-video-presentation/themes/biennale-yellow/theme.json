@@ -1,0 +1,27 @@
+{
+  "id": "biennale-yellow",
+  "name": "Biennale Yellow",
+  "nameZh": "双年展黄",
+  "description": "Warm parchment ground with solar-yellow blooms and deep indigo navy ink. Instrument Serif display, Archivo body, JetBrains Mono chrome. Atmospheric, literary, contemplative editorial — like a museum poster.",
+  "descriptionZh": "温暖羊皮纸底色 + 太阳黄光晕 + 深靛蓝墨水。Instrument Serif 展示字、Archivo 正文、JetBrains Mono 信息栏。文艺、沉静、编辑派——如安静的美术馆海报。",
+  "mood": ["editorial", "atmospheric", "warm", "cultural-institution", "poster-like", "literary", "contemplative"],
+  "bestFor": [
+    "展览 / 双年展方案",
+    "艺术机构年度计划",
+    "设计 / 字体设计会议",
+    "文学 / 策展出版",
+    "设计工作室回顾"
+  ],
+  "avoidFor": [
+    "需要饱和多色冲击力的场景",
+    "快节奏商业演示"
+  ],
+  "formality": "high",
+  "source": "beautiful-html-templates/biennale-yellow",
+  "preview": {
+    "shell": "#1A1917",
+    "surface": "#E9E5DB",
+    "text": "#1B2566",
+    "accent": "#F1EE2E"
+  }
+}

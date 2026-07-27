@@ -1,0 +1,443 @@
+/* ======================================================================
+ * Theme · editorial-tri-tone
+ *   Strict three-color editorial system: blush pink, golden butter,
+ *   deep burgundy wine. All CSS aliases resolve to one of three hexes.
+ *   Bricolage Grotesque (variable grotesk, optical-size axis) at extreme
+ *   weights and negative tracking. Instrument Serif italic for expressive
+ *   accent moments (chapter numerals, pull-quotes, years, signatures).
+ *   JetBrains Mono for all metadata, labels, footers.
+ *   Section markers use the § NN — Title convention.
+ *
+ *   Source: beautiful-html-templates/templates/editorial-tri-tone/
+ *
+ *   Character signatures:
+ *     • three colors — pink (#F2B6C6), butter (#F2D86A), burgundy (#7A1F35)
+ *     • the em rule: <em> in headlines triggers Instrument Serif italic
+ *     • pills (border-radius 999px) at three sizes
+ *     • value cards: 28px radius, alternation dark/light
+ *     • rgba dividers on dark surfaces (whispered separators)
+ *     • footer chrome with dot-row progress indicator
+ *     • fixed 1920×1080 canvas
+ * ====================================================================== */
+:root {
+  /* ─── Palette — three hex values, multiple semantic aliases ─── */
+  --shell:        #7A1F35;    /* deep burgundy letterbox */
+
+  /* Surface tones */
+  --surface:      #F2D86A;    /* golden butter — primary light surface */
+  --surface-2:    #F2B6C6;    /* blush pink — accent surface */
+  --surface-3:    #7A1F35;    /* deep burgundy — dark surface */
+  --surface-alt:  #7A1F35;    /* burgundy — alternate / dark register */
+
+  /* Color aliases (all resolve to one of the three hexes) */
+  --pink:         #F2B6C6;
+  --butter:       #F2D86A;
+  --burgundy:     #7A1F35;
+  --cream:        #F2D86A;
+  --lime:         #F2D86A;
+  --terracotta:   #F2D86A;
+  --navy:         #7A1F35;
+  --forest:       #7A1F35;
+  --ink:          #7A1F35;
+
+  --text:         #7A1F35;    /* burgundy on light surfaces */
+  --text-2:       rgba(122,31,53,0.75);
+  --text-mute:    rgba(122,31,53,0.55);
+  --text-faint:   rgba(122,31,53,0.25);
+
+  --text-on-alt:       #F2D86A;    /* butter on burgundy */
+  --text-2-on-alt:     rgba(242,216,106,0.75);
+  --text-mute-on-alt:  rgba(242,216,106,0.55);
+  --text-faint-on-alt: rgba(242,216,106,0.25);
+
+  --rule:          rgba(242,216,106,0.30);  /* butter at low opacity on dark */
+  --rule-on-alt:   rgba(122,31,53,0.20);   /* burgundy at low opacity on light */
+
+  --accent:       #F2B6C6;    /* blush pink — signature accent */
+  --accent-soft:  rgba(242,182,198,0.2);
+  --accent-glow:  rgba(242,182,198,0.3);
+
+  /* ─── Typography ─── */
+  --font-display-en: "Bricolage Grotesque", "Noto Sans SC", sans-serif;
+  --font-display-cn: "ZCOOL XiaoWei", "Noto Serif SC", serif;
+  --font-serif-en:   "Instrument Serif", "LXGW WenKai TC", serif;
+  --font-body:       "Bricolage Grotesque", "Noto Sans SC", sans-serif;
+  --font-mono:       "JetBrains Mono", "Noto Sans Mono CJK SC", monospace;
+  --font-features:   "tnum", "ss01";
+
+  /* ─── Type scale (1920×1080 fixed canvas values) ─── */
+  --t-display:  clamp(84px, 8vw, 300px);    /* Bricolage Grotesque extreme */
+  --t-h1:       clamp(76px, 7vw, 84px);
+  --t-h2:       clamp(56px, 5vw, 76px);
+  --t-h3:       clamp(40px, 4vw, 56px);
+  --t-body:     26px;                        /* Bricolage Grotesque 400 */
+  --t-body-sm:  24px;
+  --t-caption:  24px;                        /* JetBrains Mono label size */
+  --t-micro:    16px;
+  --t-serif-lg: clamp(200px, 18vw, 540px);  /* Instrument Serif display */
+
+  /* ─── Spacing scale (1920×1080) ─── */
+  --space-unit: 8px;
+  --space-xs:   4px;
+  --space-sm:   8px;
+  --space-md:   16px;
+  --space-lg:   24px;
+  --space-xl:   48px;
+  --space-2xl:  96px;
+
+  /* ─── Radii ─── */
+  --r-card: 28px;              /* value cards */
+  --r-pill: 999px;             /* pills */
+  --r-chart-card: 32px;        /* chart card */
+
+  /* ─── Stage ─── */
+  --stage-pad-x: 64px;
+  --stage-pad-y: 96px;
+  --shadow-stage: none;
+  --card-shadow: none;
+
+  /* ─── Motion ─── */
+  --ease-slide:  cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-slide:   0.6s;
+  --ease-enter:  cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-enter:   0.5s;
+  --dur-reveal:  0.5s;
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * MUST classes — the 12-class contract
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* .display — Hero headline — Bricolage Grotesque extreme weight, negative tracking */
+.display {
+  font-family: var(--font-display-en);
+  font-size: var(--t-h1);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.display em {
+  font-family: var(--font-serif-en);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--terracotta);
+}
+.surface-alt .display {
+  color: var(--text-on-alt);
+}
+.surface-alt .display em {
+  color: var(--butter);
+}
+
+/* .display-cn — Hero headline (Chinese) */
+.display-cn {
+  font-family: var(--font-display-cn);
+  font-size: var(--t-h1);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0;
+  color: var(--text);
+}
+.surface-alt .display-cn {
+  color: var(--text-on-alt);
+}
+
+/* .body — Body text — Bricolage Grotesque 400 */
+.body {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--text);
+}
+.surface-alt .body {
+  color: var(--text-on-alt);
+}
+
+/* .body-sm — Caption / small body */
+.body-sm {
+  font-family: var(--font-body);
+  font-size: var(--t-body-sm);
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--text-mute);
+}
+.surface-alt .body-sm {
+  color: var(--text-mute-on-alt);
+}
+
+/* .label — JetBrains Mono uppercase label */
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-mute);
+}
+.surface-alt .label {
+  color: var(--text-mute-on-alt);
+}
+
+/* .stat-value — Large stat number — Bricolage Grotesque 700 */
+.stat-value {
+  font-family: var(--font-display-en);
+  font-size: var(--t-serif-lg);
+  font-weight: 700;
+  line-height: 0.78;
+  letter-spacing: -0.06em;
+  color: var(--accent);
+}
+.surface-alt .stat-value {
+  color: var(--text-on-alt);
+}
+
+/* .stat-label — Stat description */
+.stat-label {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text);
+}
+.surface-alt .stat-label {
+  color: var(--text-on-alt);
+}
+
+/* .card — Card container — 28px radius, alternation pattern */
+.card {
+  background: var(--butter);
+  border-radius: var(--r-card);
+  padding: 28px;
+  color: var(--burgundy);
+}
+.card.dark {
+  background: var(--burgundy);
+  color: var(--butter);
+}
+.surface-alt .card {
+  background: var(--burgundy);
+  color: var(--butter);
+}
+
+/* .divider — Horizontal rule */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: var(--rule);
+  border: 0;
+  margin: var(--space-md) 0;
+}
+.surface-alt .divider {
+  background: var(--rule-on-alt);
+}
+
+/* .quote — Pull quote — Instrument Serif + Bricolage mix */
+.quote {
+  font-family: var(--font-serif-en);
+  font-size: var(--t-h2);
+  font-weight: 400;
+  line-height: 1.1;
+  font-style: italic;
+  color: var(--text);
+  border-left: 3px solid var(--accent);
+  padding-left: var(--space-lg);
+}
+.quote b {
+  font-family: var(--font-display-en);
+  font-weight: 600;
+  font-style: normal;
+  color: var(--burgundy);
+}
+.surface-alt .quote {
+  color: var(--text-on-alt);
+  border-left-color: var(--text-on-alt);
+}
+.surface-alt .quote b {
+  color: var(--butter);
+}
+
+/* .tag — Badge / pill — 999px radius */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35em 0.9em;
+  border-radius: var(--r-pill);
+  font-family: var(--font-display-en);
+  font-size: var(--t-micro);
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  background: transparent;
+  border: 1px solid;
+}
+.tag.primary {
+  background: var(--burgundy);
+  color: var(--pink);
+  border-color: var(--burgundy);
+}
+.tag.secondary {
+  background: var(--butter);
+  color: var(--burgundy);
+  border-color: var(--butter);
+}
+
+/* .meta — Metadata / footnote */
+.meta {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  color: var(--text-faint);
+}
+.surface-alt .meta {
+  color: var(--text-faint-on-alt);
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * Editorial Tri-Tone-specific extensions
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* Surface-alt helper: dark burgundy background */
+.surface-alt {
+  background: var(--surface-alt);
+  color: var(--text-on-alt);
+}
+.surface-alt .body { color: var(--text-2-on-alt); }
+.surface-alt .body-sm { color: var(--text-mute-on-alt); }
+.surface-alt .label { color: var(--text-mute-on-alt); }
+.surface-alt .meta { color: var(--text-faint-on-alt); }
+.surface-alt .divider { background: var(--rule-on-alt); }
+
+/* .chapter-num — Instrument Serif oversized chapter numeral */
+.chapter-num {
+  font-family: var(--font-serif-en);
+  font-size: 240px;
+  font-weight: 400;
+  line-height: 0.9;
+  color: var(--burgundy);
+  text-transform: none;
+}
+.surface-alt .chapter-num {
+  color: var(--butter);
+}
+
+/* .signature — Instrument Serif signature / sign-off */
+.signature {
+  font-family: var(--font-serif-en);
+  font-size: 64px;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--lime);
+}
+
+/* .pill — Pill component */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35em 0.9em;
+  border-radius: var(--r-pill);
+  font-family: var(--font-display-en);
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* .section-marker — § NN — Title convention */
+.section-marker {
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: var(--space-lg);
+}
+
+/* .footer-chrome — Persistent footer */
+.footer-chrome {
+  position: absolute;
+  left: 64px;
+  right: 64px;
+  bottom: 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+/* .footer-dots — Dot-row progress indicator */
+.footer-dots {
+  display: flex;
+  gap: 8px;
+}
+.footer-dots .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--r-pill);
+  background: currentColor;
+  opacity: 0.3;
+}
+.footer-dots .dot.active {
+  opacity: 1;
+}
+
+/* .lede — Bricolage Grotesque opening statement */
+.lede {
+  font-family: var(--font-display-en);
+  font-size: 56px;
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.lede em {
+  font-family: var(--font-serif-en);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--terracotta);
+}
+.surface-alt .lede {
+  color: var(--text-on-alt);
+}
+.surface-alt .lede em {
+  color: var(--butter);
+}
+
+/* .timeline-ribbon — Burgundy pill with mono text */
+.timeline-ribbon {
+  background: var(--burgundy);
+  color: var(--butter);
+  border-radius: var(--r-pill);
+  padding: 24px 44px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.timeline-ribbon .accent {
+  font-family: var(--font-serif-en);
+  font-size: 30px;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--pink);
+}
+
+/* .swatch-row — Color dot row */
+.swatch-row {
+  display: flex;
+  gap: 10px;
+}
+.swatch-dot {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-pill);
+  display: block;
+}

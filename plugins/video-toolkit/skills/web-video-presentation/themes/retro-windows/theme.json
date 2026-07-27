@@ -1,0 +1,27 @@
+{
+  "id": "retro-windows",
+  "name": "Retro Windows",
+  "nameZh": "复古视窗",
+  "description": "Windows 95 chrome: beveled gray windows, navy gradient title bars, MS Sans Serif system font, Press Start 2P pixel accents. Bevel-based depth — no blurred shadows. CRT scanline overlay. Dense application-UI composition. Retro status colors (green/red/yellow/cyan) with fixed semantic meanings.",
+  "descriptionZh": "Windows 95 界面：斜角灰色窗口、海军蓝渐变标题栏、MS Sans Serif 系统字体、Press Start 2P 像素字体。斜面深度——无模糊阴影。CRT 扫描线叠加层。密集应用 UI 编排。复古状态颜色（绿/红/黄/青）有固定语义含义。",
+  "mood": ["nostalgic", "retro", "geeky", "playful", "functional"],
+  "bestFor": [
+    "复古游戏提案",
+    "Y2K 品牌",
+    "90 年代美学创作者作品集",
+    "科技历史演讲",
+    "有意的搞怪 deck"
+  ],
+  "avoidFor": [
+    "需要现代 / 优雅质感的场合",
+    "机构可信度优先的内容"
+  ],
+  "formality": "low",
+  "source": "beautiful-html-templates/retro-windows",
+  "preview": {
+    "shell": "#808080",
+    "surface": "#D4D0C8",
+    "text": "#000080",
+    "accent": "#000080"
+  }
+}
