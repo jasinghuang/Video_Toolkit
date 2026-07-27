@@ -62,18 +62,17 @@ list-reveal/
 
 ## 关键手段（地板线）
 
-| 维度 | 这个 anchor 怎么实现 |
-|---|---|
-| 字号 | 标题 64px / 巨号 144px serif |
-| 槽位状态 | dashed → 巨号红色高亮 → 灰化数字（**位置不重排**） |
-| 序号 | hero-num 字体（衬线大数字） |
-| 主导动作 | mask reveal（标题）+ 数字砸下（accent 红） |
-| 伴随动作 | 副标 stagger 200ms + accent 横线 scaleX |
-| 持续微动 | active 槽位的数字 accent 光晕 `infinite` 呼吸 |
-| 引子 | masthead 双线规则 + serif 大字 |
+| 维度 | 旧版（手写布局 + Slot 组件） | 新版（布局组件 + StepReveal） |
+|---|---|---|
+| 槽位网格 | 手写 `.lr-grid` + 自建 `<Slot>` 组件 | `<StatGrid.Card>` + `<StepReveal state={...}>` |
+| 状态过渡 | 手写 `.lr-slot-ghost` / `-active` / `-past` 三套 CSS | `step-ghost` / `step-active` / `step-past`（animations.css 统一提供） |
+| 入场动画 | 手写 `delay={...}` + `MaskReveal` | `<AnimateIn type="reveal-right" delay={n}>` — 标准 7 级延迟 |
+| 引子 | 手写 `.lr-intro` flex 列 | `<StatGrid.Root kicker={...} headline={...}>` 承载布局，自定义 masthead + 引子文字 |
 
-> **新写章节时**：抄结构（单网格 N 槽位、每 step 只填一个槽位、位置
-> 不重排），按本章内容 + 本主题气质自由设计主导动作的形式。
+> **新写列举型章节时**：核心结构（N 槽位网格 + 渐进揭示 + 位置不重排）
+> 不变。实现层改用 `<StatGrid.Card>` + `<StepReveal>` 替代自建 Slot
+> 组件 —— 省掉所有 `-ghost` / `-active` / `-past` 的 CSS 手写工作。
+> 入场动画统一走 `<AnimateIn>`。
 
 ## 切到其它主题时
 

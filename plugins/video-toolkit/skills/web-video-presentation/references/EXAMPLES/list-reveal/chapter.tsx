@@ -1,103 +1,112 @@
 // ⚠️ 这是 anchor 参考代码，不会被任何项目编译。
 //    抄到真实项目时（presentation/src/chapters/NN-list/），
-//    把下面两个 import 改成：
+//    把下面 import 改成：
 //      import { MaskReveal } from "../../components/MaskReveal";
+//      import { AnimateIn } from "../../components/AnimateIn";
+//      import { StepReveal } from "../../components/StepReveal";
+//      import { StatGrid, StatItem } from "../../components/layouts";
 //      import type { ChapterStepProps } from "../../registry/types";
 import { MaskReveal } from "../../../templates/src/components/MaskReveal";
+import { AnimateIn } from "../../../templates/src/components/AnimateIn";
+import { StepReveal } from "../../../templates/src/components/StepReveal";
+import { StatGrid } from "../../../templates/src/components/layouts";
+import type { StatItem } from "../../../templates/src/components/layouts";
 import type { ChapterStepProps } from "../../../templates/src/registry/types";
 import "./chapter.css";
 
 /**
- * list-reveal · 完整章节示例
+ * list-reveal · 用布局组件重写的渐进揭示示例
  * ─────────────────────────────────────────
- * 默认绑 newsroom 主题。
+ * 新版架构：用 StatGrid 驱动 3 列数据卡，StepReveal 处理状态过渡。
+ * 不再需要手写 Slot 组件和 lr-* CSS —— StatGrid 自带的 .sg-card +
+ * step-ghost / step-active / step-past 类已覆盖全部视觉状态。
  *
- * 关键手段：
- * - 槽位用 hero-num（serif 巨号）替代普通文字编号
- * - 引子用 masthead 双线规则 + serif 大字
- * - 槽位状态切换有专属动画：
- *     ghost  → active：mask reveal 标题 + 数字砸下（accent 红）
- *     active → past   ：accent 灰化（filter）
- * - 关键：所有槽位的 React 节点位置不重排，只切换 className
+ * 组件使用对照：
+ *   step 0      — StatGrid（引子 masthead + 3 ghost 卡片）
+ *   step 1-3    — StatGrid（渐进揭示：ghost → active → past）
+ *
+ * 自定义部分（仍写 CSS）：
+ *   lr-masthead  — 双线 + kicker 的章节标题（布局组件不管这个）
+ *   lr-intro-h   — 引子大字（自定义排版，不映射到 StatGrid props）
  */
-const ITEMS = [
-  { num: "01", title: "文字渲染", body: "图里的文字也能正确写出来" },
-  { num: "02", title: "指令遵循", body: "可以给到非常具体的要求" },
-  { num: "03", title: "照片真实感", body: "光影 / 材质 / 人物接近真实" },
+
+const ITEMS: StatItem[] = [
+  { value: "01", label: "文字渲染", note: "图里的文字也能正确写出来" },
+  { value: "02", label: "指令遵循", note: "可以给到非常具体的要求" },
+  { value: "03", label: "照片真实感", note: "光影 / 材质 / 人物接近真实" },
 ];
 
 export default function ListRevealChapter({ step }: ChapterStepProps) {
-  // step 1 — 引子
+  /* ─── step 0 — 引子 + 全部 ghost ─── */
   if (step === 0) {
     return (
-      <div className="lr-scene scene-pad lr-intro">
+      <StatGrid.Root kicker="第一部分" headline="强在哪" className="lr-intro-scene">
+        {/* 引子 masthead（布局组件不管这个） */}
         <header className="lr-masthead">
           <span className="lr-rule" />
           <span className="lr-kicker">第一部分</span>
           <span className="lr-rule" />
         </header>
-        <MaskReveal show duration={1100}>
+
+        <AnimateIn type="fade-up" delay={1}>
           <h1 className="lr-intro-h">
             强在<span className="lr-em">哪</span>
           </h1>
-        </MaskReveal>
-        <MaskReveal show delay={400} duration={900}>
-          <div className="lr-intro-sub">三件事 —— 一个个看</div>
-        </MaskReveal>
+        </AnimateIn>
 
+        <AnimateIn type="fade-up" delay={2}>
+          <div className="lr-intro-sub">三件事 —— 一个个看</div>
+        </AnimateIn>
+
+        {/* 3 列 ghost 卡片 */}
         <div className="lr-grid">
-          {ITEMS.map((it) => (
-            <Slot key={it.num} state="ghost" item={it} />
+          {ITEMS.map((item, i) => (
+            <StepReveal key={i} state="ghost">
+              <StatGrid.Card
+                value={item.value}
+                label={item.label}
+                note={item.note}
+                corner={`/0${i + 1}`}
+              />
+            </StepReveal>
           ))}
         </div>
-      </div>
+      </StatGrid.Root>
     );
   }
 
+  /* ─── step 1-3 — 渐进揭示 ─── */
   const activeIdx = step - 1;
+  const revealed = ITEMS.slice(0, step).map((_, i) => i);
+
   return (
-    <div className="lr-scene scene-pad">
+    <StatGrid.Root kicker="第一部分 · 强在哪" className="lr-reveal-scene">
+      {/* Masthead（精简版：单行） */}
       <header className="lr-masthead">
         <span className="lr-rule" />
         <span className="lr-kicker">第一部分 · 强在哪</span>
         <span className="lr-rule" />
       </header>
 
+      {/* 3 列渐进揭示 */}
       <div className="lr-grid">
-        {ITEMS.map((it, i) => {
+        {ITEMS.map((item, i) => {
           const state =
             i < activeIdx ? "past" : i === activeIdx ? "active" : "ghost";
-          return <Slot key={it.num} state={state} item={it} />;
+
+          return (
+            <StepReveal key={i} state={state} enter="reveal-right">
+              <StatGrid.Card
+                value={item.value}
+                label={item.label}
+                note={item.note}
+                corner={`/0${i + 1}`}
+                variant={i === activeIdx ? "accent" : "surface"}
+              />
+            </StepReveal>
+          );
         })}
       </div>
-    </div>
-  );
-}
-
-function Slot({
-  state,
-  item,
-}: {
-  state: "ghost" | "active" | "past";
-  item: { num: string; title: string; body: string };
-}) {
-  return (
-    <div className={`lr-slot lr-slot-${state}`}>
-      <div className="lr-slot-num">{item.num}</div>
-      <div className="lr-slot-content">
-        {state !== "ghost" && (
-          <>
-            <MaskReveal show duration={900} key={`${item.num}-title`}>
-              <div className="lr-slot-title">{item.title}</div>
-            </MaskReveal>
-            {state === "active" && (
-              <MaskReveal show delay={350} duration={900}>
-                <div className="lr-slot-body">{item.body}</div>
-              </MaskReveal>
-            )}
-          </>
-        )}
-      </div>
-    </div>
+    </StatGrid.Root>
   );
 }

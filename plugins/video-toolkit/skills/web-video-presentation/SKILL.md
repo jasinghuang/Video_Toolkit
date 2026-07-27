@@ -113,7 +113,7 @@ Phase 2.4 的"实现单章"会重复 N 次 —— 每次都要回看核心约束
 | Phase 1.1-1.2 内容编写 | `references/SCRIPT-STYLE.md` + `references/OUTLINE-FORMAT.md` + `article.md`（用户原文，如有） | —— |
 | **Checkpoint Plan 选主题** | —— | `themes/*/theme.json`（动态读全部，列清单 + `bestFor` 推荐 + `descriptionZh`）；`references/THEMES.md`（用户想了解主题系统时）；`references/SEMANTIC-CLASSES.md`（了解 12-class 合约） |
 | Phase 2.1 脚手架 | —— | SKILL.md 本节看一次 |
-| **Phase 2.4 实现单章（×N 次，被 2.2 / 2.3 调用）** | **`references/CHAPTER-CRAFT.md`** 单一入口 + `references/SEMANTIC-CLASSES.md`（12-class 合约）+ 当前主题的 `themes/<id>/theme.json` + `themes/<id>/design.md`（设计约束）+ 当前章节的 outline.md 段落 + **`article.md` 本章对应段落** + 素材清单 | `references/EXAMPLES/`（结构示意）；`references/THEMES.md` 主题系统 |
+| **Phase 2.4 实现单章（×N 次，被 2.2 / 2.3 调用）** | **`references/CHAPTER-CRAFT.md`** 单一入口 + `references/SEMANTIC-CLASSES.md`（12-class 合约）+ `references/ARCHITECTURE.md`（布局组件系统架构）+ 当前主题的 `themes/<id>/theme.json` + `themes/<id>/design.md`（设计约束）+ 当前章节的 outline.md 段落 + **`article.md` 本章对应段落** + 素材清单 | `references/EXAMPLES/`（结构示意）；`references/THEMES.md` 主题系统；`src/components/layouts/`（布局组件源码） |
 | Phase 3 音频合成 | `references/AUDIO.md`（含 narrations.ts → segments.json → 任意 provider 流程，内置 minimax + openai） | `templates/scripts/tts-providers/README.md`（换 provider / 自带 TTS 时） |
 | Phase 4 录屏 + 后期 | `references/RECORDING.md`（含 `?auto=1` 自动录屏） | —— |
 | 选 / 造 / 切主题 | —— | `references/THEMES.md` |

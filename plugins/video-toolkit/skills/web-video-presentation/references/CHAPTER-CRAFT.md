@@ -152,12 +152,60 @@ AI 生成的网页有几种共有的"视觉指纹"，**全部不要**：
 - **颜色**：`--text` / `--text-2` / `--text-mute` / `--text-faint` / `--surface` / `--surface-2` / `--accent` / `--accent-soft` / `--rule` —— **禁硬编码 hex / rgb / 颜色名**
 - **字体家族**：通过 MUST class 使用，不直接写 `font-family`
 
+---
+
+## 布局组件：先选公式，再填内容
+
+> **这是新版最重要的约束。** 不要在每步都从零发明布局。先判断这一步属于
+> 哪种「布局公式」，用对应的布局组件。只有在确实没有匹配的公式时才自己写。
+
+### 布局组件清单（`src/components/layouts/`）
+
+| 组件 | 适用场景 | 核心 Props |
+| --- | --- | --- |
+| `CoverSlide` | 封面大字 + 装饰图形区 + 底部 meta | `headline`, `headlineCn`, `subtitle`, `kicker`, `meta`, `decor` |
+| `StatGrid` | 2×2 / 3 列 / 4 列数据卡 | `items: StatItem[]`, `cols`, `cellVariants`, `activeIndex`, `revealed` |
+| `SplitSlide` | 左右分栏：文字 + 图片/图表 | `headline`, `body`, `bullets`, `flip`, `children`(图片侧) |
+| `QuoteSlide` | 引用页：大引号 + 居中文字 + 署名 | `text`, `source`, `context`, `variant: "centered" \| "left-accent"` |
+| `Timeline` | 竖排时间线 + spine | `events: TimelineEvent[]`, `activeIndex`, `revealed` |
+
+完整 API 见各组件源文件 + [`ARCHITECTURE.md`](ARCHITECTURE.md)。
+
+### 动画组件清单（`src/components/`）
+
+| 组件 | 用途 |
+|---|---|
+| `<AnimateIn type="fade-up" delay={2}>` | 标准入场动画包装器。type: `fade-up` / `fade-in` / `reveal-right` / `reveal-left` / `scale-in` / `pop-in`。delay: 0-6 档（0 / 80 / 180 / 300 / 440 / 600 / 780 ms） |
+| `<StepReveal state="active" enter="reveal-right">` | 渐进揭示的状态转换包装器。state: `ghost` / `active` / `past` / `visible` |
+
+### 实现每步时的决策流程
+
+```text
+这一步的内容本质是什么？
+  ├─ 封面大字 + 一句总结         → 用 <CoverSlide>
+  ├─ N 个数据 / 指标             → 用 <StatGrid>
+  ├─ 一段说明 + 一张配图         → 用 <SplitSlide>
+  ├─ 一句引用 / 金句             → 用 <QuoteSlide>
+  ├─ N 个按时间排列的事件         → 用 <Timeline>
+  ├─ N 个步骤 / 流程              → 用 .grid-2/.grid-3 + <StepReveal> 组合
+  ├─ 对比 A vs B                  → 用 <SplitSlide flip> 或两个 <StatGrid.Card>
+  └─ 以上都不是                   → 用 .scene-pad + 布局原语 + MUST class 自己写
+```
+
+### 组件使用规则
+
+1. **优先用组件**：能用组件覆盖的场景，不自己写布局。组件已经处理了主题兼容性、间距系统、step 状态转换。
+2. **组件不做的事**：组件不定义颜色、不加载字体、不定义动画 keyframes。这些仍然由主题 + animations.css + 你的章节 CSS 负责。
+3. **逃生舱**：每个组件导出 `.Root` 和子组件（如 `<StatGrid.Card>`）。完整组件模式覆盖 90% 场景；子组件模式在需要定制每个 item 渲染时使用。
+4. **decor 插槽**：需要装饰图形（色块、几何形状、印章）时，用组件的 `decor` prop（`position: absolute` 在组件 bounds 内），在章节 CSS 中定义装饰元素的样式。
+5. **与 `design.md` 冲突时**：以主题的 `design.md` 为准。如果组件的默认行为与主题设计约束矛盾，弃用组件，手写布局。
+
 ### 章节自己写什么
 
-以下维度由章节 agent 在每步实现时自由决定，走章节自己的 CSS 文件：
+只在**组件无法覆盖的场景**下自己写：
 
-- **动画 keyframes + 时长 + 缓动**：按内容驱动的动画意图设计
-- **独特的可视化布局**：CSS Grid / absolute 定位用于自定义图表、对比面板、流程图等 —— 这些是章节特有的视觉演示，主题不提供
+- **独特的可视化布局**：自定义图表、自定义示意图、复杂的 absolute 定位编排
+- **动画 keyframes + 时长 + 缓动**：章节特有的内容驱动动画（组件只用标准入场动画）
 - **章节特有的装饰元素**：特定的 SVG 形状、渐变叠层、自定义边框效果
 - **字号微调**：如果主题的字号尺度在特定步中不合适，可以在章节 CSS 中覆盖 —— 但要三思，大多数时候主题的字号是对的
 
@@ -166,6 +214,8 @@ AI 生成的网页有几种共有的"视觉指纹"，**全部不要**：
 - 不要写自己的 `.card` 或 `.divider` —— 用主题提供的
 - 不要在章节 CSS 中重定义主题的 CSS 变量
 - 不要写硬编码颜色或字体名
+- **不要写布局组件已经提供的布局** —— 不要自己写 stat grid，用 `<StatGrid>`
+- **不要自己管理 step 状态** —— 用 `activeIndex` + `revealed` 传给组件，或用 `<StepReveal>` 包装
 
 ### 其它工程红线
 
@@ -195,19 +245,36 @@ AI 生成的网页有几种共有的"视觉指纹"，**全部不要**：
 
 写完一章 + 在浏览器点完一遍后逐项过：
 
+### 布局与组件
+
+- [ ] **能用布局组件覆盖的步骤，用了组件** —— 封面→CoverSlide / 数据→StatGrid / 引用→QuoteSlide / 分栏→SplitSlide / 时间线→Timeline。不要在有匹配组件时还手写布局
+- [ ] **自己写的布局用了 .scene-pad + 布局原语** —— .stack / .row / .grid-2 / .grid-3 / .center。没有裸 flex/grid 绕过间距系统
+
+### 视觉与内容
+
 - [ ] **每章至少 1~2 处 CSS / SVG / Canvas / JS 视觉演示** —— 没有 = 回去补
 - [ ] **不同 step 的主导动作不一样** —— 全章一种动画 = 回去重做
 - [ ] 字号大、留白舒服、配色舒服
-- [ ] 清单 / 列表逐个揭示，**1 项 = 1 step**
+- [ ] 清单 / 列表逐个揭示，**1 项 = 1 step**（用 `<StepReveal>` 或 `activeIndex` + `revealed` 传给布局组件）
 - [ ] 画面信息比口播稿多（回了原文章抽细节挂上来）
 - [ ] 没有紫粉渐变 / 圆角彩色边框 / emoji / 假数据 / 假 logo
 - [ ] 缺的素材用 placeholder，不是 fake
+
+### 样式契约
+
 - [ ] **所有文字使用主题 MUST class**（.display / .body / .label 等）—— 无裸 `<p>` 无样式、无硬编码字体名
 - [ ] **所有颜色走 CSS 变量** —— 无硬编码 hex / rgb
 - [ ] **容器 / 分隔 / 标记使用主题 class**（.card / .divider / .tag）—— 无自己发明的卡片样式
+- [ ] **动画用 `<AnimateIn>` 或 `<StepReveal>` 或章节 CSS keyframes** —— 无裸 CSS animation 绕过延迟系统
 - [ ] 章节交付时**主动告诉用户**："本章还缺这些素材"
+
+### 反模式
+
 - [ ] 禁止出现小号字体，大量纯文字
 - [ ] 禁止出现任何形式的页眉页脚
+
+### 工程
+
 - [ ] **`npx tsc --noEmit` 通过**
 - [ ] 章节代码物理隔离：独立 CSS 类前缀（`.cd-` / `.mg-` / ...），未跨章 import，未修改 `chapters.ts` 之外的共享文件
 - [ ] **`narrations.ts` 存在**且 `narrations.length` === 章节代码里 `if (step === N)` 用到的最大 N + 1（不一致 = Auto 模式录屏会错位）

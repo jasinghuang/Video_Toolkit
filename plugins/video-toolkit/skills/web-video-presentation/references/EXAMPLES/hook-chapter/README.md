@@ -55,20 +55,18 @@ hook-chapter/
 
 ## 关键手段（地板线）
 
-| 维度 | 这个 anchor 怎么实现 |
-|---|---|
-| 素材 | `<img src="/hook/<asset>.png" />` 真截图 |
-| 字号 | hero = 144px serif (`var(--t-display-1)`) |
-| 主导动作 | brush-stroke + 印章砸下（newsroom 气质） |
-| 伴随动作 | accent 红条 scaleX + 副标 stagger 200ms |
-| 持续微动 | accent 红条光晕 `infinite` 呼吸；图片 ken burns 缓推 |
-| 卡片样式 | drop-shadow + 微旋转 1deg |
-| takeover | 三张图缩入 + hero 巨字爆出 + accent 红条贯穿 |
+| 维度 | 旧版（手写布局） | 新版（布局组件驱动） |
+|---|---|---|
+| step 0 三 ghost | 手写 `.hk-grid` + `.hk-ghost` | `<StatGrid cols={3} activeIndex={-1}>` |
+| step 1-3 独图 | 自定义（无组件覆盖） | 自定义 `.scene-pad` + `<MaskReveal>` + `<AnimateIn>` |
+| step 4 takeover | 手写 `.hk-takeover` flex 列 | `<CoverSlide headline={...} decor={...}>` |
+| step 5 收束 | 手写 `.hk-close` grid | `<QuoteSlide.Root>` + 自定义 brush |
+| 入场动画 | 各处手写 `delay={idx * 200}` | `<AnimateIn type="fade-up" delay={n}>` — 标准 7 级延迟 |
 
-> **新写章节时**：抄结构和字号关系，按本章内容 + 本主题气质自由
-> 设计动画形式。**持续微动按需挂**，不强求 —— 详见
-> [`../../CHAPTER-CRAFT.md`](../../CHAPTER-CRAFT.md)「避免 AI 味」一节
-> 关于「每步都挂 ken burns / 持续闪烁」的反模式。
+> **新写章节时**：先用布局组件匹配（CoverSlide / QuoteSlide / StatGrid），
+> 不匹配的步再用 `.scene-pad` + 布局原语手写。入场动画统一走
+> `<AnimateIn>` 而非各处手写 delay。章节 CSS 只写动画 keyframes +
+> 自定义装饰 —— 不写布局结构。
 
 ## 切到其它主题时
 
