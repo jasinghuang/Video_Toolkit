@@ -156,7 +156,7 @@ def build_subtitle_tsx() -> str:
             return () => window.removeEventListener("keydown", onKey);
           }, []);
           if (!text || hidden) return null;
-          const display = text.replace(/[，。！？、；：,.!?;:]+$/, "");
+          const display = text.replace(/\\n/g, "").replace(/[，。！？、；：,.!?;:]+$/, "");
           if (!display) return null;
           return (
             <div className="subtitle-layer">
@@ -194,8 +194,8 @@ def build_subtitle_css() -> str:
           border-radius: 18px;
           padding: 12px 40px;
           box-shadow: 0 10px 32px rgba(0, 0, 0, 0.28);
-          white-space: nowrap;
-          overflow: hidden;
+          white-space: nowrap !important;
+          overflow: hidden !important;
           text-overflow: ellipsis;
           max-width: 90%;
         }

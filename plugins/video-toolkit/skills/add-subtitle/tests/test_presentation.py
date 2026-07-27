@@ -39,9 +39,10 @@ def test_build_subtitle_tsx_contains_component_and_hide_key():
     assert "subtitle-layer" in tsx
     assert "subtitle-badge" in tsx
     assert "useState" in tsx  # hidden state
-    # 句末标点 strip
+    # 句末标点 strip + newline strip
     assert "text.replace" in tsx
     assert "，。！？、；：,.!?;:" in tsx
+    assert r"\\n" in tsx or r"\n" in tsx
     # 确认不再有截断
     assert "MAX_CHARS" not in tsx
     assert "text.slice" not in tsx
@@ -58,6 +59,8 @@ def test_build_subtitle_css_contains_fixed_params():
     assert "font-size: 40px" in css
     assert "box-shadow: 0 10px 32px rgba(0, 0, 0, 0.28)" in css
     assert "white-space: nowrap" in css
+    assert "nowrap !important" in css
+    assert "hidden !important" in css
     assert "FZLanTingHei" in css
     # NEW: overflow protection
     assert "overflow: hidden" in css
@@ -70,8 +73,10 @@ from presentation import build_subtitle_tsx as _bst  # noqa: E402
 def test_build_subtitle_tsx_strips_trailing_punctuation():
     """验证生成的 Subtitle 组件会 strip 句末标点。"""
     tsx = _bst()
+    # 新行 strip
+    assert r"\n/g" in tsx
     # 提取 render 逻辑验证：正则应覆盖中英文常见句末标点
-    assert "text.replace(/[，。！？、；：,.!?;:]+$/, \"\")" in tsx
+    assert r'text.replace(/\n/g, "").replace(/[，。！？、；：,.!?;:]+$/, "")' in tsx
     # 确认只 strip 尾部（$ 锚定），不处理句中
     # 正则末尾 $ 确保只匹配句末
     assert "+$/, " in tsx

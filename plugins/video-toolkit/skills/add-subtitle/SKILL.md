@@ -2,7 +2,7 @@
 name: add-subtitle
 description: >
   SRT 字幕叠加到视频的工具。将标准 SRT 字幕以"黑字白底圆角描边标签"
-  样式叠加到视频上，输出一个自包含 HTML 播放页。样式固定、单行居中，
+  样式叠加到视频上，输出一个自包含 HTML 播放页。样式固定、**严格单行**、居中，
   自动适配 16:9 / 4:3 / 3:4 / 9:16 等多种视频比例。约定输入 SRT 每条 ≤12 字
   （超出由上游 text-refine 切分）。当用户要给视频加字幕、字幕叠加、
   生成字幕播放页、srt 转 html、presentation 字幕、注入字幕层时触发此 skill。
@@ -92,6 +92,8 @@ Summary: 1 PASS, 1 WARN, 1 FAIL
 
 presentation 注入模式下，字幕文本直接取自 `narrations.ts`，不做字数限制。超长文本由 CSS `text-overflow: ellipsis` 兜底（约 38 字后触发省略号），正常 step 口播不会触发。
 
+两种模式下字幕都**强制单行**。CSS `white-space: nowrap !important` 阻止自动换行，Subtitle 组件主动去除文本中的换行符。超长文本由 `text-overflow: ellipsis` 截断，不换行。
+
 ## 输出
 
 ```
@@ -102,11 +104,13 @@ presentation 注入模式下，字幕文本直接取自 `narrations.ts`，不做
 
 ## 字幕样式（固定）
 
+- **强制单行** — CSS `white-space: nowrap !important` + `overflow: hidden`，多层防御
 - 黑字 `#000` + 白底 `#fff`
 - 描边 `1.3px solid #000`、圆角 `9px`、内边距 `6px 20px`、柔和外投影
 - 字体 `FZLanTingHei`（回退 PingFang SC / 微软雅黑），字重 600
 - 字号 `clamp(12px, 2.4cqw, 28px)`——随视频宽度自适应，竖屏保底 12px
-- 居中、距底 8%，单行
+- **严格单行**：CSS `white-space: nowrap !important` + JS 主动 strip `\n`，任何情况下都不允许换行
+- 居中、距底 8%
 
 ## 多比例自适应
 
