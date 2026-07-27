@@ -23,7 +23,7 @@ set -euo pipefail
 SKILL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TEMPLATES="$SKILL_DIR/templates"
 THEMES_DIR="$SKILL_DIR/themes"
-DEFAULT_THEME="midnight-press"
+DEFAULT_THEME="signal"
 
 list_themes() {
   echo "可用主题（来自 ${THEMES_DIR}）:"
