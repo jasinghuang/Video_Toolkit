@@ -115,7 +115,7 @@ def main():
 
     # presentation 模式
     if args.presentation:
-        from presentation import check_presentation, format_check_report, inject_presentation, scan_long_narrations
+        from presentation import check_presentation, format_check_report, inject_presentation
 
         pres_path = Path(args.presentation).expanduser()
         if not pres_path.is_dir():
@@ -138,7 +138,7 @@ def main():
             )
             sys.exit(1 if has_issues else 0)
         else:
-            # 修复模式（原逻辑 + 末尾文案扫描告警）
+            # 修复模式
             if args.srt_file or args.video:
                 parser.error("--presentation 与 srt_file/--video 互斥")
             print(f"\n{'=' * 60}")
@@ -146,14 +146,6 @@ def main():
             print(f"{'=' * 60}")
             print(f"  Target: {pres_path}")
             inject_presentation(pres_path)
-            # 文案扫描告警
-            long_lines = scan_long_narrations(pres_path)
-            if long_lines:
-                print(f"\n  ⚠ {len(long_lines)} narration(s) exceed 18 chars:")
-                for item in long_lines:
-                    text_preview = item["text"][:30] + ("..." if len(item["text"]) > 30 else "")
-                    print(f"    {item['file']}  L{item['line']}  \"{text_preview}\" ({item['char_count']}字)")
-                print("  → 建议在口播稿中将以上文案拆分为多个 step")
             print(f"{'=' * 60}\nDone!\n{'=' * 60}\n")
         return
 
