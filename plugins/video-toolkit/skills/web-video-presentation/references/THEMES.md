@@ -23,34 +23,24 @@ themes/<slug>/
 
 ## 内置主题
 
-15 套主题，每套来自 [beautiful-html-templates](https://github.com/zarazhangrui/beautiful-html-templates) 的独立设计 DNA。
+34 套主题，每套来自 [beautiful-html-templates](https://github.com/zarazhangrui/beautiful-html-templates) 的独立设计 DNA，1:1 翻译为 WVP 主题。每套含 `theme.json`（元数据）+ `theme.css`（完整 CSS 设计系统）+ `design.md`（设计约束文档）。
 
-### 深色主题
+运行 `bash scripts/scaffold.sh --list-themes` 查看完整目录及每套的中文简介。
 
-| id | 名称 | 性格 | bestFor |
-|----|------|------|---------|
-| `signal` | 信号 | 深海军蓝+暖奶油双表面，古董金 accent，Instrument Serif 斜体，80px 不可视听网格 | 深度内容、品牌文化、高端发布、编辑级口播 |
-| `studio` | 工作室 | 近黑+酸性黄二元系统，Barlow 900 大写，类型即图形 | 创意设计、品牌宣言、激进观点、年轻化内容 |
-| `broadside` | 传单 | 近黑+暖奶油双表面，火橙 accent，全 sans-serif 双语系统 | 双语内容、社论、pitch deck、数据叙事 |
-| `block-frame` | 块框 | 多色 pastel-neon 块系统，Space Grotesk，3px 粗黑边框 | 创意、非正式、设计周、年轻品牌 |
+覆盖的设计方向：
 
-### 浅色主题
-
-| id | 名称 | 性格 | bestFor |
-|----|------|------|---------|
-| `cartesian` | 笛卡尔 | 暖石色调系统，无饱和色，Playfair Display 斜体，1px 发丝线，罗盘圆装饰 | 学术研究、建筑设计、极简内容、投资报告 |
-| `emerald-editorial` | 翡翠编辑 | 深绿+奶油，编辑级衬线，自然/可持续气质 | 环境、户外、纪录、文学 |
-| `neo-grid-bold` | 新网格 | 12×8 网格系统，粗体 sans-serif，技术文档感 | 技术演示、架构图、数据密集 |
-| `8-bit-orbit` | 8位轨道 | 像素艺术+复古游戏美学 | 游戏、怀旧、创意技术 |
-| `biennale-yellow` | 双年黄 | 阳光黄+暖羊皮纸，艺术展览气质 | 艺术展览、文化项目、创意 |
-| `daisy-days` | 雏菊 | 柔粉 pastel+手写体，温和友好 | 温馨、友好、onboarding、女性向 |
-| `monochrome` | 单色 | 严格单色编辑，比 Cartesian 更暗 | 摄影、极简、严肃内容 |
-| `pin-and-paper` | 图钉纸 | 软木板+图钉美学，独特装饰词汇 | 创意工作坊、头脑风暴、非正式 |
-| `retro-zine` | 复古志 | risograph 印刷质感+叠层色彩 | 独立出版、zine、触感 vintage |
-| `editorial-tri-tone` | 三色调 | 三色调编辑系统，独特配色 | 时尚、设计、品牌 |
-| `raw-grid` | 原生网格 | 原始网格美学/结构化 brutalist | 建筑、结构、实验性 |
-
-> 运行 `bash scripts/scaffold.sh --list-themes` 查看当前完整目录。
+| 方向 | 代表主题 |
+|------|---------|
+| 编辑级暗色 | `signal`, `pink-script`, `dark-botanical`→`grove` |
+| 编辑级浅色 | `cartesian`, `monochrome`, `soft-editorial`, `editorial-forest` |
+| 极简/学术 | `vellum`, `mat`, `cobalt-grid` |
+| 激进/粗野 | `studio`, `block-frame`, `raw-grid`, `bold-poster` |
+| 温暖/手绘 | `pin-and-paper`, `daisy-days`, `scatterbrain` |
+| 复古/怀旧 | `retro-windows`, `retro-zine`, `8-bit-orbit`, `stencil-tablet` |
+| 多彩/玩味 | `sakura-chroma`, `playful`, `capsule`, `coral` |
+| 专业/商务 | `blue-professional`, `broadside`, `peoples-platform`, `long-table` |
+| 艺术/文化 | `biennale-yellow`, `editorial-tri-tone`, `creative-mode`, `emerald-editorial` |
+| 技术/网格 | `neo-grid-bold` |
 
 ## 脚手架时选主题
 

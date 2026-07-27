@@ -89,7 +89,7 @@ skills/web-video-presentation/
 │   │       ├── minimax.sh            # default — uses mmx-cli
 │   │       └── openai.sh             # built-in — uses OPENAI_API_KEY via curl
 │   └── src/
-└── themes/                    # 15 themes derived from beautiful-html-templates
+└── themes/                    # 34 themes derived from beautiful-html-templates
     ├── signal/
     ├── cartesian/
     ├── studio/
@@ -121,7 +121,7 @@ The generated `presentation/` project is a normal Vite + React + TypeScript app.
 
 ## Theme Gallery
 
-The skill ships **15 themes**, each a complete CSS design system derived from
+The skill ships **34 themes**, each a complete CSS design system derived from
 [beautiful-html-templates](https://github.com/zarazhangrui/beautiful-html-templates).
 Run ```bash scripts/scaffold.sh --list-themes``` to see the current catalog,
 or browse ```references/THEMES.md``` for the full theme table with mood, bestFor, and

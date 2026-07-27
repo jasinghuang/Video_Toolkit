@@ -89,7 +89,7 @@ skills/web-video-presentation/
 │   │       ├── minimax.sh            # 默认 provider（mmx-cli）
 │   │       └── openai.sh             # 内置：OpenAI TTS（curl + OPENAI_API_KEY）
 │   └── src/
-└── themes/                    # 15 套主题，来自 beautiful-html-templates
+└── themes/                    # 34 套主题，来自 beautiful-html-templates
     ├── signal/
     ├── cartesian/
     ├── studio/

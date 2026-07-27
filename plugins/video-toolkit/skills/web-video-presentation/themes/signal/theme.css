@@ -34,10 +34,10 @@
   --accent-glow:  rgba(200,168,112,0.45);
 
   /* ─── Typography ─── */
-  --font-display-en: "Instrument Serif", "Playfair Display", Georgia, serif;
+  --font-display-en: "Source Serif 4", "Noto Serif SC", Georgia, serif;
   --font-display-cn: "Noto Serif SC", "Source Han Serif SC", serif;
-  --font-body:       "Archivo", "Noto Sans SC", -apple-system, sans-serif;
-  --font-mono:       "JetBrains Mono", "SF Mono", ui-monospace, monospace;
+  --font-body:       "DM Sans", "Noto Sans SC", -apple-system, sans-serif;
+  --font-mono:       "IBM Plex Mono", "SF Mono", monospace;
   --font-features:   "tnum", "ss01";
 
   /* ─── Type scale ─── */
@@ -91,8 +91,7 @@
 .display {
   font-family: var(--font-display-en);
   font-size: var(--t-display);
-  font-style: italic;
-  font-weight: 400;
+  font-weight: 700;
   line-height: 0.95;
   letter-spacing: -0.02em;
   color: var(--text);

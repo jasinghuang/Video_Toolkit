@@ -1,11 +1,27 @@
 /* ─────────────────────────────────────────────────────────────────────
- * Example chapter — uses ONLY semantic tokens from the active theme.
- * Replace this file freely; it's just demo content.
+ * Example chapter — uses MUST classes + layout primitives from the
+ * active theme. Replace this file freely; it's just demo content.
  * ───────────────────────────────────────────────────────────────────── */
 
 .ex-scene { color: var(--text); }
 
-.ex-em { color: var(--accent); }
+/* Accent dot — inline colored dot matching theme accent */
+.ex-dot {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  vertical-align: middle;
+}
+
+/* Masthead — simple flex replacement for old .masthead primitive */
+.ex-masthead {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-lg);
+  width: 100%;
+}
+.ex-masthead .meta { margin-left: auto; }
 
 /* ─── step 0: cover ─── */
 .ex-cover-body {
@@ -13,20 +29,14 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: var(--space-5);
-  padding-top: var(--space-7);
+  gap: var(--space-lg);
+  padding-top: var(--space-xl);
 }
 .ex-cover-h {
-  font-size: var(--t-display-2);
+  font-size: var(--t-h1);
   line-height: 1.05;
   margin: 0;
   max-width: 24ch;
-}
-.ex-cover-foot {
-  margin-top: var(--space-7);
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
 }
 
 /* ─── step 1: split ─── */
@@ -34,17 +44,17 @@
   flex: 1;
   display: grid;
   grid-template-columns: minmax(240px, 320px) 1fr;
-  gap: var(--space-9);
-  padding-top: var(--space-7);
+  gap: var(--space-2xl);
+  padding-top: var(--space-xl);
   align-items: start;
 }
 .ex-split-num {
-  font-size: var(--t-display-1);
+  font-size: var(--t-display);
 }
 .ex-split-body {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-md);
 }
 .ex-split-h {
   font-size: var(--t-h1);
@@ -68,13 +78,10 @@
   flex-direction: column;
   justify-content: center;
   padding: var(--stage-pad-y) var(--stage-pad-x);
-  gap: var(--space-5);
+  gap: var(--space-lg);
 }
 .ex-quote {
-  font-size: var(--t-display-2);
+  font-size: var(--t-h1);
   line-height: 1.15;
   max-width: 22ch;
-}
-.ex-close-foot {
-  margin-top: var(--space-7);
 }
