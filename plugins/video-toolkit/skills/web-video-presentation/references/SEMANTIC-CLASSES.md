@@ -151,6 +151,22 @@ font-size: var(--t-micro);
 color: var(--text-faint);
 ```
 
+## SHOULD classes (themes provide if applicable)
+
+These are common patterns that most themes support, but not universal requirements. Chapter agents should check the theme's `design.md` before relying on them.
+
+### `.surface-alt` — Alternate surface
+
+Apply to a step's root to switch to the theme's alternate background. 29/34 themes provide this class. Single-surface themes (cartesian, monochrome, cobalt-grid, daisy-days, block-frame) do not.
+```tsx
+<div className="scene-pad stack surface-alt">
+  <h1 className="display">Alternate surface step</h1>
+</div>
+```
+The `.surface-alt` class automatically inverts text colors, divider colors, and card backgrounds for its surface.
+
+---
+
 ## What chapters still write themselves
 
 Chapter-specific CSS that is NOT covered by the contract — chapters own these:
