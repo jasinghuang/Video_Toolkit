@@ -4,47 +4,11 @@ presentation 注入一个字幕层（显示当前 step 的 narration）。"""
 import re
 from pathlib import Path
 
-# Matches single/double-quoted and template-literal strings (any length)
-_STRING_RE = re.compile(r"""['"`]([^'"`\n]+)['"`]""")
 
+def check_presentation(pres_dir: Path) -> dict:
+    """Run 3 checks on a presentation directory. Read-only, no side effects.
 
-def _is_chinese_text(text: str) -> bool:
-    """Check if text contains CJK characters (vs code identifiers)."""
-    return any('一' <= c <= '鿿' or '　' <= c <= '〿'
-               for c in text)
-
-
-def scan_long_narrations(pres_dir: Path, max_chars: int = 18) -> list[dict]:
-    """Scan src/chapters/**/narrations.ts for narration strings > max_chars.
-
-    Returns a list of dicts: {file, line, text, char_count}. Empty if all ok.
-    """
-    chapters_dir = pres_dir / "src" / "chapters"
-    if not chapters_dir.is_dir():
-        return []
-
-    long_lines = []
-    for narr_file in sorted(chapters_dir.rglob("narrations.ts")):
-        for lineno, line in enumerate(narr_file.read_text(encoding="utf-8").splitlines(), 1):
-            for m in _STRING_RE.finditer(line):
-                text = m.group(1)
-                if not _is_chinese_text(text):
-                    continue
-                char_count = len(text)
-                if char_count > max_chars:
-                    long_lines.append({
-                        "file": str(narr_file),
-                        "line": lineno,
-                        "text": text,
-                        "char_count": char_count,
-                    })
-    return long_lines
-
-
-def check_presentation(pres_dir: Path, max_chars: int = 18) -> dict:
-    """Run 4 checks on a presentation directory. Read-only, no side effects.
-
-    Returns a dict with keys: structure, injection, components, narrations.
+    Returns a dict with keys: structure, injection, components.
     Each value has 'status' ("pass"|"fail"|"warn") and 'msg'.
     """
     app_path = pres_dir / "src" / "App.tsx"
@@ -115,22 +79,10 @@ def check_presentation(pres_dir: Path, max_chars: int = 18) -> dict:
                 "detail": "stale",
             }
 
-    # 4) 文案合规
-    long_lines = scan_long_narrations(pres_dir, max_chars=max_chars)
-    if not long_lines:
-        narrations = {"status": "pass", "msg": f"所有 narration ≤{max_chars} 字", "long_lines": []}
-    else:
-        narrations = {
-            "status": "fail",
-            "msg": f"{len(long_lines)} 条 narration 超过 {max_chars} 字",
-            "long_lines": long_lines,
-        }
-
     return {
         "structure": structure,
         "injection": injection,
         "components": components,
-        "narrations": narrations,
     }
 
 
@@ -140,25 +92,16 @@ def format_check_report(results: dict) -> str:
         "structure": "结构兼容",
         "injection": "注入完整",
         "components": "组件新鲜度",
-        "narrations": "文案合规",
     }
     status_mark = {"pass": "[PASS]", "warn": "[WARN]", "fail": "[FAIL]"}
 
     lines = []
     lines.append("=== add-subtitle --check ===")
-    for key in ["structure", "injection", "components", "narrations"]:
+    for key in ["structure", "injection", "components"]:
         entry = results[key]
         mark = status_mark.get(entry["status"], "[????]")
         label = labels[key]
         lines.append(f"{mark} {label} — {entry['msg']}")
-
-    # 文案超长详情
-    long_lines = results["narrations"].get("long_lines", [])
-    if long_lines:
-        lines.append("")
-        for item in long_lines:
-            text_preview = item["text"][:30] + ("..." if len(item["text"]) > 30 else "")
-            lines.append(f"  {item['file']}  L{item['line']}  \"{text_preview}\" ({item['char_count']}字)")
 
     # 摘要
     statuses = [e["status"] for e in results.values()]
