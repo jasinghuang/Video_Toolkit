@@ -111,9 +111,9 @@ Phase 2.4 的"实现单章"会重复 N 次 —— 每次都要回看核心约束
 | 阶段 | 必读（每次都看） | 一次性看完 / 按需查 |
 |---|---|---|
 | Phase 1.1-1.2 内容编写 | `references/SCRIPT-STYLE.md` + `references/OUTLINE-FORMAT.md` + `article.md`（用户原文，如有） | —— |
-| **Checkpoint Plan 选主题** | —— | `themes/*/theme.json`（动态读全部，列清单 + `bestFor` 推荐 + `descriptionZh`）；`references/THEMES.md`（用户想了解主题系统时） |
+| **Checkpoint Plan 选主题** | —— | `themes/*/theme.json`（动态读全部，列清单 + `bestFor` 推荐 + `descriptionZh`）；`references/THEMES.md`（用户想了解主题系统时）；`references/SEMANTIC-CLASSES.md`（了解 12-class 合约） |
 | Phase 2.1 脚手架 | —— | SKILL.md 本节看一次 |
-| **Phase 2.4 实现单章（×N 次，被 2.2 / 2.3 调用）** | **`references/CHAPTER-CRAFT.md`** 单一入口 —— Part 0 十条原则 / Part 1 开工 5 问 / Part 2 关系→动作决策树 / Part 3 视觉工具箱 / Part 4 时长参考 / Part 5 反 AI 味反模式 / Part 6 代码硬规则（**含 narrations.ts 强制约束**）/ Part 7 完工自检 / Part 8 反馈速查 + 当前主题的 `themes/<id>/theme.json` + 当前章节的 outline.md 段落 + **`article.md` 本章对应段落** + 素材清单 | `references/EXAMPLES/`（结构示意，不是抄袭模板）；`references/THEMES.md` 完整 token 契约 |
+| **Phase 2.4 实现单章（×N 次，被 2.2 / 2.3 调用）** | **`references/CHAPTER-CRAFT.md`** 单一入口 + `references/SEMANTIC-CLASSES.md`（12-class 合约）+ 当前主题的 `themes/<id>/theme.json` + `themes/<id>/design.md`（设计约束）+ 当前章节的 outline.md 段落 + **`article.md` 本章对应段落** + 素材清单 | `references/EXAMPLES/`（结构示意）；`references/THEMES.md` 主题系统 |
 | Phase 3 音频合成 | `references/AUDIO.md`（含 narrations.ts → segments.json → 任意 provider 流程，内置 minimax + openai） | `templates/scripts/tts-providers/README.md`（换 provider / 自带 TTS 时） |
 | Phase 4 录屏 + 后期 | `references/RECORDING.md`（含 `?auto=1` 自动录屏） | —— |
 | 选 / 造 / 切主题 | —— | `references/THEMES.md` |
@@ -443,9 +443,10 @@ Part 8「常见反馈速查」。**关键**：先定位是哪一层（节奏 / �
 | [`references/OUTLINE-FORMAT.md`](references/OUTLINE-FORMAT.md) | Phase 1.2 必读 | outline.md 字段 spec、命名约定、章节切分、信息池 |
 | [`references/CHAPTER-CRAFT.md`](references/CHAPTER-CRAFT.md) | **Phase 2.4 每章单一必读入口** | Part 0 十条原则 / Part 1 开工 5 问 / Part 2 关系→动作决策树 / Part 3 视觉工具箱 / Part 4 时长 / Part 5 反 AI 味反模式 / Part 6 代码硬规则 / Part 7 完工自检 / Part 8 反馈速查 |
 | [`references/EXAMPLES/`](references/EXAMPLES/) | **可选** —— 看结构 | 章节结构示意（hook / list-reveal / case-tech-review）；**不是抄袭模板** |
-| [`references/THEMES.md`](references/THEMES.md) | 选 / 造 / 切主题时 | 完整 token 契约 + 内置主题清单 + 创作流程 |
+| [`references/THEMES.md`](references/THEMES.md) | 选 / 造 / 切主题时 | 主题系统架构 + 内置主题目录 + 创作流程 |
+| [`references/SEMANTIC-CLASSES.md`](references/SEMANTIC-CLASSES.md) | Phase 2 开始时读一次 | 12-class 合约：章节 agent 必须使用的主题 class |
 | [`references/AUDIO.md`](references/AUDIO.md) | Phase 3 才读 | provider-agnostic 音频合成流程、内置 minimax 用法、换 provider 路径、故障排查 |
 | [`templates/scripts/tts-providers/README.md`](templates/scripts/tts-providers/README.md) | 换 / 加 TTS provider 时 | 三函数契约 + 内置 2 个 (minimax / openai) + 5 种现成代码片段（ElevenLabs / edge-tts / macOS say / Azure / Google） |
 | [`references/RECORDING.md`](references/RECORDING.md) | Phase 4 才读 | 录屏工具 + 后期合成 |
-| [`themes/`](themes) | Checkpoint Plan / Phase 1.2 时翻 | 内置主题（每个含 `theme.json` + `tokens.css`） |
+| [`themes/`](themes) | Checkpoint Plan / Phase 1.2 时翻 | 内置主题（每个含 `theme.json` + `theme.css` + `design.md`） |
 | [`scripts/scaffold.sh`](scripts/scaffold.sh) | Phase 2.1 跑一次 | 一键项目脚手架 |
