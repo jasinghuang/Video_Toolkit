@@ -157,6 +157,7 @@ def build_subtitle_tsx() -> str:
           }, []);
           if (!text || hidden) return null;
           const display = text.replace(/[，。！？、；：,.!?;:]+$/, "");
+          if (!display) return null;
           return (
             <div className="subtitle-layer">
               <span className="subtitle-badge">{display}</span>
