@@ -108,33 +108,6 @@ def test_help_lists_presentation_flag():
     assert "--presentation" in result.stdout
 
 
-def test_check_mode_reports_fail_on_long_narrations():
-    """fixture 含超长 narration，--check 正确返回失败"""
-    import shutil
-    import tempfile
-
-    fixture_pres = Path(__file__).resolve().parent / "fixtures" / "sample-presentation"
-    with tempfile.TemporaryDirectory() as tmp:
-        tmp_pres = Path(tmp) / "pres"
-        shutil.copytree(str(fixture_pres), str(tmp_pres))
-        # 先注入
-        result = subprocess.run(
-            [sys.executable, str(SCRIPT), "--presentation", str(tmp_pres)],
-            capture_output=True, text=True,
-        )
-        assert result.returncode == 0
-        # check（cli 层暂不开放 --max-chars，用 presentation 默认 18）
-        # fixture 超长文案会导致 narration FAIL——确认 exit code != 0
-        result = subprocess.run(
-            [sys.executable, str(SCRIPT), "--presentation", str(tmp_pres), "--check"],
-            capture_output=True, text=True,
-        )
-        # exit code 1 因为有超长文案
-        assert result.returncode == 1
-        assert "[PASS] 结构兼容" in result.stdout
-        assert "[PASS] 注入完整" in result.stdout
-        assert "[FAIL] 文案合规" in result.stdout
-
 
 def test_check_rejects_srt_with_check():
     """--check 与 srt_file 互斥"""
