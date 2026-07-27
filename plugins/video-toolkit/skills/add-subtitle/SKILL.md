@@ -8,7 +8,7 @@ description: >
   生成字幕播放页、srt 转 html、presentation 字幕、注入字幕层时触发此 skill。
   也可给 web-video-presentation 产出的 presentation（Vite+React 项目）
   注入字幕层（显示当前 narration，随 step 自动切换），运行 --check 可诊断
-  presentation 项目的字幕注入状态与文案合规性。依赖 jinja2（视频模式自动安装）。
+  presentation 项目的字幕注入状态。依赖 jinja2（视频模式自动安装）。
 ---
 
 # add-subtitle
@@ -51,14 +51,13 @@ python ${CLAUDE_PLUGIN_ROOT}/skills/add-subtitle/skill_main.py --presentation /p
 
 要求 presentation 是标准 web-video-presentation 结构（`App.tsx` 含 `stepText` 和 `<Stage>`），否则报错不动文件。
 
-### --check 检测项（4 项）
+### --check 检测项（3 项）
 
 | 检测项 | 严重度 | 说明 |
 |--------|--------|------|
 | 结构兼容 | FAIL | App.tsx 是否含 `stepText` + `<Stage` |
 | 注入完整 | FAIL | App.tsx 是否已有 Subtitle import + 挂载 |
 | 组件新鲜度 | WARN | Subtitle.tsx/.css 是否存在且与模板一致 |
-| 文案合规 | FAIL | 扫描 `src/chapters/*/narrations.ts`，narration ≤18 字 |
 
 输出示例：
 
@@ -69,13 +68,11 @@ python ${CLAUDE_PLUGIN_ROOT}/skills/add-subtitle/skill_main.py --presentation /p
 [PASS] 结构兼容 — App.tsx 含 stepText + <Stage
 [FAIL] 注入完整 — 未注入：缺少 Subtitle import 和挂载
 [WARN] 组件新鲜度 — 组件缺失: Subtitle.tsx, Subtitle.css
-[FAIL] 文案合规 — 2 条 narration 超过 18 字
-  src/chapters/01-intro/narrations.ts  L2  "这一句超过十八个字的限制需要被检测..." (22字)
 
-Summary: 1 PASS, 1 WARN, 2 FAIL
+Summary: 1 PASS, 1 WARN, 1 FAIL
 ```
 
-重复运行 `--presentation`（不加 `--check`）即可修复所有 FAIL/WARN（文案超长除外，需手动拆分 step）。
+重复运行 `--presentation`（不加 `--check`）即可修复所有 FAIL/WARN。
 
 ## 参数
 
@@ -93,7 +90,7 @@ Summary: 1 PASS, 1 WARN, 2 FAIL
 
 每条字幕 **≤12 字**（视频模式），单行显示。超长条由上游 `text-refine` 切分；本 skill 不切分。
 
-presentation 注入模式下，每条 narration **≤18 字**。Subtitle 组件对超长文本做截断兜底（`text.slice(0, 18) + "…"`），但建议在口播稿中提前拆分 step。运行 `--check` 可检测超长文案。
+presentation 注入模式下，字幕文本直接取自 `narrations.ts`，不做字数限制。超长文本由 CSS `text-overflow: ellipsis` 兜底（约 38 字后触发省略号），正常 step 口播不会触发。
 
 ## 输出
 
