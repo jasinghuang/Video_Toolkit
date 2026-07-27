@@ -66,9 +66,9 @@ done
 
 TARGET="${TARGET:-presentation}"
 THEME_DIR="$THEMES_DIR/$THEME"
-THEME_TOKENS="$THEME_DIR/tokens.css"
+THEME_CSS="$THEME_DIR/theme.css"
 
-if [[ ! -d "$THEME_DIR" || ! -f "$THEME_TOKENS" ]]; then
+if [[ ! -d "$THEME_DIR" || ! -f "$THEME_CSS" ]]; then
   echo "✗ 找不到主题 '${THEME}'。可用主题：" >&2
   echo >&2
   for dir in "$THEMES_DIR"/*/; do
@@ -122,8 +122,8 @@ cp "$TEMPLATES/index.html" .
 cp "$TEMPLATES/src/main.tsx" src/main.tsx
 cp "$TEMPLATES/src/App.tsx"  src/App.tsx
 
-# tokens.css 来自所选主题
-cp "$THEME_TOKENS"                          src/styles/tokens.css
+# theme.css 来自所选主题
+cp "$THEME_CSS"                             src/styles/theme.css
 cp "$TEMPLATES/src/styles/base.css"         src/styles/base.css
 cp "$TEMPLATES/src/styles/animations.css"   src/styles/animations.css
 cp "$TEMPLATES/src/styles/fonts.css"        src/styles/fonts.css
@@ -237,8 +237,8 @@ cat <<EOF
   • $SKILL_DIR/references/EXAMPLES/
       完整章节 anchor（钩子型 / 列举型）—— 看"形"，不要照搬
 
-要换一个主题，覆盖 tokens.css 即可：
-  cp $SKILL_DIR/themes/<id>/tokens.css src/styles/tokens.css
+要换一个主题，覆盖 theme.css 即可：
+  cp $SKILL_DIR/themes/<id>/theme.css src/styles/theme.css
 
 想自创主题，看 $SKILL_DIR/references/THEMES.md。
 

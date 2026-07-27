@@ -1,0 +1,26 @@
+{
+  "id": "signal",
+  "name": "Signal",
+  "nameZh": "信号",
+  "description": "Deep editorial navy + warm cream dual-surface system. Antique gold accent. Instrument Serif italic display vs Archivo body. 80px invisible structural grid. Short gold rules.",
+  "descriptionZh": "深海军蓝 + 暖奶油双表面系统。古董金强调色。Instrument Serif 斜体标题 + Archivo 正文。80px 不可视听网格。金色短分隔线。",
+  "mood": ["dark", "editorial", "cinematic", "refined", "confident"],
+  "bestFor": [
+    "深度内容 / 长文解析",
+    "品牌 / 文化内容",
+    "高端产品发布",
+    "编辑级口播"
+  ],
+  "avoidFor": [
+    "轻松 / 俏皮内容",
+    "快节奏 vlog"
+  ],
+  "formality": "high",
+  "source": "beautiful-html-templates/signal",
+  "preview": {
+    "shell": "#0D1117",
+    "surface": "#F0ECE3",
+    "text": "#1C2644",
+    "accent": "#C8A870"
+  }
+}

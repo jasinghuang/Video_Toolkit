@@ -1,0 +1,244 @@
+/* ======================================================================
+ * Theme · signal
+ *   Deep editorial navy + warm cream dual-surface system.
+ *   Antique gold accent. Instrument Serif italic display vs Archivo body.
+ *   80px invisible structural grid on cream surface. Short gold rules.
+ *   Slow cinematic pacing (1.5s reveals).
+ *
+ *   Source: beautiful-html-templates/templates/signal/
+ *
+ *   character signatures:
+ *     • dual-surface: navy (--surface-alt) ↔ cream (--surface)
+ *     • gold italic mid-sentence emphasis (.display em, .display i)
+ *     • 36px short gold divider (.divider-accent-short)
+ *     • 80px invisible grid on cream surface
+ *     • stat value: Source Serif 4 italic 600 tabular-nums
+ * ====================================================================== */
+:root {
+  /* ─── Palette ─── */
+  --shell:        #0D1117;    /* darker than surface for letterbox depth */
+  --surface:      #F0ECE3;    /* warm cream — primary surface */
+  --surface-2:    #E6E0D5;    /* slightly deeper cream for cards */
+  --surface-3:    #D8D1C5;    /* deepest cream for nested surfaces */
+  --surface-alt:  #1C2644;    /* deep navy — alternate surface */
+  --text:         #1C2644;    /* navy ink on cream */
+  --text-2:       #3A4560;    /* lighter navy for secondary text */
+  --text-mute:    #7A8299;    /* muted steel blue */
+  --text-faint:   #B0B5C0;    /* faint steel */
+  --text-on-alt:  #F0ECE3;    /* cream text on navy surface */
+  --text-2-on-alt:#C8CFD8;    /* muted cream text on navy */
+  --rule:         #D0C9BB;    /* warm hairline on cream */
+  --rule-on-alt:  rgba(240,236,227,0.12);  /* subtle rule on navy */
+  --accent:       #C8A870;    /* antique gold */
+  --accent-soft:  rgba(200,168,112,0.12);
+  --accent-glow:  rgba(200,168,112,0.45);
+
+  /* ─── Typography ─── */
+  --font-display-en: "Instrument Serif", "Playfair Display", Georgia, serif;
+  --font-display-cn: "Noto Serif SC", "Source Han Serif SC", serif;
+  --font-body:       "Archivo", "Noto Sans SC", -apple-system, sans-serif;
+  --font-mono:       "JetBrains Mono", "SF Mono", ui-monospace, monospace;
+  --font-features:   "tnum", "ss01";
+
+  /* ─── Type scale ─── */
+  --t-display:  clamp(80px, 9.5vw, 182px);
+  --t-h1:       clamp(48px, 5vw, 72px);
+  --t-h2:       clamp(32px, 3.6vw, 48px);
+  --t-h3:       clamp(24px, 2.5vw, 34px);
+  --t-body:     20px;
+  --t-caption:  14px;
+  --t-micro:    11px;
+
+  /* ─── Spacing scale ─── */
+  --space-unit: 8px;
+  --space-xs:   4px;
+  --space-sm:   8px;
+  --space-md:   16px;
+  --space-lg:   24px;
+  --space-xl:   48px;
+  --space-2xl:  96px;
+
+  /* ─── Radii ─── */
+  --r-card: 4px;    /* refined, almost sharp */
+
+  /* ─── Stage ─── */
+  --stage-pad-x: 120px;
+  --stage-pad-y: 80px;
+  --shadow-stage:
+    0 60px 160px rgba(28,38,68,0.30),
+    0 0 0 1px rgba(0,0,0,0.04);
+
+  /* ─── Motion: slow cinematic ─── */
+  --ease-quart:    cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-expo:     cubic-bezier(0.86, 0, 0.07, 1);
+  --dur-quick:     300ms;
+  --dur-base:      800ms;
+  --dur-slow:      1200ms;
+  --dur-cinematic: 1500ms;
+
+  /* ─── Decoration ─── */
+  /* 80px invisible structural grid on cream surface */
+  --surface-pattern:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80'><rect width='80' height='80' fill='none' stroke='white' stroke-width='0.5' stroke-opacity='0.03'/></svg>");
+  --surface-pattern-size: 80px 80px;
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * MUST classes — the 12-class contract
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* .display — Hero headline (Latin) */
+.display {
+  font-family: var(--font-display-en);
+  font-size: var(--t-display);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+/* Signal signature: gold italic mid-sentence emphasis */
+.display em,
+.display i {
+  color: var(--accent);
+  font-style: italic;
+}
+
+/* .display-cn — Hero headline (Chinese) */
+.display-cn {
+  font-family: var(--font-display-cn);
+  font-size: var(--t-display);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+/* .body — Body text */
+.body {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text-2);
+}
+
+/* .body-sm — Caption */
+.body-sm {
+  font-family: var(--font-body);
+  font-size: var(--t-caption);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-mute);
+}
+
+/* .label — Uppercase mono label */
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-mute);
+}
+
+/* .stat-value — Large stat number */
+.stat-value {
+  font-family: "Source Serif 4", var(--font-display-en);
+  font-size: var(--t-h1);
+  font-weight: 600;
+  font-style: italic;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);  /* Signal: gold stats */
+}
+
+/* .stat-label — Stat description */
+.stat-label {
+  font-family: var(--font-body);
+  font-size: var(--t-caption);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+}
+
+/* .card — Card container */
+.card {
+  background: var(--surface-2);
+  border-radius: var(--r-card);
+  padding: var(--space-lg);
+  box-shadow: 0 1px 0 var(--rule);
+}
+
+/* .divider — Horizontal rule */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: var(--rule);
+  border: 0;
+  margin: var(--space-md) 0;
+}
+
+/* .quote — Pull quote */
+.quote {
+  border-left: 3px solid var(--accent);
+  padding: var(--space-sm) 0 var(--space-sm) var(--space-lg);
+  font-family: var(--font-display-en);
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--t-h3);
+  line-height: 1.4;
+  color: var(--text);
+}
+
+/* .tag — Badge / pill */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 12px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+/* .meta — Metadata / footnote */
+.meta {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  color: var(--text-faint);
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * Signal-specific extensions (MAY — not part of the contract)
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* Short gold accent divider — Signal's signature */
+.divider-accent-short {
+  width: 36px;
+  height: 2px;
+  background: var(--accent);
+  border: 0;
+  margin: var(--space-md) 0;
+}
+
+/* Dual-surface helper: apply to a step's root to use navy surface */
+.surface-alt {
+  background: var(--surface-alt);
+  color: var(--text-on-alt);
+}
+.surface-alt .body { color: var(--text-2-on-alt); }
+.surface-alt .body-sm { color: var(--text-2-on-alt); opacity: 0.7; }
+.surface-alt .label { color: rgba(200,207,216,0.6); }
+.surface-alt .meta { color: rgba(200,207,216,0.4); }
+.surface-alt .divider { background: var(--rule-on-alt); }
+.surface-alt .card {
+  background: rgba(240,236,227,0.06);
+  box-shadow: 0 1px 0 rgba(240,236,227,0.08);
+}
