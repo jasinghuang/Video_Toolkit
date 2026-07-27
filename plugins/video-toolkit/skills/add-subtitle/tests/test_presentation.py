@@ -40,9 +40,12 @@ def test_build_subtitle_tsx_contains_component_and_hide_key():
     assert "subtitle-layer" in tsx
     assert "subtitle-badge" in tsx
     assert "useState" in tsx  # hidden state
-    # NEW: trailing punctuation strip (replaces old 18-char truncation)
-    assert "MAX_CHARS" not in tsx
+    # 句末标点 strip
     assert "text.replace" in tsx
+    assert "，。！？、；：,.!?;:" in tsx
+    # 确认不再有截断
+    assert "MAX_CHARS" not in tsx
+    assert "text.slice" not in tsx
 
 
 def test_build_subtitle_css_contains_fixed_params():
@@ -60,6 +63,19 @@ def test_build_subtitle_css_contains_fixed_params():
     # NEW: overflow protection
     assert "overflow: hidden" in css
     assert "text-overflow: ellipsis" in css
+
+
+from presentation import build_subtitle_tsx as _bst  # noqa: E402
+
+
+def test_build_subtitle_tsx_strips_trailing_punctuation():
+    """验证生成的 Subtitle 组件会 strip 句末标点。"""
+    tsx = _bst()
+    # 提取 render 逻辑验证：正则应覆盖中英文常见句末标点
+    assert "text.replace(/[，。！？、；：,.!?;:]+$/, \"\")" in tsx
+    # 确认只 strip 尾部（$ 锚定），不处理句中
+    # 正则末尾 $ 确保只匹配句末
+    assert "+$/, " in tsx
 
 
 from presentation import patch_app_tsx  # noqa: E402
@@ -144,38 +160,7 @@ def test_inject_refuses_missing_app_tsx(tmp_path: Path):
         inject_presentation(pres)
 
 
-from presentation import scan_long_narrations, check_presentation, format_check_report  # noqa: E402
-
-
-def test_scan_long_narrations_finds_overlong():
-    pres = Path(__file__).resolve().parent / "fixtures" / "sample-presentation"
-    long_lines = scan_long_narrations(pres, max_chars=18)
-    assert len(long_lines) == 2
-    # 按文件行号排序，第一段超长在 line 3（0-index 数组索引 1 → narrations.ts line 2+1+1）
-    assert long_lines[0]["text"].startswith("这一句")
-    assert long_lines[0]["char_count"] > 18
-    assert long_lines[1]["text"].startswith("另外一句")
-    assert "narrations.ts" in str(long_lines[0]["file"])
-
-
-def test_scan_long_narrations_empty_when_no_narrations_dir(tmp_path: Path):
-    pres = tmp_path / "presentation"
-    (pres / "src").mkdir(parents=True)
-    (pres / "src" / "App.tsx").write_text("// empty", encoding="utf-8")
-    result = scan_long_narrations(pres, max_chars=18)
-    assert result == []
-
-
-def test_scan_long_narrations_empty_when_all_short(tmp_path: Path):
-    pres = tmp_path / "presentation"
-    chapters_dir = pres / "src" / "chapters" / "01-intro"
-    chapters_dir.mkdir(parents=True)
-    (chapters_dir / "narrations.ts").write_text(
-        'export const narrations = ["短句一", "短句二", "短句三"];\n',
-        encoding="utf-8",
-    )
-    result = scan_long_narrations(pres, max_chars=18)
-    assert result == []
+from presentation import check_presentation, format_check_report  # noqa: E402
 
 
 # ── check_presentation ──────────────────────────────────────────────
@@ -187,12 +172,11 @@ def test_check_passes_clean_presentation():
     pres = Path(__file__).resolve().parent / "fixtures" / "sample-presentation"
     from presentation import inject_presentation
     import tempfile
-    # 复制 fixture 到临时目录避免污染
     with tempfile.TemporaryDirectory() as tmp:
         tmp_pres = Path(tmp) / "pres"
         shutil.copytree(str(pres), str(tmp_pres))
         inject_presentation(tmp_pres)
-        result = check_presentation(tmp_pres, max_chars=100)  # high limit to pass narration check
+        result = check_presentation(tmp_pres)
         assert result["structure"]["status"] == "pass"
         assert result["injection"]["status"] == "pass"
         assert result["components"]["status"] == "pass"
@@ -205,7 +189,7 @@ def test_check_catches_missing_injection():
         tmp_pres = Path(tmp) / "pres"
         shutil.copytree(str(pres), str(tmp_pres))
         # 不注入，直接 check
-        result = check_presentation(tmp_pres, max_chars=100)
+        result = check_presentation(tmp_pres)
         assert result["injection"]["status"] == "fail"
         assert result["components"]["status"] == "warn"  # 组件文件不存在
 
@@ -217,20 +201,9 @@ def test_check_rejects_non_standard_structure(tmp_path: Path):
         'export default function App() { return <div>no stage</div>; }\n',
         encoding="utf-8",
     )
-    result = check_presentation(pres, max_chars=18)
+    result = check_presentation(pres)
     assert result["structure"]["status"] == "fail"
     assert "stepText" in result["structure"]["msg"]
-
-
-def test_check_catches_long_narrations():
-    pres = Path(__file__).resolve().parent / "fixtures" / "sample-presentation"
-    import tempfile
-    with tempfile.TemporaryDirectory() as tmp:
-        tmp_pres = Path(tmp) / "pres"
-        shutil.copytree(str(pres), str(tmp_pres))
-        result = check_presentation(tmp_pres, max_chars=18)
-        assert result["narrations"]["status"] == "fail"
-        assert len(result["narrations"]["long_lines"]) == 2
 
 
 def test_format_check_report_all_pass():
@@ -238,7 +211,6 @@ def test_format_check_report_all_pass():
         "structure":  {"status": "pass", "msg": "App.tsx 含 stepText + <Stage"},
         "injection":  {"status": "pass", "msg": "Subtitle import + 挂载完整"},
         "components": {"status": "pass", "msg": "Subtitle.tsx/.css 与模板一致", "detail": "ok"},
-        "narrations": {"status": "pass", "msg": "所有 narration ≤18 字", "long_lines": []},
     }
     report = format_check_report(results)
     assert "[PASS]" in report
@@ -251,9 +223,6 @@ def test_format_check_report_with_failures():
         "structure":  {"status": "pass", "msg": "ok"},
         "injection":  {"status": "fail", "msg": "未找到 Subtitle import"},
         "components": {"status": "warn", "msg": "Subtitle.tsx 版本过旧", "detail": "stale"},
-        "narrations": {"status": "fail", "msg": "2 条超长", "long_lines": [
-            {"file": "src/chapters/01/narrations.ts", "line": 2, "text": "abc" * 7, "char_count": 21},
-        ]},
     }
     report = format_check_report(results)
     assert "[FAIL]" in report
