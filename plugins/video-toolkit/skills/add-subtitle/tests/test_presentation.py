@@ -40,9 +40,9 @@ def test_build_subtitle_tsx_contains_component_and_hide_key():
     assert "subtitle-layer" in tsx
     assert "subtitle-badge" in tsx
     assert "useState" in tsx  # hidden state
-    # NEW: truncation
-    assert "MAX_CHARS = 18" in tsx
-    assert "text.slice(0, MAX_CHARS)" in tsx
+    # NEW: trailing punctuation strip (replaces old 18-char truncation)
+    assert "MAX_CHARS" not in tsx
+    assert "text.replace" in tsx
 
 
 def test_build_subtitle_css_contains_fixed_params():

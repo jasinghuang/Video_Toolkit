@@ -203,8 +203,6 @@ def build_subtitle_tsx() -> str:
           text: string;
         }
 
-        const MAX_CHARS = 18;
-
         export function Subtitle({ text }: SubtitleProps) {
           const [hidden, setHidden] = useState(false);
           useEffect(() => {
@@ -215,7 +213,7 @@ def build_subtitle_tsx() -> str:
             return () => window.removeEventListener("keydown", onKey);
           }, []);
           if (!text || hidden) return null;
-          const display = text.length > MAX_CHARS ? text.slice(0, MAX_CHARS) + "…" : text;
+          const display = text.replace(/[，。！？、；：,.!?;:]+$/, "");
           return (
             <div className="subtitle-layer">
               <span className="subtitle-badge">{display}</span>
