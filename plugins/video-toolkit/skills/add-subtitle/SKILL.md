@@ -5,10 +5,7 @@ description: >
   样式叠加到视频上，输出一个自包含 HTML 播放页。样式固定、**严格单行**、居中，
   自动适配 16:9 / 4:3 / 3:4 / 9:16 等多种视频比例。约定输入 SRT 每条 ≤12 字
   （超出由上游 text-refine 切分）。当用户要给视频加字幕、字幕叠加、
-  生成字幕播放页、srt 转 html、presentation 字幕、注入字幕层时触发此 skill。
-  也可给 web-video-presentation 产出的 presentation（Vite+React 项目）
-  注入字幕层（显示当前 narration，随 step 自动切换），运行 --check 可诊断
-  presentation 项目的字幕注入状态。依赖 jinja2（视频模式自动安装）。
+  生成字幕播放页、srt 转 html 时触发此 skill。依赖 jinja2（自动安装）。
 ---
 
 # add-subtitle
@@ -33,66 +30,17 @@ python ${CLAUDE_PLUGIN_ROOT}/skills/add-subtitle/skill_main.py subtitle.srt --vi
 python ${CLAUDE_PLUGIN_ROOT}/skills/add-subtitle/skill_main.py subtitle.srt --video video.mp4 -o ~/Desktop
 ```
 
-## presentation 注入模式
-
-给 [web-video-presentation](https://github.com/ConardLi/garden-skills) 产出的 presentation（Vite+React 项目）注入字幕层：在舞台底部显示当前 step 的 narration，随 step 推进自动切换、和口播音频天然同步（step 驱动，无需 srt/时间戳）。默认显示，按 `H` 键临时隐藏。
-
-```bash
-# 修复模式：注入/更新字幕层（覆盖组件文件，幂等 patch App.tsx）
-python ${CLAUDE_PLUGIN_ROOT}/skills/add-subtitle/skill_main.py --presentation /path/to/presentation
-
-# 检测模式：只诊断，不动文件（exit code 0 = 全部通过，1 = 有问题）
-python ${CLAUDE_PLUGIN_ROOT}/skills/add-subtitle/skill_main.py --presentation /path/to/presentation --check
-```
-
-注入内容：
-- 生成 `src/components/Subtitle.tsx` + `Subtitle.css`（黑字白底圆角描边标签，舞台 1920×1080 坐标 px）
-- patch `src/App.tsx` 挂载 `<Subtitle text={stepText} />`（幂等，可重复运行）
-
-要求 presentation 是标准 web-video-presentation 结构（`App.tsx` 含 `stepText` 和 `<Stage>`），否则报错不动文件。
-
-### --check 检测项（3 项）
-
-| 检测项 | 严重度 | 说明 |
-|--------|--------|------|
-| 结构兼容 | FAIL | App.tsx 是否含 `stepText` + `<Stage` |
-| 注入完整 | FAIL | App.tsx 是否已有 Subtitle import + 挂载 |
-| 组件新鲜度 | WARN | Subtitle.tsx/.css 是否存在且与模板一致 |
-
-输出示例：
-
-```
-=== add-subtitle --check ===
-  Target: /path/to/presentation
-
-[PASS] 结构兼容 — App.tsx 含 stepText + <Stage
-[FAIL] 注入完整 — 未注入：缺少 Subtitle import 和挂载
-[WARN] 组件新鲜度 — 组件缺失: Subtitle.tsx, Subtitle.css
-
-Summary: 1 PASS, 1 WARN, 1 FAIL
-```
-
-重复运行 `--presentation`（不加 `--check`）即可修复所有 FAIL/WARN。
-
 ## 参数
 
 | 参数 | 说明 | 默认值 |
 |------|------|--------|
-| `srt_file` | 输入 SRT 文件（视频模式） | 视频模式必需 |
-| `--video` | 视频文件（视频模式） | 视频模式必需 |
-| `--output`, `-o` | 输出目录（视频模式） | SRT 同目录 |
-| `--presentation` | presentation 目录（注入模式） | —— |
-| `--check` | 检测模式：只诊断 presentation，不动文件 | —— |
-
-`srt_file`/`--video`（视频模式）与 `--presentation`（注入模式）**互斥**。
+| `srt_file` | 输入 SRT 文件 | 必需 |
+| `--video` | 视频文件 | 必需 |
+| `--output`, `-o` | 输出目录 | SRT 同目录 |
 
 ## 输入约定
 
-每条字幕 **≤12 字**（视频模式），单行显示。超长条由上游 `text-refine` 切分；本 skill 不切分。
-
-presentation 注入模式下，字幕文本直接取自 `narrations.ts`，不做字数限制。超长文本由 CSS `text-overflow: ellipsis` 兜底（约 38 字后触发省略号），正常 step 口播不会触发。
-
-两种模式下字幕都**强制单行**。CSS `white-space: nowrap !important` 阻止自动换行，Subtitle 组件主动去除文本中的换行符。超长文本由 `text-overflow: ellipsis` 截断，不换行。
+每条字幕 **≤12 字**，单行显示。超长条由上游 `text-refine` 切分；本 skill 不切分。CSS `white-space: nowrap !important` 阻止自动换行，Subtitle 组件主动去除文本中的换行符。超长文本由 `text-overflow: ellipsis` 截断，不换行。
 
 ## 输出
 
@@ -126,13 +74,6 @@ video-downloader → audio-transcribe → text-refine → add-subtitle
     下载视频          转录字幕         校准/切分字幕   叠加字幕到视频
 ```
 
-Presentation 模式：
-
-```
-web-video-presentation → add-subtitle --presentation → add-subtitle --check
-     制作项目                注入/更新字幕层                诊断检测
-```
-
 ## 示例
 
 **视频模式：**
@@ -142,10 +83,3 @@ web-video-presentation → add-subtitle --presentation → add-subtitle --check
 用户: add-subtitle video.srt --video video.mp4 -o ~/Desktop
 ```
 
-**Presentation 模式：**
-
-```
-用户: 给 presentation 注入字幕
-用户: 检查一下 presentation 的字幕有没有问题
-用户: 更新字幕层到最新版本
-```
